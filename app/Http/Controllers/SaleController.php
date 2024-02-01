@@ -269,7 +269,8 @@ class SaleController extends Controller
         $sale = DB::table('sales')->where('id', $id)->first();
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
         $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
-        return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 0));
+        $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
+        return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 0, 'users' => $users));
     }
     public function update(Request $request)
     {
