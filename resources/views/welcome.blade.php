@@ -416,10 +416,12 @@
             margin: 4px 2px;
             cursor: pointer;
         }
-        .mt-3{
+
+        .mt-3 {
             margin-top: 2rem;
         }
-        .login-regis-btn{
+
+        .login-regis-btn {
             padding: .8rem 4rem;
             font-size: 1.2rem;
         }
@@ -427,28 +429,30 @@
 </head>
 
 <body class="antialiased">
-<div class="flex" style="height: 100vh; flex-direction: column; justify-content:center; align-items:center;">
+    <div class="flex" style="height: 100vh; flex-direction: column; justify-content:center; align-items:center;">
 
-    <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-        <img src="{{url('/company_logo/quadacts.webp')}}" style="width: 400px">
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <img src="{{ url('/company_logo/quadacts.webp') }}" style="width: 400px">
+
+        </div>
+        @if (Route::has('login'))
+            <div class="sm:block">
+                @auth
+                    <a href="{{ url('/dashboard') }}"
+                        class="login-regis-btn text-sm  text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}"
+                        class="login-regis-btn text-sm text-gray-700 dark:text-gray-500 underline button mt-3">Log in</a>
+
+                    @if (Route::has('register'))
+                        {{-- <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a> --}}
+                    @endif
+                @endauth
+            </div>
+        @endif
 
     </div>
-    @if (Route::has('login'))
-        <div class="hidden  sm:block">
-            @auth
-                <a href="{{ url('/dashboard') }}" class="login-regis-btn text-sm  text-gray-700 dark:text-gray-500 underline">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}" class="login-regis-btn text-sm text-gray-700 dark:text-gray-500 underline button mt-3">Log in</a>
-
-                @if (Route::has('register'))
-                    {{--<a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>--}}
-                @endif
-            @endauth
-        </div>
-    @endif
-
-</div>
-</div>
+    </div>
 </body>
 
 </html>

@@ -68,13 +68,31 @@
                                     </select>
                                 </div>
                             </div>
+                            {{-- <div class="form-group col-2 pl-1 pt-1">
+                                <div class="form-group">
+                                    <label for="branch" class="">
+                                        Salesman
+                                    </label>
+                                    <select class="js-example-basic-single form-control" placeholder="Select Salesman"
+                                        name="user_id" id="user_id">
+                                        <option value="">Select Salesman</option>
+                                        @if (!empty($users))
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}"
+                                                    {{ isset($user_id) ? ($user->id == $user_id ? 'Selected' : '') : '' }}>
+                                                    {{ $user->name }} </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div> --}}
                             <div class="form-group col-2 ml-1">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">Invoice</label>
                                 <input type="text" name="invoice_number" class="form-control"
                                     value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"
                                     placeholder="Invoice No.">
                             </div>
-                            <div class="col-2 align-self-end ml-2 pb-3" style="margin-bottom: 1.1rem;">
+                            <div class="col-1 align-self-end ml-2 pb-3" style="margin-bottom: 1.1rem;">
                                 <div class="page-title-actions">
                                     <a href="">
                                         <button type="submit" data-toggle="tooltip" title=""

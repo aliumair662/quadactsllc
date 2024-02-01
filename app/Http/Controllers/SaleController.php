@@ -41,8 +41,8 @@ class SaleController extends Controller
             }
             unset($data);
         }
-
-        return view('sales.list', array('salelist' => $list, 'queries' => $Queries, 'customers' => $customers, 'net_total' => $net_total, 'net_pcs' => $net_pcs, 'net_qty' => $net_qty));
+        $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
+        return view('sales.list', array('salelist' => $list, 'queries' => $Queries, 'customers' => $customers, 'net_total' => $net_total, 'net_pcs' => $net_pcs, 'net_qty' => $net_qty, 'users' => $users));
     }
     public function newsale()
     {
@@ -495,16 +495,10 @@ class SaleController extends Controller
     // Search Sales
     public function searchSales(Request $request)
     {
+        Log::debug($request->user_id);
         $Queries = array();
-        // if ($request->isMethod('GET')) {
 
-        //     $request->from_date= $request->get('from_date');
-        //     $request->to_date=$request->get('to_date');
-        //     $request->invoice_number=$request->get('invoice_number');
-        //     $request->customer_id=$request->get('customer_id');
-        // }
-
-        if (empty($request->from_date) && empty($request->to_date) &&  empty($request->customer_id) && empty($request->invoice_number)) {
+        if (empty($request->from_date) && empty($request->to_date) && empty($request->customer_id) && empty($request->invoice_number) && empty($request->user_id)) {
             return redirect('sales/list');
         }
         $query = DB::table('sales');
@@ -524,13 +518,29 @@ class SaleController extends Controller
             $Queries['customer_id'] = $request->customer_id;
             $query->where('sales.customer_id', '=', $request->customer_id);
         }
+        if (!empty($request->user_id)) {
+            $Queries['user_id'] = $request->user_id;
+            $query->where('sales.user_id', '=', $request->user_id);
+            Log::debug($query->tosql());
+        }
         $list = $query->orderByDesc('sales.id')->paginate(20);
+        Log::debug(json_encode($list));
         $list->appends($Queries);
         $net_total = $query->sum('net_total');
         $net_qty = $query->sum('net_qty');
         $net_pcs = $query->sum('net_pcs');
         $customers = DB::table('customers')->get();
-        return view('sales.list', array('salelist' => $list, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'customer_id' => $request->customer_id, 'invoice_number' => $request->invoice_number, 'customers' => $customers, 'net_total' => $net_total, 'net_pcs' => $net_pcs, 'net_qty' => $net_qty));
+        $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
+        foreach ($list as $item) {
+            $item->items_detail = unserialize($item->items_detail);
+
+            foreach ($item->items_detail as &$data) {
+                $item_data = DB::table('items')->where('id', $data['item_id'])->first();
+                $data['item_name'] = $item_data->name;
+            }
+            unset($data);
+        }
+        return view('sales.list', array('salelist' => $list, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'customer_id' => $request->customer_id, 'invoice_number' => $request->invoice_number, 'customers' => $customers, 'net_total' => $net_total, 'net_pcs' => $net_pcs, 'net_qty' => $net_qty, 'user_id' => $request->user_id, 'users' => $users));
     }
 
 
