@@ -117,6 +117,25 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-2">
+                                <div class="position-relative form-group">
+                                    <label for="branch" class="">
+                                        User
+                                        <a href="" title="category List"><i class="fa fa-list"></i></a>
+                                    </label>
+                                    <select class="js-example-basic-single form-control" placeholder="Select User"
+                                        name="user_id" id="user_id" required>
+                                        <option value="">Select User</option>
+                                        @if (!empty($users))
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}"
+                                                    {{ isset($sale) ? ($sale->user_id == $user->id ? 'Selected' : '') : '' }}>
+                                                    {{ $user->name }} </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-2" style="padding-top: 1.8rem;">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#exampleModal" data-whatever="@mdo">Add Customer</button>

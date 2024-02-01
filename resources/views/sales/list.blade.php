@@ -107,6 +107,9 @@
 
                                         <th class="text-center">Invoice #</th>
                                         <th class="text-center">Item Details</th>
+                                        @if (Auth::user()->is_admin === 1)
+                                            <th class="text-center">Salesman Name</th>
+                                        @endif
                                         <th class="text-center">Customer Name</th>
                                         <th class="text-center">Net Total</th>
                                         {{-- <th class="text-center">Net PCS</th> --}}
@@ -129,6 +132,9 @@
                                                         {{ $item['item_name'] }} : {{ $item['item_qty'] }},
                                                     @endforeach
                                                 </td>
+                                                @if (Auth::user()->is_admin === 1)
+                                                    <td class="text-center">{{ $list->user_name }}</td>
+                                                @endif
                                                 <td class="text-center">{{ $list->customer_name }}</td>
                                                 <td class="text-center">{{ $list->net_total }} </td>
                                                 {{-- <td class="text-center">{{$list->net_pcs}} </td> --}}
@@ -168,7 +174,12 @@
                                     @endif
 
                                     <tr>
-                                        <td colspan="3">Net Totals</td>
+                                        @if (Auth::user()->is_admin === 1)
+                                            <td colspan="5">Net Totals</td>
+                                        @endif
+                                        @if (Auth::user()->is_admin == 0)
+                                            <td colspan="4">Net Totals</td>
+                                        @endif
                                         <td class="text-center">{{ isset($net_total) ? $net_total : '' }}</td>
                                         {{-- <td class="text-center">{{(isset($net_pcs)) ? $net_pcs : ''}}</td> --}}
                                         <td class="text-center">{{ isset($net_qty) ? $net_qty : '' }}</td>

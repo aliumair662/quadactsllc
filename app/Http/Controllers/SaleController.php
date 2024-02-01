@@ -52,7 +52,8 @@ class SaleController extends Controller
         $items = DB::table('items')->where('branch', Auth()->user()->branch)
             ->whereIn('category', [4, 5, 6])
             ->get();
-        return view('sales.new', array('customers' => $customers, 'invoice_number' => $invoice_number, 'items' => $items,));
+        $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
+        return view('sales.new', array('customers' => $customers, 'invoice_number' => $invoice_number, 'items' => $items, 'users' => $users));
     }
     public function store(Request $request)
     {
@@ -224,6 +225,7 @@ class SaleController extends Controller
                 $this->stockManagementEntry($stock);
                 // }
             }
+            $user =  DB::table('users')->where('id', $request->user_id)->first();
             $sale = array(
                 'net_total' => $request->net_total,
                 'gross_amount' => $request->gross_amount,
@@ -239,7 +241,9 @@ class SaleController extends Controller
                 'branch' => Auth::user()->branch,
                 'recieved_amount' => $request->recieved_amount,
                 'balance_amount' => $request->balance_amount,
-                'gross_purchase_amount' => $request->gross_purchase_amount
+                'gross_purchase_amount' => $request->gross_purchase_amount,
+                'user_id' => $request->user_id,
+                'user_name' => isset($user->name) ? $user->name : null
             );
             $idForPdf =  DB::table('sales')->insertGetId($sale);
             /***
@@ -430,6 +434,7 @@ class SaleController extends Controller
                 );
                 $this->stockManagementEntry($stock);
             }
+            $user =  DB::table('users')->where('id', $request->user_id)->first();
             $sale = array(
                 'net_total' => $request->net_total,
                 'gross_amount' => $request->gross_amount,
@@ -445,7 +450,9 @@ class SaleController extends Controller
                 'branch' => Auth::user()->branch,
                 'recieved_amount' => $request->recieved_amount,
                 'balance_amount' => $request->balance_amount,
-                'gross_purchase_amount' => $request->gross_purchase_amount
+                'gross_purchase_amount' => $request->gross_purchase_amount,
+                'user_id' => $request->user_id ?? null,
+                'user_name' => isset($user->name) ? $user->name : null
 
             );
             DB::table('sales')->where('id', $request->id)->update($sale);

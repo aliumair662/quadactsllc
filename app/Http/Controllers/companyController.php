@@ -24,10 +24,6 @@ class companyController extends Controller
     public function editCompany($id)
     {
         $com = DB::table('companyinfo')->where('id', $id)->first();
-        // return $menus;
-        // echo $menus->title;
-        // exit;
-        Log::debug(json_encode($com));
         return view('company.companyUpdate', array('company' => $com));
     }
     public function updateCompany(Request $request)
