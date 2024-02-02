@@ -79,7 +79,7 @@
 
     <div class="card-body">
         <h4 class="card-title" style="text-align: center">Visit Details</h4>
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>
                     <p for="exampleEmail11"><b>Visit ID: </b>{{ $dailyVisit->invoice_number }}
@@ -128,12 +128,10 @@
     <p class="mb-5">{{ $dailyVisit->description }}</p>
     <hr>
     <div class="mt-2" style="text-align: center;">
-        <img src="{{ public_path($dailyVisit->attachment) }}" alt="Image" width="350px">
+        <img src="{{ public_path($dailyVisit->attachment) }}" alt="Image" width="350px" height="300px">
     </div>
-    {{-- {{ public_path($dailyVisit->attachment) }} --}}
     <div class="mt-5" style="position: fixed; bottom: 10%; left: 0; width: 100%;">
         <div class="d-inline-block">
-            {{-- <p class="mb-0" style="font-size: 1.3rem; font-weight:900">Thank You for Your business!</p> --}}
             <p><span style="font-size: 1.3rem; font-weight:900">Print Date:</span> @php echo date('d-m-Y'); @endphp</p>
         </div>
         <div class="d-inline-block float-right">
@@ -145,7 +143,7 @@
     <div
         style="position: fixed; bottom: 0; left: 0; width: 100%; align-items: center; justify-content: center; padding-left: 25%;">
 
-        <p class="mb-0" style="font-size: 1.3rem; font-weight:900">Thank You for Your business! :)</p>
+        <p class="mb-0" style="font-size: 1.3rem; font-weight:900">Thank You for Your business!</p>
     </div>
 
 </body>

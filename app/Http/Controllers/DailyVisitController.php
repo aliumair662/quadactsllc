@@ -47,8 +47,6 @@ class DailyVisitController extends Controller
         if (empty($daily_visit)) {
             return response()->json(['success' => false, 'message' => 'Record not found..', 'redirectUrl' => '/dailyVisit/list'], 404);
         }
-        $daily_visit->attachment = 'daily-visits\65ba442edefb5.png';
-        Log::debug($daily_visit->attachment);
         return view('dailyVisits/new', array('dailyVisit' => $daily_visit));
     }
 
@@ -73,15 +71,15 @@ class DailyVisitController extends Controller
                 'description' => 'required',
             ],
             [
-                'invoice_number.required' => 'The Visit # is required.',
-                'invoice_date.required' => 'The Visit Date is required.',
-                'name.required' => 'The name is required.',
-                'email.required' => 'The email is required.',
-                'phone.required' => 'The phone is required.',
-                'address.required' => 'The address is required.',
-                'latitude.required' => 'The latitude is required.',
-                'longitute.required' => 'The latitude is required.',
-                'location' => 'The location is required.',
+                'invoice_number.required' => ' Visit # is required.',
+                'invoice_date.required' => ' Visit Date is required.',
+                'name.required' => ' Business name is required.',
+                'email.required' => ' email is required.',
+                'phone.required' => ' phone is required.',
+                'address.required' => ' address is required.',
+                'latitude.required' => ' latitude is required.',
+                'longitute.required' => ' latitude is required.',
+                'location' => ' location is required.',
                 'description.required' => 'Notes is required.',
             ]
         );
@@ -91,12 +89,14 @@ class DailyVisitController extends Controller
                 'errors' => $validator->getMessageBag()->toArray()
             ), 422);
         } else {
-
-            if ($files = $request->file('attachment')) {
+            if ($file = $request->file('attachment')) {
                 $relativePath = 'daily-visits';
-                $newFileName = uniqid() . "." . $files->getClientOriginalExtension();
+                $newFileName = uniqid() . "." . $file->getClientOriginalExtension();
 
-                $img = Image::make($files->path());
+                $img = Image::make($file->path())->resize(800, 600, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize(false);
+                });
                 $img->save(public_path($relativePath) . DIRECTORY_SEPARATOR . $newFileName);
 
                 $storedRelativePath = $relativePath . DIRECTORY_SEPARATOR . $newFileName;
@@ -115,7 +115,7 @@ class DailyVisitController extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
                 'description' => $request->description,
                 'location' => $request->location,
-                'attachment' => $storedRelativePath,
+                'attachment' => isset($storedRelativePath) ? $storedRelativePath : null,
             );
             $idForPdf = DB::table('daily_visits')->insertGetId($daily_visit);
             /***
@@ -156,7 +156,7 @@ class DailyVisitController extends Controller
             [
                 'invoice_number.required' => 'The Visit # is required.',
                 'invoice_date.required' => 'The Visit Date is required.',
-                'name.required' => 'The name is required.',
+                'name.required' => 'The business name is required.',
                 'email.required' => 'The email is required.',
                 'phone.required' => 'The phone is required.',
                 'address.required' => 'The address is required.',
@@ -173,11 +173,20 @@ class DailyVisitController extends Controller
             ), 422);
         } else {
 
-            if ($files = $request->file('attachment')) {
-                $relativePath = 'daily-visits';
-                $newFileName = uniqid() . "." . $files->getClientOriginalExtension();
+            if ($file = $request->file('attachment')) {
+                $record = DB::table('daily_visits')->where('id', $request->id)->first();
+                $imagePath = public_path($record->attachment);
 
-                $img = Image::make($files->path());
+                if (File::exists($imagePath)) {
+                    File::delete($imagePath);
+                }
+                $relativePath = 'daily-visits';
+                $newFileName = uniqid() . "." . $file->getClientOriginalExtension();
+
+                $img = Image::make($file->path())->resize(800, 600, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize(false);
+                });
                 $img->save(public_path($relativePath) . DIRECTORY_SEPARATOR . $newFileName);
 
                 $storedRelativePath = $relativePath . DIRECTORY_SEPARATOR . $newFileName;
@@ -196,8 +205,9 @@ class DailyVisitController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
                 'description' => $request->description,
                 'location' => $request->location,
-                'attachment' => $storedRelativePath,
+                'attachment' => isset($storedRelativePath) ? $storedRelativePath : null
             );
+
             DB::table('daily_visits')->where('id', $request->id)->update($daily_visit);
             /***
              * add entry to transaction log
@@ -224,6 +234,10 @@ class DailyVisitController extends Controller
         if (empty($daily_visit)) {
             return response()->json(['success' => false, 'message' => 'Record not found..', 'redirectUrl' => '/dailyVisit/list'], 404);
         }
+        $imagePath = public_path($daily_visit->attachment);
+        if (File::exists($imagePath)) {
+            File::delete($imagePath);
+        }
         DB::table('daily_visits')->where('invoice_number', $daily_visit->invoice_number)->delete();
         $log = array(
             'user_id' => Auth::user()->id,
@@ -248,13 +262,7 @@ class DailyVisitController extends Controller
         // 'qrCodeString' => $qrCodeString
         $data =  array('dailyVisit' => $daily_visit, 'companyinfo' => $companyinfo);
 
-        // if ($companyinfo->auto_print_invoice == 0) {
         $pdf = PDF::loadView('dailyVisits.dailyVisitPdf', $data);
-        // }
-        // else {
-        //     $customPaper = array(20, 0, 800.00, 280.80);
-        //     $pdf = PDF::loadView('dailyVisits.dailyVisitThermalPdf', $data)->setPaper($customPaper, 'landscape');
-        // }
         return $pdf->stream('dailyVisitPdf.pdf');
     }
 

@@ -54,7 +54,7 @@
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
-                                    <label for="exampleEmail11" class="">Name</label>
+                                    <label for="exampleEmail11" class="">Business Name</label>
                                     <input name="name" id="text" placeholder="Enter Name" type="text"
                                         value="{{ isset($dailyVisit) ? $dailyVisit->name : '' }}" class="form-control">
                                     <input name="id" id="id"

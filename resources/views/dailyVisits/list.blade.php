@@ -107,7 +107,7 @@
                                         @if (Auth::user()->is_admin === 1)
                                             <th class="text-center">User Name</th>
                                         @endif
-                                        <th class="text-center">Customer Name</th>
+                                        <th class="text-center">Business Name</th>
                                         <th class="text-center">Phone</th>
                                         {{-- <th class="text-center">Email</th>
                                         <th class="text-center">Address</th> --}}
