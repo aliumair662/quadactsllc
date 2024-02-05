@@ -16,8 +16,9 @@
                             </i>
                         </div>
                         <div>Quotation
-                            <div class="page-title-subheading">This is an example dashboard created using build-in
-                                elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in
+                                elements and components. --}}
                             </div>
 
                         </div>
@@ -42,7 +43,7 @@
             </div>
             <div class="row card mx-0 mb-2 pt-1">
                 <div class="col-md-12">
-                    <form action="{{ route('searchQuotation', ['asad' => 'amir']) }}" method="post">
+                    <form action="{{ route('searchQuotation') }}" method="post">
                         @csrf
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
@@ -76,7 +77,27 @@
                                     value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"
                                     placeholder="Quotation No.">
                             </div>
-                            <div class="col-2 align-self-end ml-2 pb-3" style="margin-bottom: 1.1rem;">
+                            @if (Auth::user()->is_admin === 1)
+                                <div class="form-group col-2 pl-1 pt-1">
+                                    <div class="form-group">
+                                        <label for="branch" class="">
+                                            Salesman
+                                        </label>
+                                        <select class="js-example-basic-single form-control"
+                                            placeholder="Select Salesman" name="user_id" id="user_id">
+                                            <option value="">Select Salesman</option>
+                                            @if (!empty($users))
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}"
+                                                        {{ isset($user_id) ? ($user->id == $user_id ? 'Selected' : '') : '' }}>
+                                                        {{ $user->name }} </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="col-1 align-self-end ml-2 pb-3" style="margin-bottom: 1.1rem;">
                                 <div class="page-title-actions">
                                     <a href="">
                                         <button type="submit" data-toggle="tooltip" title=""
@@ -114,6 +135,7 @@
                                         <th class="text-center">Customer Name</th>
                                         <th class="text-center">Net Total</th>
                                         <th class="text-center">Net Qty</th>
+                                        <th class="text-center">Net Profit</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -127,7 +149,8 @@
                                                 <td class="text-center text-muted">{{ $i }}</td>
                                                 <td class="text-center text-muted">{{ $list->invoice_number }}</td>
                                                 @if (Auth::user()->is_admin === 1)
-                                                    <td class="text-center text-muted"> {{ $list->user_name }}</td>
+                                                    <td class="text-center text-muted">
+                                                        {{ $list->quotation_user_name }}</td>
                                                 @endif
                                                 <td class="text-center">
 
@@ -138,6 +161,7 @@
                                                 </td>
                                                 <td class="text-center">{{ $list->net_total }} </td>
                                                 <td class="text-center">{{ $list->net_qty }} </td>
+                                                <td class="text-center">{{ $list->net_profit }} </td>
                                                 <td class="text-center">
                                                     <div class="mb-2 mr-2 btn-group">
                                                         <button class="btn btn-outline-success">Edit</button>

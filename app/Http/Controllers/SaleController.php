@@ -41,7 +41,8 @@ class SaleController extends Controller
             }
             unset($data);
         }
-        $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
+        // ->where('is_admin', 0)
+        $users = DB::table('users')->where('status', 1)->get();
         return view('sales.list', array('salelist' => $list, 'queries' => $Queries, 'customers' => $customers, 'net_total' => $net_total, 'net_pcs' => $net_pcs, 'net_qty' => $net_qty, 'users' => $users));
     }
     public function newsale()
@@ -52,7 +53,8 @@ class SaleController extends Controller
         $items = DB::table('items')->where('branch', Auth()->user()->branch)
             ->whereIn('category', [4, 5, 6])
             ->get();
-        $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
+        // ->where('is_admin', 0)
+        $users = DB::table('users')->where('status', 1)->get();
         return view('sales.new', array('customers' => $customers, 'invoice_number' => $invoice_number, 'items' => $items, 'users' => $users));
     }
     public function store(Request $request)
@@ -243,7 +245,8 @@ class SaleController extends Controller
                 'balance_amount' => $request->balance_amount,
                 'gross_purchase_amount' => $request->gross_purchase_amount,
                 'user_id' => $request->user_id,
-                'user_name' => isset($user->name) ? $user->name : null
+                'sale_user_name' => isset($user->name) ? $user->name : null,
+                'net_profit' => $request->net_profit
             );
             $idForPdf =  DB::table('sales')->insertGetId($sale);
             /***
@@ -453,7 +456,8 @@ class SaleController extends Controller
                 'balance_amount' => $request->balance_amount,
                 'gross_purchase_amount' => $request->gross_purchase_amount,
                 'user_id' => $request->user_id ?? null,
-                'user_name' => isset($user->name) ? $user->name : null
+                'sale_user_name' => isset($user->name) ? $user->name : null,
+                'net_profit' => $request->net_profit
 
             );
             DB::table('sales')->where('id', $request->id)->update($sale);
@@ -495,7 +499,6 @@ class SaleController extends Controller
     // Search Sales
     public function searchSales(Request $request)
     {
-        Log::debug($request->user_id);
         $Queries = array();
 
         if (empty($request->from_date) && empty($request->to_date) && empty($request->customer_id) && empty($request->invoice_number) && empty($request->user_id)) {
@@ -521,16 +524,15 @@ class SaleController extends Controller
         if (!empty($request->user_id)) {
             $Queries['user_id'] = $request->user_id;
             $query->where('sales.user_id', '=', $request->user_id);
-            Log::debug($query->tosql());
         }
         $list = $query->orderByDesc('sales.id')->paginate(20);
-        Log::debug(json_encode($list));
         $list->appends($Queries);
         $net_total = $query->sum('net_total');
         $net_qty = $query->sum('net_qty');
         $net_pcs = $query->sum('net_pcs');
         $customers = DB::table('customers')->get();
-        $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
+        // ->where('is_admin', 0)
+        $users = DB::table('users')->where('status', 1)->get();
         foreach ($list as $item) {
             $item->items_detail = unserialize($item->items_detail);
 
@@ -683,28 +685,34 @@ class SaleController extends Controller
     {
         $Queries = array();
         if (Auth::user()->is_admin) {
-            $list = DB::table('quotation')->where('branch', Auth::user()->branch)
+            // ->where('branch', Auth::user()->branch)
+            $list = DB::table('quotation')
                 ->orderBy('id', 'ASC')
                 ->paginate(20);
             $net_total = DB::table('quotation')->where('branch', Auth::user()->branch)->sum('net_total');
             $net_qty = DB::table('quotation')->where('branch', Auth::user()->branch)->sum('net_qty');
         } else {
-            $list = DB::table('quotation')->where('branch', Auth::user()->branch)->where('user_id', Auth::user()->id)
+            // ->where('branch', Auth::user()->branch)
+            $list = DB::table('quotation')->where('user_id', Auth::user()->id)
                 ->orderBy('id', 'ASC')
                 ->paginate(20);
             $net_total = DB::table('quotation')->where('branch', Auth::user()->branch)->where('user_id', Auth::user()->id)->sum('net_total');
             $net_qty = DB::table('quotation')->where('branch', Auth::user()->branch)->where('user_id', Auth::user()->id)->sum('net_qty');
         }
+        // ->where('is_admin', 0)
+        $users = DB::table('users')->where('status', 1)->get();
 
-        return view('quotation/list', array('lists' => $list, 'queries' => $Queries, 'net_total' => $net_total, 'net_qty' => $net_qty));
+        return view('quotation/list', array('lists' => $list, 'queries' => $Queries, 'net_total' => $net_total, 'net_qty' => $net_qty, 'users' => $users));
     }
 
     public function PackagesList()
     {
-        $list = $list = DB::table('quotation_packages')->where('branch', Auth::user()->branch)
+
+        $list = $list = DB::table('quotation_packages')
+            // ->where('branch', Auth::user()->branch)
             ->orderBy('id', 'ASC')
-            ->paginate(20);;
-        // array('lists' => $list, 'queries' => $Queries, 'net_total' => $net_total, 'net_qty' => $net_qty)
+            ->paginate(20);
+
         return view('packages/list', array('lists' => $list));
     }
 
@@ -712,7 +720,8 @@ class SaleController extends Controller
     {
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
         $invoice_number = DB::table('quotation')->max('id') + 1;
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)
+        // ->where('branch', Auth()->user()->branch)
+        $items = DB::table('items')
             ->whereIn('category', [4, 5, 6])
             ->get();
         $response = ['invoice_number' => $invoice_number, 'items' => $items, 'customers' => $customers];
@@ -723,7 +732,9 @@ class SaleController extends Controller
             $pkg_data->pkg_id = request()->input('pkg_id');
             $response['quotation'] = $pkg_data;
         }
+        $file_name = request()->input('file_name') ?? null;
         return view('quotation/new', $response);
+        // return view('quotation/new', array($response, 'file_name' => $file_name));
     }
 
     public function newPackage()
@@ -739,7 +750,6 @@ class SaleController extends Controller
 
     public function saveQuotation(Request $request)
     {
-        Log::debug($request->all());
         $response = array('success' => false, 'message' => '', 'redirectUrl' => '');
         $sale = DB::table('quotation')->where('invoice_number', $request->invoice_number)->first();
         if (!empty($sale)) {
@@ -824,8 +834,9 @@ class SaleController extends Controller
                 'branch' => Auth::user()->branch,
                 'cancel_status' => false,
                 'user_id' => Auth::user()->id,
-                'user_name' => Auth::user()->name,
-                'gross_purchase_amount' => $request->gross_purchase_amount
+                'quotation_user_name' => Auth::user()->name,
+                'gross_purchase_amount' => $request->gross_purchase_amount,
+                'net_profit' => $request->net_profit
             );
 
             $idForPdf = DB::table('quotation')->insertGetId($sale);
@@ -935,7 +946,8 @@ class SaleController extends Controller
                 'cancel_status' => false,
                 'user_id' => Auth::user()->id,
                 'user_name' => Auth::user()->name,
-                'gross_purchase_amount' => $request->gross_purchase_amount
+                'gross_purchase_amount' => $request->gross_purchase_amount,
+                'net_profit' => $request->net_profit
             );
 
             $idForPdf = DB::table('quotation_packages')->insert($sale);
@@ -977,7 +989,6 @@ class SaleController extends Controller
 
     public function updateQuotation(Request $request)
     {
-        // Log::debug($request->all());
         $response = array('success' => false, 'message' => '', 'redirectUrl' => '');
         $companyBusinessType = DB::table('companyinfo')->first();
 
@@ -1062,8 +1073,9 @@ class SaleController extends Controller
                 'branch' => Auth::user()->branch,
                 'cancel_status' => false,
                 'user_id' => Auth::user()->id,
-                'user_name' => Auth::user()->name,
-                'gross_purchase_amount' => $request->gross_purchase_amount
+                'quotation_user_name' => Auth::user()->name,
+                'gross_purchase_amount' => $request->gross_purchase_amount,
+                'net_profit' => $request->net_profit
             );
             DB::table('quotation')->where('id', $request->id)->update($quotation);
             $log = array(
@@ -1120,7 +1132,7 @@ class SaleController extends Controller
     public function searchQuotation(Request $request)
     {
         $Queries = array();
-        if (empty($request->from_date) && empty($request->to_date) &&  empty($request->customer_name) && empty($request->invoice_number)) {
+        if (empty($request->from_date) && empty($request->to_date) &&  empty($request->customer_name) && empty($request->invoice_number) && empty($request->user_id)) {
             return redirect('/quotation/list');
         }
         $query = DB::table('quotation');
@@ -1138,12 +1150,18 @@ class SaleController extends Controller
             $Queries['customer_name'] = $request->customer_name;
             $query->where('customer_name', '=', $request->customer_name);
         }
+        if (!empty($request->user_id)) {
+            $Queries['user_id'] = $request->user_id;
+            $query->where('quotation.user_id', '=', $request->user_id);
+        }
         $list = $query->orderByDesc('id')->paginate(20);
         $list->appends($Queries);
         $net_total = $query->sum('net_total');
         $net_qty = $query->sum('net_qty');
+        // ->where('is_admin', 0)
+        $users = DB::table('users')->where('status', 1)->get();
         // $net_pcs = $query->sum('net_pcs');
-        return view('quotation/list', array('lists' => $list, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'customer_name' => $request->customer_name, 'invoice_number' => $request->invoice_number, 'net_total' => $net_total, 'net_qty' => $net_qty));
+        return view('quotation/list', array('lists' => $list, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'customer_name' => $request->customer_name, 'invoice_number' => $request->invoice_number, 'net_total' => $net_total, 'net_qty' => $net_qty, 'user_id' => $request->user_id, 'users' => $users));
     }
 
     public function searchPackages(Request $request)

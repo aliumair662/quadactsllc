@@ -43,7 +43,6 @@ function qtySum() {
         item_pcs += Number($(this).val());
     });
     $("#qty_").val(item_pcs);
-    console.log("hell");
 }
 
 function checkDebitCredit() {
@@ -126,8 +125,14 @@ function calculateInvoiceSum() {
     }
     $("#net_total").val(net_total);
 }
+function calculateNetProfit() {
+    var net_profit =
+        $("#gross_amount").val() -
+        $("#gross_purchase_amount").val() -
+        $("#discount_amount").val();
+    $("#net_profit").val(net_profit);
+}
 function calculatePurchaseAmountSum() {
-    console.log("hello dear");
     var net_total = 0;
     $(".item_purchase_price").each(function (index) {
         var item_purchase_price = $(this)
@@ -145,18 +150,10 @@ function calculatePurchaseAmountSum() {
         $(this).closest("tr").find(".total_purchase_amount").val(amount);
         net_total += amount;
     });
-    // var dicount = 0;
 
     if ($("#gross_purchase_amount").length) {
         $("#gross_purchase_amount").val(net_total);
     }
-    // if ($("#discount_amount").length) {
-    //     dicount = $("#discount_amount").val();
-    //     if (dicount > 0) {
-    //         net_total = parseFloat(net_total) - parseFloat(dicount);
-    //     }
-    // }
-    // $("#net_total").val(net_total);
 }
 function calculateBalanceAmount() {
     var balance_amount = $("#net_total").val() - $("#recieved_amount").val();
@@ -389,8 +386,6 @@ function updateProductionQty() {
 function openGoogleMaps() {
     // Replace with the location address you want to display
     const locationAddress = $("#map_location").text().trim();
-    console.log(locationAddress);
-    console.log("location address: ", locationAddress);
     // Encode the address for use in the Google Maps URL
     const encodedAddress = encodeURIComponent(locationAddress);
 
@@ -412,7 +407,6 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".removeRow", function () {
-        console.info("calling");
         $(this).closest("tr").remove();
     });
 
@@ -437,9 +431,7 @@ $(document).ready(function () {
                     toasterTitle = "Well done!";
                     toasterMessage = response.message;
                     successToaster();
-                    console.log("hello world!");
                     if (response.print) {
-                        console.log("Condition true!");
                         window.open(response.print, "_blank");
                     }
                     if (response.redirectUrl == "currentPage") {

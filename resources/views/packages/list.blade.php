@@ -16,8 +16,9 @@
                             </i>
                         </div>
                         <div>Packages
-                            <div class="page-title-subheading">This is an example dashboard created using build-in
-                                elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in
+                                elements and components. --}}
                             </div>
 
                         </div>
@@ -111,6 +112,7 @@
                                         {{-- <th class="text-center">Customer Name</th> --}}
                                         <th class="text-center">Net Total</th>
                                         <th class="text-center">Net Qty</th>
+                                        <th class="text-center">Net Profit</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -132,6 +134,7 @@
                                                 {{-- <td class="text-center">{{isset($list->customer_name) ? $list->customer_name : "testing"}}</td> --}}
                                                 <td class="text-center">{{ $list->net_total }} </td>
                                                 <td class="text-center">{{ $list->net_qty }} </td>
+                                                <td class="text-center">{{ $list->net_profit }} </td>
                                                 <td class="text-center">
                                                     <div class="mb-2 mr-2 btn-group">
                                                         <button class="btn btn-outline-success">Edit</button>
@@ -144,7 +147,7 @@
                                                             class="dropdown-menu" x-placement="bottom-start"
                                                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(68px, 33px, 0px);">
                                                             <a
-                                                                href="{{ route('newQuotation', ['pkg_id' => $list->id]) }}"><button
+                                                                href="{{ route('newQuotation', ['pkg_id' => $list->id, 'file_name' => 'packages']) }}"><button
                                                                     type="button" tabindex="0"
                                                                     class="dropdown-item">Create Quotation</button></a>
                                                             @if (Auth::user()->is_admin !== 0)

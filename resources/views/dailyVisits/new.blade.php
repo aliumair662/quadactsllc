@@ -9,8 +9,9 @@
                             </i>
                         </div>
                         <div>Daily Visits
-                            <div class="page-title-subheading">This is an example dashboard created using build-in
-                                elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in
+                                elements and components. --}}
                             </div>
                         </div>
                     </div>
@@ -37,7 +38,7 @@
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Visit ID</label>
                                     <input name="invoice_number" id="invoice_number" placeholder="" type="text"
-                                        value="{{ isset($dailyVisit) ? $dailyVisit->invoice_number : Config::get('constants.PACKAGE_INVOICE_PREFIX') . $invoice_number }}"
+                                        value="{{ isset($dailyVisit) ? $dailyVisit->invoice_number : Config::get('constants.DAILY_VISITS_PREFIX') . $invoice_number }}"
                                         class="form-control" readonly>
                                 </div>
                             </div>

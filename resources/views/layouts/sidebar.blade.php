@@ -46,38 +46,40 @@
                 @endif
                 {{-- @endif --}}
                 <li class="app-sidebar__heading">Sales</li>
-                <li>
-                    <a href="#"
-                        class="{{ Request::is('sales/list') || Request::is('sales/new') || Request::is('sales/edit*') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-users"></i>
-                        Sales
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="{{ route('saleslist') }}">
-                                <i class="metismenu-icon"></i>
-                                List
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"
-                        class="{{ Request::is('salesReturn/list') || Request::is('salesReturn/new') || Request::is('salesReturn/edit*') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-users"></i>
-                        Sales return
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="{{ route('saleReturnList') }}">
-                                <i class="metismenu-icon"></i>
-                                List
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if (Auth::user()->is_admin !== 0)
+                    <li>
+                        <a href="#"
+                            class="{{ Request::is('sales/list') || Request::is('sales/new') || Request::is('sales/edit*') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-users"></i>
+                            Sales
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ route('saleslist') }}">
+                                    <i class="metismenu-icon"></i>
+                                    List
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="{{ Request::is('salesReturn/list') || Request::is('salesReturn/new') || Request::is('salesReturn/edit*') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-users"></i>
+                            Sales return
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ route('saleReturnList') }}">
+                                    <i class="metismenu-icon"></i>
+                                    List
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 <li>
                     <a href="#"
                         class="{{ Request::is('customer/list') || Request::is('customer/new') || Request::is('customerreceipt/list') || Request::is('customer/edit*') || Request::is('customerreceipt/edit*') || Request::is('customerreceipt/new') ? 'mm-active' : '' }}">

@@ -9,14 +9,16 @@
                             </i>
                         </div>
                         <div>Item Stock Ledger
-                            <div class="page-title-subheading">This is an example dashboard created using build-in elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in elements and components. --}}
                             </div>
 
                         </div>
                     </div>
                     <div class="page-title-actions">
                         <a href="{{ route('newSaleReturn') }}">
-                            <button type="button" data-toggle="tooltip" title="" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New Sale Return Invoice">
+                            <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
+                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New Sale Return Invoice">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </a>
@@ -25,39 +27,44 @@
                 </div>
             </div>
             @php
-            if(isset($_GET['page'])){
-            $page = $_GET['page'];
-            }
-            else{
-            $page = 1;
-            }
+                if (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                } else {
+                    $page = 1;
+                }
             @endphp
 
 
             <div class="row card mx-0 mb-2 pt-1">
                 <div class="col-md-12">
-                    <form action="{{route('searchSales',['asad'=>'amir'])}}" method="post">
+                    <form action="{{ route('searchSales', ['asad' => 'amir']) }}" method="post">
                         @csrf
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
                             <div class="form-group col-2">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">From</label>
-                                <input type="date" name="from_date" class="form-control" value="{{(isset($from_date)) ? $from_date : ((isset($_GET['queries']['from'])) ? $_GET['queries']['from'] : '')}}">
+                                <input type="date" name="from_date" class="form-control"
+                                    value="{{ isset($from_date) ? $from_date : (isset($_GET['queries']['from']) ? $_GET['queries']['from'] : '') }}">
                             </div>
                             <div class="form-group col-2 mx-2">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">To</label>
-                                <input type="date" name="to_date" class="form-control" value="{{(isset($to_date)) ? $to_date : ((isset($_GET['queries']['to'])) ? $_GET['queries']['to'] : '')}}">
+                                <input type="date" name="to_date" class="form-control"
+                                    value="{{ isset($to_date) ? $to_date : (isset($_GET['queries']['to']) ? $_GET['queries']['to'] : '') }}">
                             </div>
 
 
                             <div class="form-group col-2">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">Invoice</label>
-                                <input type="text" name="invoice_number" class="form-control" value="{{(isset($invoice_number)) ? $invoice_number : ((isset($_GET['queries']['invoice_number'])) ? $_GET['queries']['invoice_number'] : '')}}" placeholder="Invoice No.">
+                                <input type="text" name="invoice_number" class="form-control"
+                                    value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"
+                                    placeholder="Invoice No.">
                             </div>
                             <div class="col-2 align-self-end ml-2" style="margin-bottom: 1.1rem;">
                                 <div class="page-title-actions">
                                     <a href="">
-                                        <button type="submit" data-toggle="tooltip" title="" data-placement="bottom" class="btn-shadow btn btn-dark" data-original-title="Search">
+                                        <button type="submit" data-toggle="tooltip" title=""
+                                            data-placement="bottom" class="btn-shadow btn btn-dark"
+                                            data-original-title="Search">
                                             <i class="fa fa-search"></i>
                                         </button>
                                     </a>
@@ -92,25 +99,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(!empty($lists))
-                                    @php
-                                    $i=1;
-                                    @endphp
-                                    @foreach($lists as $list)
-                                    <tr>
-                                        <td class="text-center text-muted">{{$i}}</td>
-                                        <td class="text-center text-muted">{{$list->voucher_number}}</td>
-                                        <td class="text-center text-muted">{{$list->voucher_date}}</td>
-                                        <td class="text-center">{{$list->name}}</td>
-                                        <td class="text-center">{{($list->transaction_type == '+') ? $list->item_qty :''}}</td>
-                                        <td class="text-center">{{($list->transaction_type == '-') ? $list->item_qty :''}}</td>
-                                        <td class="text-center">{{$list->netQty}}</td>
+                                    @if (!empty($lists))
+                                        @php
+                                            $i = 1;
+                                        @endphp
+                                        @foreach ($lists as $list)
+                                            <tr>
+                                                <td class="text-center text-muted">{{ $i }}</td>
+                                                <td class="text-center text-muted">{{ $list->voucher_number }}</td>
+                                                <td class="text-center text-muted">{{ $list->voucher_date }}</td>
+                                                <td class="text-center">{{ $list->name }}</td>
+                                                <td class="text-center">
+                                                    {{ $list->transaction_type == '+' ? $list->item_qty : '' }}</td>
+                                                <td class="text-center">
+                                                    {{ $list->transaction_type == '-' ? $list->item_qty : '' }}</td>
+                                                <td class="text-center">{{ $list->netQty }}</td>
 
-                                    </tr>
-                                    @php
-                                    $i++;
-                                    @endphp
-                                    @endforeach
+                                            </tr>
+                                            @php
+                                                $i++;
+                                            @endphp
+                                        @endforeach
                                     @endif
                                 </tbody>
                             </table>
@@ -131,15 +140,15 @@
                             </div> -->
                             <!-- <div class="form-group pr-2">
                                 <label for="">Net Total</label>
-                                <input type="text" class="form-control mb-4" value="{{(isset($net_total)) ? $net_total : ''}}" style="width: 130px;" readonly>
+                                <input type="text" class="form-control mb-4" value="{{ isset($net_total) ? $net_total : '' }}" style="width: 130px;" readonly>
                             </div>
                             <div class="form-group pr-2">
                                 <label for="">Net Pcs</label>
-                                <input type="text" class="form-control mb-4" value="{{(isset($net_pcs)) ? $net_pcs : ''}}" style="width: 130px;" readonly>
+                                <input type="text" class="form-control mb-4" value="{{ isset($net_pcs) ? $net_pcs : '' }}" style="width: 130px;" readonly>
                             </div> -->
                             <!-- <div class="form-group pr-2 mr-5">
                                 <label for="">Net Qty</label>
-                                <input type="text" value="{{(isset($net_qty)) ? $net_qty : ''}}" class="form-control mb-4" style="width: 130px;" readonly>
+                                <input type="text" value="{{ isset($net_qty) ? $net_qty : '' }}" class="form-control mb-4" style="width: 130px;" readonly>
                             </div> -->
 
                         </div>

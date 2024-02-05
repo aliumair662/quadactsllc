@@ -11,8 +11,9 @@
                             </i>
                         </div>
                         <div>Sales
-                            <div class="page-title-subheading">This is an example dashboard created using build-in
-                                elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in
+                                elements and components. --}}
                             </div>
 
                         </div>
@@ -35,7 +36,7 @@
             </div>
             <div class="row card mx-0 mb-2 pt-1">
                 <div class="col-md-12">
-                    <form action="{{ route('searchSales', ['asad' => 'amir']) }}" method="post">
+                    <form action="{{ route('searchSales') }}" method="post">
                         @csrf
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
@@ -68,7 +69,7 @@
                                     </select>
                                 </div>
                             </div>
-                            {{-- <div class="form-group col-2 pl-1 pt-1">
+                            <div class="form-group col-2 pl-1 pt-1">
                                 <div class="form-group">
                                     <label for="branch" class="">
                                         Salesman
@@ -85,7 +86,7 @@
                                         @endif
                                     </select>
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="form-group col-2 ml-1">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">Invoice</label>
                                 <input type="text" name="invoice_number" class="form-control"
@@ -133,6 +134,7 @@
                                         {{-- <th class="text-center">Net PCS</th> --}}
                                         <th class="text-center">Net Qty</th>
                                         <th class="text-center">Invoice Date</th>
+                                        <th class="text-center">Net Profit</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -151,7 +153,7 @@
                                                     @endforeach
                                                 </td>
                                                 @if (Auth::user()->is_admin === 1)
-                                                    <td class="text-center">{{ $list->user_name }}</td>
+                                                    <td class="text-center">{{ $list->sale_user_name }}</td>
                                                 @endif
                                                 <td class="text-center">{{ $list->customer_name }}</td>
                                                 <td class="text-center">{{ $list->net_total }} </td>
@@ -160,6 +162,7 @@
                                                 <td class="text-center">
                                                     {{ \Carbon\Carbon::parse($list->invoice_date)->format('d-m-Y') }}
                                                 </td>
+                                                <td class="text-center">{{ $list->net_profit }} </td>
                                                 <td class="text-center">
                                                     <div class="mb-2 mr-2 btn-group">
                                                         <button class="btn btn-outline-success">Edit</button>

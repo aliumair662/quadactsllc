@@ -11,8 +11,9 @@
                             </i>
                         </div>
                         <div>Daily Visits
-                            <div class="page-title-subheading">This is an example dashboard created using build-in
-                                elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in
+                                elements and components. --}}
                             </div>
 
                         </div>
@@ -33,9 +34,9 @@
                     target="_blank" class="btn btn-outline-success mb-2">Download PDF</a>
 
             </div> --}}
-            {{-- <div class="row card mx-0 mb-2 pt-1">
+            <div class="row card mx-0 mb-2 pt-1">
                 <div class="col-md-12">
-                    <form action="{{ route('searchSales', ['asad' => 'amir']) }}" method="post">
+                    <form action="{{ route('searchDailyVisit') }}" method="post">
                         @csrf
                         <div class="row no-gutters">
                             <div class="form-group col-2">
@@ -49,7 +50,7 @@
                                     value="{{ isset($to_date) ? $to_date : (isset($_GET['queries']['to']) ? $_GET['queries']['to_date'] : '') }}">
                             </div>
 
-                            <div class="form-group col-2 pl-1 pt-1">
+                            {{-- <div class="form-group col-2 pl-1 pt-1">
                                 <div class="form-group">
                                     <label for="branch" class="">
                                         Customer
@@ -62,6 +63,24 @@
                                                 <option value="{{ $customer->id }}"
                                                     {{ isset($customer_id) ? ($customer->id == $customer_id ? 'Selected' : '') : '' }}>
                                                     {{ $customer->name }} </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div> --}}
+                            <div class="form-group col-2 pl-1 pt-1">
+                                <div class="form-group">
+                                    <label for="branch" class="">
+                                        Salesman
+                                    </label>
+                                    <select class="js-example-basic-single form-control" placeholder="Select Salesman"
+                                        name="user_id" id="user_id">
+                                        <option value="">Select Salesman</option>
+                                        @if (!empty($users))
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}"
+                                                    {{ isset($user_id) ? ($user->id == $user_id ? 'Selected' : '') : '' }}>
+                                                    {{ $user->name }} </option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -87,7 +106,7 @@
                         </div>
                     </form>
                 </div>
-            </div> --}}
+            </div>
 
             <div class="row">
                 <div class="col-md-12">

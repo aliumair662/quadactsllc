@@ -9,8 +9,9 @@
                             </i>
                         </div>
                         <div>Packages
-                            <div class="page-title-subheading">This is an example dashboard created using build-in
-                                elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in
+                                elements and components. --}}
                             </div>
                         </div>
                     </div>
@@ -45,20 +46,23 @@
                         </td>
                         <td class="text-center" style="min-width: 150px;"><input name="item_price[]" id="item_price"
                                 placeholder="Price" value="" type="text" class="form-control item_price"
-                                onchange="calculateInvoiceSum();"><input name="item_purchase_price[]"
-                                id="item_purchase_price" placeholder="Purchase Price" value="" type="text"
-                                class="form-control item_purchase_price" onchange="" readonly></td>
+                                onchange="calculateInvoiceSum();calculateNetProfit();"><input
+                                name="item_purchase_price[]" id="item_purchase_price" placeholder="Purchase Price"
+                                value="" type="text" class="form-control item_purchase_price" onchange=""
+                                readonly></td>
                         <td class="text-center" style="min-width: 150px;"><input name="item_qty[]" id="item_qty"
                                 placeholder="Quantity" value="" type="text"
                                 class="form-control item_qty item_qt"
-                                onchange="calculateInvoiceSum(); qtySum();calculatePurchaseAmountSum();"></td>
+                                onchange="calculateInvoiceSum(); qtySum();calculatePurchaseAmountSum();calculateNetProfit();">
+                        </td>
                         <td class="text-center" style="min-width: 150px;"><input name="amount[]" id="amount"
                                 placeholder="Total Amount" value="" type="text" class="form-control amount"
                                 readonly><input name="total_purchase_amount[]" id="total_purchase_amount"
                                 placeholder="Total Purchase Amount" value="" type="text"
                                 class="form-control total_purchase_amount" readonly></td>
                         <td><button class="btn btn-dark" type="button"
-                                onclick="removeRow(this);calculateInvoiceSum();"><i class="fas fa-times"></i></button>
+                                onclick="removeRow(this);calculateInvoiceSum();calculateNetProfit();"><i
+                                    class="fas fa-times"></i></button>
                         </td>
                     </tr>
                 <tbody>
@@ -80,7 +84,8 @@
                                     <label for="exampleEmail11" class="">Invoice #</label>
                                     <input name="invoice_number" id="invoice_number" placeholder="" type="text"
                                         value="{{ isset($quotation) ? $quotation->invoice_number : Config::get('constants.PACKAGE_INVOICE_PREFIX') . $invoice_number }}"
-                                        class="form-control" readonly>
+                                        class="form-control">
+                                    {{-- readonly --}}
                                 </div>
                             </div>
 
@@ -134,7 +139,7 @@
                                                                 placeholder="Price"
                                                                 value="{{ isset($quotation) ? $invoiceItem['item_price'] : '' }}"
                                                                 type="text" class="form-control item_price"
-                                                                onchange="calculateInvoiceSum();"><input
+                                                                onchange="calculateInvoiceSum();calculateNetProfit();"><input
                                                                 name="item_purchase_price[]" id="item_purchase_price"
                                                                 placeholder="Purchase Price"
                                                                 value="{{ isset($quotation) ? $invoiceItem['item_purchase_price'] : '' }}"
@@ -147,7 +152,7 @@
                                                                 placeholder="Quantity"
                                                                 value="{{ isset($quotation) ? $invoiceItem['item_qty'] : '' }}"
                                                                 type="text" class="form-control item_qty item_qt"
-                                                                onchange="qtySum();calculateInvoiceSum();calculatePurchaseAmountSum();">
+                                                                onchange="qtySum();calculateInvoiceSum();calculatePurchaseAmountSum();calculateNetProfit();">
                                                         </td>
                                                         <td class="text-center" style="min-width: 150px"><input
                                                                 name="amount[]" id="amount"
@@ -215,7 +220,8 @@
                                     <input name="gross_purchase_amount" id="gross_purchase_amount" placeholder=""
                                         type="text"
                                         value="{{ isset($quotation) ? $quotation->gross_purchase_amount : '' }}"
-                                        class="form-control" onchange="calculateInvoiceSum();" readonly>
+                                        class="form-control" onchange="calculateInvoiceSum();calculateNetProfit();"
+                                        readonly>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +232,7 @@
                                     <label for="exampleEmail11" class="">Discount</label>
                                     <input name="discount_amount" id="discount_amount" placeholder="" type="text"
                                         value="{{ isset($quotation) ? $quotation->discount_amount : '' }}"
-                                        class="form-control" onchange="calculateInvoiceSum();">
+                                        class="form-control" onchange="calculateInvoiceSum();calculateNetProfit();">
                                 </div>
                             </div>
                         </div>
@@ -237,6 +243,17 @@
                                     <label for="exampleEmail11" class="">Net Total</label>
                                     <input name="net_total" id="net_total" placeholder="" type="text"
                                         value="{{ isset($quotation) ? $quotation->net_total : '' }}"
+                                        class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-9"></div>
+                            <div class="col-md-3">
+                                <div class="position-relative form-group">
+                                    <label for="exampleEmail11" class="">Profit/Loss</label>
+                                    <input name="net_profit" id="net_profit" placeholder="" type="text"
+                                        value="{{ isset($quotation) ? $quotation->net_profit : '' }}"
                                         class="form-control" readonly>
                                 </div>
                             </div>
