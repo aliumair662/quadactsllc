@@ -8,6 +8,11 @@
     <title>Sale Invoice</title>
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
 </head>
+<style>
+    .table th {
+        background-color: rgb(133, 226, 41);
+    }
+</style>
 
 <body>
     <div class="pt-5 mb-4">
@@ -30,7 +35,7 @@
                 </td>
                 <td class="align-middle" style="padding-left: 30%; padding-top:2rem;">
                     <p class="mb-1" style="font-family:Georgia, 'Times New Roman', Times, serif;">
-                        <b>Verify Your
+                        <b>Verify Your Sale
                             Invoice</b>
                     </p>
                     <hr>
@@ -53,7 +58,7 @@
     <table style="width: 100%;" collspacing="0" class="">
         <tr>
             <td>
-                <p class="mb-1"><b>Invoice #:</b> {{ $sale->invoice_number }}</p>
+                <p class="mb-1"><b>Sale Invoice #:</b> {{ $sale->invoice_number }}</p>
             </td>
             <td>
                 <p class="mb-1"><b>Customer Name:</b> {{ $sale->name }}</p>
@@ -75,7 +80,7 @@
             </td>
         </tr>
     </table>
-    <p class="text-right"><b>Sale Invoice</b></p>
+    <h2 class="text-right"><b>Sale Invoice</b></h2>
     <table class="table table-bordered">
         <thead>
             <tr class="table-warning">
@@ -120,27 +125,35 @@
             @endif
             <tr>
                 <td colspan="4" style="text-align: right;padding-right:2rem;">Gross Amount</td>
-                <td>{{ $sale->gross_amount }}</td>
-
+                <td>
+                    {{ !empty($sale->gross_amount) ? $sale->gross_amount . '.' . $currency_symbol : '' }}
+                </td>
             </tr>
             <tr>
                 <td colspan="4" style="text-align: right;padding-right:2rem;">Discount</td>
-                <td>{{ $sale->discount_amount }}</td>
-
+                <td>
+                    {{ !empty($sale->discount_amount) ? $sale->discount_amount . '.' . $currency_symbol : '' }}
+                </td>
             </tr>
             <tr>
                 <td colspan="4" style="text-align: right;padding-right:2rem;">Net Total</td>
-                <td>{{ $sale->net_total }}</td>
+                <td>
+                    {{ !empty($sale->net_total) ? $sale->net_total . '.' . $currency_symbol : '' }}
+                </td>
 
             </tr>
             <tr>
                 <td colspan="4" style="text-align: right;padding-right:2rem;">Recieved/Advance Amount</td>
-                <td>{{ $sale->recieved_amount }}</td>
+                <td>
+                    {{ !empty($sale->recieved_amount) ? $sale->recieved_amount . '.' . $currency_symbol : '' }}
+                </td>
 
             </tr>
             <tr>
                 <td colspan="4" style="text-align: right;padding-right:2rem;">Balance</td>
-                <td>{{ $sale->balance_amount }}</td>
+                <td>
+                    {{ !empty($sale->balance_amount) ? $sale->balance_amount . '.' . $currency_symbol : '' }}
+                </td>
 
             </tr>
         </tbody>

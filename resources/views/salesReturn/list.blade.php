@@ -126,7 +126,8 @@
                                                 <td class="text-center">{{ $list->net_pcs }} </td>
                                                 <td class="text-center">{{ $list->net_qty }} </td>
                                                 <td class="text-center">
-                                                    \Carbon\Carbon::parse($list->invoice_date)->format('d-m-Y')</td>
+                                                    {{ \Carbon\Carbon::parse($list->invoice_date)->format('d-m-Y') }}
+                                                </td>
                                                 <td class="text-center">
                                                     <div class="mb-2 mr-2 btn-group">
                                                         <button class="btn btn-outline-success">Edit</button>

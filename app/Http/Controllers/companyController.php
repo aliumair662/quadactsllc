@@ -24,7 +24,16 @@ class companyController extends Controller
     public function editCompany($id)
     {
         $com = DB::table('companyinfo')->where('id', $id)->first();
-        return view('company.companyUpdate', array('company' => $com));
+        $currency_data = config('constants.currency');
+        $currency = [];
+
+        foreach ($currency_data as $id => $name) {
+            $currencyObject = new \stdClass();
+            $currencyObject->id = $id;
+            $currencyObject->name = $name;
+            $currency[] = $currencyObject;
+        }
+        return view('company.companyUpdate', array('company' => $com, 'currency' => $currency));
     }
     public function updateCompany(Request $request)
     {
@@ -61,7 +70,8 @@ class companyController extends Controller
                 'email' => $request->email,
                 'stock_calculation' => $request->status,
                 'auto_print_invoice' => $request->auto_print_invoice,
-                'web' => $request->web
+                'web' => $request->web,
+                'currency_id' => $request->currency_id
 
             );
             if ($files = $request->file('logo')) {

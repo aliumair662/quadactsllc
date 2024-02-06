@@ -20,7 +20,7 @@ class CustomerController extends Controller
 
         if (Auth::user()->is_admin) {
             $lists = DB::table('customers')
-                ->where('branch', Auth::user()->branch)
+                // ->where('branch', Auth::user()->branch)
                 ->orderByDesc('id')
                 ->paginate(20);
             foreach ($lists as $list) {
@@ -38,7 +38,7 @@ class CustomerController extends Controller
             }
         } else {
             $lists = DB::table('customers')
-                ->where('branch', Auth::user()->branch)
+                // ->where('branch', Auth::user()->branch)
                 ->where('user_id', Auth::user()->id)
                 ->orderByDesc('id')
                 ->paginate(20);

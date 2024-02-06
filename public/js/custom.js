@@ -91,6 +91,7 @@ async function fetchingItemData($this) {
                 .val(data.data.purchase_price);
             calculateInvoiceSum();
             calculatePurchaseAmountSum();
+            calculateNetProfit();
         },
         error: function (err) {
             console.log(err);

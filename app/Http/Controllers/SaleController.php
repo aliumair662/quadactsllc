@@ -27,7 +27,9 @@ class SaleController extends Controller
             ->select('sales.*', 'customers.name as customer_name')->where('sales.branch', Auth::user()->branch)
             ->orderByDesc('sales.id')
             ->paginate(20);
+        // ->where('branch', Auth::user()->branch)
         $net_total = DB::table('sales')->where('branch', Auth::user()->branch)->sum('net_total');
+        $net_profit = DB::table('sales')->sum('net_profit');
         $net_qty = DB::table('sales')->where('branch', Auth::user()->branch)->sum('net_qty');
         $net_pcs = DB::table('sales')->where('branch', Auth::user()->branch)->sum('net_pcs');
         $customers = DB::table('customers')->where('branch', Auth::user()->branch)->get();
@@ -43,7 +45,7 @@ class SaleController extends Controller
         }
         // ->where('is_admin', 0)
         $users = DB::table('users')->where('status', 1)->get();
-        return view('sales.list', array('salelist' => $list, 'queries' => $Queries, 'customers' => $customers, 'net_total' => $net_total, 'net_pcs' => $net_pcs, 'net_qty' => $net_qty, 'users' => $users));
+        return view('sales.list', array('salelist' => $list, 'queries' => $Queries, 'customers' => $customers, 'net_total' => $net_total, 'net_pcs' => $net_pcs, 'net_qty' => $net_qty, 'users' => $users, 'net_profit' => $net_profit));
     }
     public function newsale()
     {
@@ -557,9 +559,11 @@ class SaleController extends Controller
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
 
+        $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
+
         $qrCodeString = $this->generateQrCode($request->url());
 
-        $data =  array('sale' => $sale, 'items' => $items, 'companyinfo' => $companyinfo, 'qrCodeString' => $qrCodeString);
+        $data =  array('sale' => $sale, 'items' => $items, 'companyinfo' => $companyinfo, 'qrCodeString' => $qrCodeString, 'currency_symbol' => $currency_symbol);
 
         if ($companyinfo->auto_print_invoice == 0) {
             $pdf = PDF::loadView('sales.salePdf', $data);
@@ -599,10 +603,14 @@ class SaleController extends Controller
         $net = $query->orderByDesc('sales.id')->sum('net_total');
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
+
+        $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
+
         $data = array(
             'salelist' => $list,
             'companyinfo' => $companyinfo,
-            'net' => $net
+            'net' => $net,
+            'currency_symbol' => $currency_symbol
         );
 
         $pdf = PDF::loadView('sales.salePagePdf', $data);
@@ -687,22 +695,24 @@ class SaleController extends Controller
         if (Auth::user()->is_admin) {
             // ->where('branch', Auth::user()->branch)
             $list = DB::table('quotation')
-                ->orderBy('id', 'ASC')
+                ->orderBy('id', 'DESC')
                 ->paginate(20);
             $net_total = DB::table('quotation')->where('branch', Auth::user()->branch)->sum('net_total');
             $net_qty = DB::table('quotation')->where('branch', Auth::user()->branch)->sum('net_qty');
+            $net_profit = DB::table('quotation')->sum('net_profit');
         } else {
             // ->where('branch', Auth::user()->branch)
             $list = DB::table('quotation')->where('user_id', Auth::user()->id)
-                ->orderBy('id', 'ASC')
+                ->orderBy('id', 'DESC')
                 ->paginate(20);
             $net_total = DB::table('quotation')->where('branch', Auth::user()->branch)->where('user_id', Auth::user()->id)->sum('net_total');
             $net_qty = DB::table('quotation')->where('branch', Auth::user()->branch)->where('user_id', Auth::user()->id)->sum('net_qty');
+            $net_profit = DB::table('quotation')->where('user_id', Auth::user()->id)->sum('net_profit');
         }
         // ->where('is_admin', 0)
         $users = DB::table('users')->where('status', 1)->get();
 
-        return view('quotation/list', array('lists' => $list, 'queries' => $Queries, 'net_total' => $net_total, 'net_qty' => $net_qty, 'users' => $users));
+        return view('quotation/list', array('lists' => $list, 'queries' => $Queries, 'net_total' => $net_total, 'net_qty' => $net_qty, 'users' => $users, 'net_profit' => $net_profit));
     }
 
     public function PackagesList()
@@ -718,7 +728,17 @@ class SaleController extends Controller
 
     public function newQuotation()
     {
-        $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
+        if (Auth::user()->is_admin) {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                // ->where('branch', Auth::user()->branch)
+                ->get();
+        } else {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+        }
         $invoice_number = DB::table('quotation')->max('id') + 1;
         // ->where('branch', Auth()->user()->branch)
         $items = DB::table('items')
@@ -974,7 +994,10 @@ class SaleController extends Controller
     {
         $sale = DB::table('quotation')->where('id', $id)->first();
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
+        $items = DB::table('items')
+            ->whereIn('category', [4, 5, 6])
+            // ->where('branch', Auth()->user()->branch)
+            ->get();
 
         return view('quotation/new', array('quotation' => $sale, 'items' => $items, 'customers' => $customers));
     }
@@ -1212,29 +1235,49 @@ class SaleController extends Controller
         $qty = $query->orderByDesc('id')->sum('net_qty');
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
+
+        $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
+
         $data = array(
             'quotationlist' => $list,
             'companyinfo' => $companyinfo,
             'net' => $net,
             // 'pcs' => $pcs,
-            'qty' => $qty
+            'qty' => $qty,
+            'currency_symbol' => $currency_symbol
         );
 
         $pdf = PDF::loadView('quotation.quotationPagePdf', $data);
         return $pdf->stream('pagePdf.pdf');
     }
+
+    function getCurrencySymbol($comp_curr_id)
+    {
+        $currency_data = config('constants.currency');
+        foreach ($currency_data as $id => $name) {
+            if ($id == $comp_curr_id) {
+                return $name;
+            }
+        }
+    }
+
     public function quotationRecordPdf(Request $request, $id)
     {
         $quotation = DB::table('quotation')->where('quotation.id', $id)
             ->leftJoin('customers', 'quotation.customer_id', '=', 'customers.id')
             ->first();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
+
+        $items = DB::table('items')
+            // ->where('branch', Auth()->user()->branch)
+            ->get();
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
 
+        $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
+
         $qrCodeString = $this->generateQrCode($request->url());
 
-        $data =  array('quotation' => $quotation, 'items' => $items, 'companyinfo' => $companyinfo, 'qrCodeString' => $qrCodeString);
+        $data =  array('quotation' => $quotation, 'items' => $items, 'companyinfo' => $companyinfo, 'qrCodeString' => $qrCodeString, 'currency_symbol' => $currency_symbol);
 
         if ($companyinfo->auto_print_invoice == 0) {
             $pdf = PDF::loadView('quotation.quotationPdf', $data);
@@ -1246,7 +1289,6 @@ class SaleController extends Controller
     }
     public function generateQrCode($url)
     {
-
         $pdf_data = 'https://wa.me/?text=' . $url;
         $qrCodeString = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate($pdf_data));
 
@@ -1267,19 +1309,21 @@ class SaleController extends Controller
             $new_item_detail[] = $detail;
         }
         $sale->items_detail =  serialize($new_item_detail);
-
-        $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)
+        // ->where('branch', Auth::user()->branch)
+        $customers = DB::table('customers')->where('status', 1)->get();
+        $items = DB::table('items')
+            // ->where('branch', Auth()->user()->branch)
             ->whereIn('category', [4, 5, 6])
             ->get();
         $invoice_number = DB::table('sales')->max('id') + 1;
         $sale->new_invoice_number = Config::get('constants.SALE_INVOICE_PREFIX') . $invoice_number;
         $sale->salesOrder = 'yes';
-        $sale->customer_id = 0;
+        // $sale->customer_id = 0;
         $sale->cash_customer_name = '';
         $sale->recieved_amount  = '';
         $sale->balance_amount   = '';
-        return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 1));
+        $users = DB::table('users')->where('status', 1)->get();
+        return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 1, 'users' => $users));
     }
 
     public function cancelQuotation($id)

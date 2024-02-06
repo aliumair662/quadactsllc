@@ -137,40 +137,48 @@
                                                 <td class="text-center">{{ $list->net_profit }} </td>
                                                 <td class="text-center">
                                                     <div class="mb-2 mr-2 btn-group">
-                                                        <button class="btn btn-outline-success">Edit</button>
-                                                        <button type="button" aria-haspopup="true"
-                                                            aria-expanded="false" data-toggle="dropdown"
-                                                            class="dropdown-toggle-split dropdown-toggle btn btn-outline-success"><span
-                                                                class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                        <div tabindex="-1" role="menu" aria-hidden="true"
-                                                            class="dropdown-menu" x-placement="bottom-start"
-                                                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(68px, 33px, 0px);">
+                                                        @if (Auth::user()->is_admin == 0)
                                                             <a
                                                                 href="{{ route('newQuotation', ['pkg_id' => $list->id, 'file_name' => 'packages']) }}"><button
                                                                     type="button" tabindex="0"
-                                                                    class="dropdown-item">Create Quotation</button></a>
-                                                            @if (Auth::user()->is_admin !== 0)
+                                                                    class="btn btn-outline-success">Create
+                                                                    Quotation</button></a>
+                                                        @else
+                                                            <button class="btn btn-outline-success">Edit</button>
+                                                            <button type="button" aria-haspopup="true"
+                                                                aria-expanded="false" data-toggle="dropdown"
+                                                                class="dropdown-toggle-split dropdown-toggle btn btn-outline-success"><span
+                                                                    class="sr-only">Toggle Dropdown</span>
+                                                            </button>
+                                                            <div tabindex="-1" role="menu" aria-hidden="true"
+                                                                class="dropdown-menu" x-placement="bottom-start"
+                                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(68px, 33px, 0px);">
+                                                                <a
+                                                                    href="{{ route('newQuotation', ['pkg_id' => $list->id, 'file_name' => 'packages']) }}"><button
+                                                                        type="button" tabindex="0"
+                                                                        class="dropdown-item">Create
+                                                                        Quotation</button></a>
                                                                 <a href="#"
                                                                     onclick="deleteRecord('{{ route('deletePackage', $list->id) }}');"><button
                                                                         type="button" tabindex="0"
                                                                         class="dropdown-item">Delete</button></a>
-                                                            @endif
-                                                            {{-- <a href="{{route('quotationRecordPdf',$list->id)}}" class="pdf" target="_blank"><button type="button" tabindex="0" class="dropdown-item">PDF</button></a>
-                                                    <a href="https://wa.me/?text={{route('quotationRecordPdf',$list->id)}}" class="" target="_blank"><button type="button" tabindex="0" class="dropdown-item">Share</button></a> --}}
-                                                            {{-- <a href="{{route('quatationToSalesInvoice',$list->id)}}" ><button type="button" tabindex="0" class="dropdown-item">Create Invoice</button></a>
-                                                    <a href="{{route('cancelQuotation', $list->id)}}" ><button type="button" tabindex="0" class="dropdown-item">Cancel</button></a> --}}
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @php
-                                                $i++;
-                                            @endphp
-                                        @endforeach
-                                    @endif
 
-                                    {{-- <tr>
+                                                                {{-- <a href="{{route('quotationRecordPdf',$list->id)}}" class="pdf" target="_blank"><button type="button" tabindex="0" class="dropdown-item">PDF</button></a>
+                                                    <a href="https://wa.me/?text={{route('quotationRecordPdf',$list->id)}}" class="" target="_blank"><button type="button" tabindex="0" class="dropdown-item">Share</button></a> --}}
+                                                                {{-- <a href="{{route('quatationToSalesInvoice',$list->id)}}" ><button type="button" tabindex="0" class="dropdown-item">Create Invoice</button></a>
+                                                    <a href="{{route('cancelQuotation', $list->id)}}" ><button type="button" tabindex="0" class="dropdown-item">Cancel</button></a> --}}
+                                                        @endif
+                                                    </div>
+                        </div>
+                        </td>
+                        </tr>
+                        @php
+                            $i++;
+                        @endphp
+                        @endforeach
+                        @endif
+
+                        {{-- <tr>
                                         @if (Auth::user()->is_admin !== 0)
                                         <td colspan="5">Net Totals</td>
                                         @endif
@@ -181,17 +189,17 @@
                                         <td class="text-center">{{(isset($net_qty)) ? $net_qty : ''}}</td>
                                         <td colspan="2"></td>
                                     </tr> --}}
-                                </tbody>
-                            </table>
+                        </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end mr-3 card-footer">
+                        <div>
                         </div>
-                        <div class="d-flex justify-content-end mr-3 card-footer">
-                            <div>
-                            </div>
-                            {{ $lists->links() }}
-                        </div>
+                        {{ $lists->links() }}
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>

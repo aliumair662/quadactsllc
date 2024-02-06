@@ -124,17 +124,21 @@
                                                             <div tabindex="-1" role="menu" aria-hidden="true"
                                                                 class="dropdown-menu" x-placement="bottom-start"
                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(68px, 33px, 0px);">
-                                                                <a
-                                                                    href="{{ route('ledger', $customer->general_ledger_account_id) }}"><button
-                                                                        type="button" tabindex="0"
-                                                                        class="dropdown-item">Ledger</button></a>
+                                                                @if (Auth::user()->is_admin === 1)
+                                                                    <a
+                                                                        href="{{ route('ledger', $customer->general_ledger_account_id) }}"><button
+                                                                            type="button" tabindex="0"
+                                                                            class="dropdown-item">Ledger</button></a>
+                                                                @endif
                                                                 <a href="{{ route('editcustomer', $customer->id) }}"><button
                                                                         type="button" tabindex="0"
                                                                         class="dropdown-item">Edit</button></a>
-                                                                <a
-                                                                    href="{{ route('deletecustomer', $customer->id) }}"><button
-                                                                        type="button" tabindex="0"
-                                                                        class="dropdown-item">Delete</button></a>
+                                                                @if (Auth::user()->is_admin === 1)
+                                                                    <a
+                                                                        href="{{ route('deletecustomer', $customer->id) }}"><button
+                                                                            type="button" tabindex="0"
+                                                                            class="dropdown-item">Delete</button></a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     @endif

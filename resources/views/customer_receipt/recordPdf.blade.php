@@ -60,7 +60,8 @@
             </tr>
             <tr>
                 <td colspan="5">Net Total</td>
-                <td>{{ $customer_receipt->amount }}</td>
+                <td>{{ !empty($customer_receipt->amount) ? $customer_receipt->amount . '.' . $currency_symbol : '' }}
+                </td>
             </tr>
         </tbody>
     </table>

@@ -128,10 +128,13 @@
                                                                 href="{{ route('editcustomer_receipt', $customer_receipt->id) }}"><button
                                                                     type="button" tabindex="0"
                                                                     class="dropdown-item">Edit</button></a>
+                                                            @if (Auth::user()->is_admin === 1)
+                                                                <a
+                                                                    href="{{ route('deletecustomer_receipt', $customer_receipt->id) }}"><button
+                                                                        type="button" tabindex="0"
+                                                                        class="dropdown-item">Delete</button></a>
+                                                            @endif
                                                             <a
-                                                                href="{{ route('deletecustomer_receipt', $customer_receipt->id) }}"><button
-                                                                    type="button" tabindex="0"
-                                                                    class="dropdown-item">Delete</button></a><a
                                                                 href="{{ route('customerRecieptRecordPdf', $customer_receipt->id) }}"><button
                                                                     type="button" tabindex="0"
                                                                     class="dropdown-item">PDF</button></a>

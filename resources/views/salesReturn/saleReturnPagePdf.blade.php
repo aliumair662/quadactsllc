@@ -74,8 +74,8 @@
                     @endforeach
                 @endif
                 <tr>
-                    <td colspan="4">Net Total</td>
-                    <td>{{ $net }}</td>
+                    <td colspan="6">Net Total</td>
+                    <td>{{ !empty($net) ? $net . '.' . $currency_symbol : '' }}</td>
 
                 </tr>
             </tbody>

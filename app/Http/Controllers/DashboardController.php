@@ -27,7 +27,7 @@ class DashboardController extends Controller
          * Calculate Net Sales
          **/
         if (Auth::user()->is_admin === 0) {
-            return redirect('sales/list');
+            return redirect('quotation/list');
         };
         $now = now();
         $Sales = DB::table('general_ledger_transactions')

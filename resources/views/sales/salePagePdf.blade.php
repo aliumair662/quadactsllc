@@ -83,7 +83,7 @@
                 @endif
                 <tr>
                     <td colspan="6">Net Total</td>
-                    <td>{{ $net }}</td>
+                    <td>{{ !empty($net) ? $net . '.' . $currency_symbol : '' }}</td>
 
                 </tr>
             </tbody>

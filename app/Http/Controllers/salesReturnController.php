@@ -442,7 +442,7 @@ class salesReturnController extends Controller
 
         if (isset($request->customer_id)) {
             $Queries['customer_id'] = $request->customer_id;
-            $query->where('sales_return.customer_id', '=',$request->customer_id);
+            $query->where('sales_return.customer_id', '=', $request->customer_id);
         }
         if (isset($request->from_date) && isset($request->to_date)) {
             $Queries['from_date'] = $request->from_date;
@@ -470,7 +470,8 @@ class salesReturnController extends Controller
         $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
-        $data = array('saleReturn' => $sale_return, 'items' => $items, 'companyinfo' => $companyinfo);
+        $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
+        $data = array('saleReturn' => $sale_return, 'items' => $items, 'companyinfo' => $companyinfo, 'currency_symbol' => $currency_symbol);
         $pdf = PDF::loadView('salesReturn.recordPdf', $data);
         return $pdf->stream('recordPdf.pdf');
     }
@@ -493,10 +494,22 @@ class salesReturnController extends Controller
         $net = $query->sum('net_total');
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
-        $data = array('saleReturnList' => $list, 'net' => $net, 'companyinfo' => $companyinfo);
+        $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
+        $data = array('saleReturnList' => $list, 'net' => $net, 'companyinfo' => $companyinfo, 'currency_symbol' => $currency_symbol);
         $pdf = PDF::loadView('salesReturn.saleReturnPagePdf', $data);
         return $pdf->stream('pagePdf.pdf');
     }
+
+    function getCurrencySymbol($comp_curr_id)
+    {
+        $currency_data = config('constants.currency');
+        foreach ($currency_data as $id => $name) {
+            if ($id == $comp_curr_id) {
+                return $name;
+            }
+        }
+    }
+
     public function insertDoubleEntry($data)
     {
         /**

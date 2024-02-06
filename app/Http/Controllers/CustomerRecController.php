@@ -16,11 +16,11 @@ class CustomerRecController extends Controller
     public function customer_receipt_List()
     {
         if (Auth::user()->is_admin) {
-            $list = DB::table('customers')->rightJoin('customer_receipt', 'customer_receipt.customer', '=', 'customers.id')->where('customer_receipt.branch', Auth::user()->branch)->select('customer_receipt.*', 'customers.name')
+            $list = DB::table('customers')->rightJoin('customer_receipt', 'customer_receipt.customer', '=', 'customers.id')->select('customer_receipt.*', 'customers.name')
                 ->orderByDesc('customer_receipt.id')
                 ->paginate(20);
         } else {
-            $list = DB::table('customers')->rightJoin('customer_receipt', 'customer_receipt.customer', '=', 'customers.id')->where('customer_receipt.branch', Auth::user()->branch)->select('customer_receipt.*', 'customers.name')
+            $list = DB::table('customers')->rightJoin('customer_receipt', 'customer_receipt.customer', '=', 'customers.id')->select('customer_receipt.*', 'customers.name')
                 ->where('customer_receipt.user_id', Auth::user()->id)
                 ->orderByDesc('customer_receipt.id')
                 ->paginate(20);
@@ -269,7 +269,10 @@ class CustomerRecController extends Controller
         $list = DB::table('customers')->get();
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
-        $data = array('customer_receipt' => $menus, 'customers' => $list, 'companyinfo' => $companyinfo);
+
+        $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
+
+        $data = array('customer_receipt' => $menus, 'customers' => $list, 'companyinfo' => $companyinfo, 'currency_symbol' => $currency_symbol);
         $pdf = PDF::loadView('customer_receipt.recordPdf', $data);
         return $pdf->stream('recordPdf.pdf');
     }
@@ -293,10 +296,24 @@ class CustomerRecController extends Controller
 
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
-        $data = array('customer_receipts' => $list, 'net' => $net, 'companyinfo' => $companyinfo);
+
+        $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
+
+        $data = array('customer_receipts' => $list, 'net' => $net, 'companyinfo' => $companyinfo, 'currency_symbol' => $currency_symbol);
         $pdf = PDF::loadView('customer_receipt.receiptPagePdf', $data);
         return $pdf->stream('pagePdf.pdf');
     }
+
+    function getCurrencySymbol($comp_curr_id)
+    {
+        $currency_data = config('constants.currency');
+        foreach ($currency_data as $id => $name) {
+            if ($id == $comp_curr_id) {
+                return $name;
+            }
+        }
+    }
+
     public function insertDoubleEntry($data)
     {
         /**

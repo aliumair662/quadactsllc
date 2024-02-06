@@ -194,7 +194,7 @@
                                                                 <a
                                                                     href="{{ route('quatationToSalesInvoice', $list->id) }}"><button
                                                                         type="button" tabindex="0"
-                                                                        class="dropdown-item">Create
+                                                                        class="dropdown-item">Create Sale
                                                                         Invoice</button></a>
                                                             @endif
                                                             <a href="{{ route('cancelQuotation', $list->id) }}"><button
@@ -219,7 +219,9 @@
                                         @endif
                                         <td class="text-center">{{ isset($net_total) ? $net_total : '' }}</td>
                                         <td class="text-center">{{ isset($net_qty) ? $net_qty : '' }}</td>
-                                        <td colspan="2"></td>
+                                        <td class="text-center">{{ isset($net_profit) ? $net_profit : '' }}</td>
+                                        <td colspan="1"></td>
+
                                     </tr>
                                 </tbody>
                             </table>

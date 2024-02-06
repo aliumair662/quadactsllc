@@ -30,7 +30,7 @@
                 </td>
                 <td class="align-middle" style="padding-left: 30%; padding-top:2rem;">
                     <p class="mb-1" style="font-family:Georgia, 'Times New Roman', Times, serif;">
-                        <b>Verify Your
+                        <b>Verify Your Quotation
                             Invoice</b>
                     </p>
                     <hr>
@@ -43,7 +43,7 @@
     <table style="width: 100%;" collspacing="0" class="">
         <tr>
             <td>
-                <p class="mb-1"><b>Invoice #:</b> {{ $quotation->invoice_number }}</p>
+                <p class="mb-1"><b>Quotation Invoice #:</b> {{ $quotation->invoice_number }}</p>
             </td>
             <td>
                 <p class="mb-1"><b>Customer Name:</b> {{ $quotation->name }}</p>
@@ -63,7 +63,7 @@
             </td>
         </tr>
     </table>
-    <p class="text-right"><b>Quotation</b></p>
+    <h2 class="text-right"><b>Quotation</b></h2>
     <table class="table table-bordered">
         <thead>
             <tr class="table-warning">
@@ -108,17 +108,21 @@
             @endif
             <tr>
                 <td colspan="4" style="text-align: right;padding-right:2rem;">Gross Amount</td>
-                <td>{{ $quotation->gross_amount }}</td>
+                <td>{{ !empty($quotation->gross_amount) ? $quotation->gross_amount . '.' . $currency_symbol : '' }}
+                </td>
 
             </tr>
             <tr>
                 <td colspan="4" style="text-align: right;padding-right:2rem;">Discount</td>
-                <td>{{ $quotation->discount_amount }}</td>
+                <td>{{ !empty($quotation->discount_amount) ? $quotation->discount_amount . '.' . $currency_symbol : '' }}
+                </td>
 
             </tr>
             <tr>
                 <td colspan="4" style="text-align: right;padding-right:2rem;">Net Total</td>
-                <td>{{ $quotation->net_total }}</td>
+                <td>
+                    {{ !empty($quotation->net_total) ? $quotation->net_total . '.' . $currency_symbol : '' }}
+                </td>
 
             </tr>
         </tbody>

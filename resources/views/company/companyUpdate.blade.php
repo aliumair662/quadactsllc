@@ -116,7 +116,26 @@
                                         class="ml-2"
                                         {{ isset($company) ? ($company->auto_print_invoice == 1 ? 'checked' : '') : '' }}>
                                 </div>
-
+                            </div>
+                        </div>
+                        <div class="form-row align-items-baseline" style="padding-left: 1rem;">
+                            <div class="col-md-2">
+                                <label for="exampleEmail11" class=""><b>Currency :</b></label>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="position-relative form-group">
+                                    <select class="js-example-basic-single form-control" placeholder="Select Currency"
+                                        name="currency_id" id="currency_id" required>
+                                        <option value="">Select Currency</option>
+                                        @if (!empty($currency))
+                                            @foreach ($currency as $data)
+                                                <option value="{{ $data->id }}"
+                                                    {{ isset($company) && isset($company->currency_id) ? ($company->currency_id == $data->id ? 'Selected' : '') : '' }}>
+                                                    {{ $data->name }} </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="form-row">

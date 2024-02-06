@@ -55,5 +55,9 @@ return [
     'OVERHEAD_COST_POOL_INVENTORY_EXPENSE_ACCOUNT_GENERAL_LEDGER' => 23, //Overhead Cost Pool A/c
     'EMPLOYEES_ADVANCE_GENERAL_LEDGER' => 36, //Employees Advance A/c
 
-
+    'currency' => [
+        '1' => 'AED',
+        '2' => '(USD)$',
+        '3' => '(PKR)Rs.'
+    ]
 ];

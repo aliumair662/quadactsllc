@@ -81,7 +81,8 @@
             @endif
             <tr>
                 <td colspan="5">Net Total</td>
-                <td>{{ $saleReturn->net_total }}</td>
+                <td>{{ !empty($saleReturn->net_total) ? $saleReturn->net_total . '.' . $currency_symbol : '' }}
+                </td>
 
             </tr>
         </tbody>

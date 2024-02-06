@@ -44,18 +44,18 @@
                                 @endif
                             </select>
                         </td>
-                        <td class="text-center" style="min-width: 150px;"><input name="item_price[]" id="item_price"
+                        <td class="text-center" style="min-width: 8rem;"><input name="item_price[]" id="item_price"
                                 placeholder="Price" value="" type="text" class="form-control item_price"
                                 onchange="calculateInvoiceSum();calculateNetProfit();"><input
                                 name="item_purchase_price[]" id="item_purchase_price" placeholder="Purchase Price"
                                 value="" type="text" class="form-control item_purchase_price" onchange=""
                                 readonly></td>
-                        <td class="text-center" style="min-width: 150px;"><input name="item_qty[]" id="item_qty"
+                        <td class="text-center" style="min-width: 5rem;"><input name="item_qty[]" id="item_qty"
                                 placeholder="Quantity" value="" type="text"
                                 class="form-control item_qty item_qt"
                                 onchange="calculateInvoiceSum(); qtySum();calculatePurchaseAmountSum();calculateNetProfit();">
                         </td>
-                        <td class="text-center" style="min-width: 150px;"><input name="amount[]" id="amount"
+                        <td class="text-center" style="min-width: 8rem;"><input name="amount[]" id="amount"
                                 placeholder="Total Amount" value="" type="text" class="form-control amount"
                                 readonly><input name="total_purchase_amount[]" id="total_purchase_amount"
                                 placeholder="Total Purchase Amount" value="" type="text"
@@ -119,7 +119,7 @@
                                                 @foreach (unserialize($quotation->items_detail) as $invoiceItem)
                                                     <tr>
                                                         <td class="text-center">{{ $i }}</td>
-                                                        <td class="text-center text-muted">
+                                                        <td class="text-center text-muted" style="min-width: 8rem;">
                                                             <select
                                                                 class="js-example-basic-single form-control itemData"
                                                                 aria-placeholder="Select Item" name="item_id[]"
@@ -134,7 +134,7 @@
 
                                                             </select>
                                                         </td>
-                                                        <td class="text-center">
+                                                        <td class="text-center" style="min-width: 8rem;">
                                                             <input name="item_price[]" id="item_price"
                                                                 placeholder="Price"
                                                                 value="{{ isset($quotation) ? $invoiceItem['item_price'] : '' }}"
@@ -147,14 +147,14 @@
                                                                 class="form-control item_purchase_price"
                                                                 onchange="" readonly>
                                                         </td>
-                                                        <td class="text-center" style="min-width: 150px"><input
+                                                        <td class="text-center" style="min-width: 5rem;"><input
                                                                 name="item_qty[]" id="item_qty"
                                                                 placeholder="Quantity"
                                                                 value="{{ isset($quotation) ? $invoiceItem['item_qty'] : '' }}"
                                                                 type="text" class="form-control item_qty item_qt"
                                                                 onchange="qtySum();calculateInvoiceSum();calculatePurchaseAmountSum();calculateNetProfit();">
                                                         </td>
-                                                        <td class="text-center" style="min-width: 150px"><input
+                                                        <td class="text-center" style="min-width: 8rem;"><input
                                                                 name="amount[]" id="amount"
                                                                 placeholder="Total Amount"
                                                                 value="{{ isset($quotation) ? $invoiceItem['amount'] : '' }}"

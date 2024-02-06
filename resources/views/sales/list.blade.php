@@ -204,7 +204,9 @@
                                         <td class="text-center">{{ isset($net_total) ? $net_total : '' }}</td>
                                         {{-- <td class="text-center">{{(isset($net_pcs)) ? $net_pcs : ''}}</td> --}}
                                         <td class="text-center">{{ isset($net_qty) ? $net_qty : '' }}</td>
-                                        <td colspan="2"></td>
+                                        <td colspan="1"></td>
+                                        <td class="text-center">{{ isset($net_profit) ? $net_profit : '' }}</td>
+                                        <td colspan="1"></td>
                                     </tr>
                                 </tbody>
                             </table>

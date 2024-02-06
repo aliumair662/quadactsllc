@@ -105,17 +105,19 @@
                 @endif
                 <tr>
                     <td colspan="4" style="text-align: right;padding-right:2rem;">Gross Amount</td>
-                    <td>{{ $quotation->gross_amount }}</td>
+                    <td>{{ !empty($quotation->gross_amount) ? $quotation->gross_amount . '.' . $currency_symbol : '' }}
+                    </td>
 
                 </tr>
                 <tr>
                     <td colspan="4" style="text-align: right;padding-right:2rem;">Discount</td>
-                    <td>{{ $quotation->discount_amount }}</td>
+                    <td>{{ !empty($quotation->discount_amount) ? $quotation->discount_amount . '.' . $currency_symbol : '' }}
+                    </td>
 
                 </tr>
                 <tr>
                     <td colspan="4" style="text-align: right;padding-right:2rem;">Net Total</td>
-                    <td>{{ $quotation->net_total }}</td>
+                    <td>{{ !empty($quotation->net_total) ? $quotation->net_total . '.' . $currency_symbol : '' }}</td>
 
                 </tr>
                 {{-- <tr>
