@@ -20,7 +20,7 @@
                     <div class="page-title-actions">
                         <a href="{{ route('newcustomer') }}">
                             <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
-                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New User">
+                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New Customer">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </a>
@@ -37,7 +37,7 @@
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
 
-                            <div class="form-group col-2 mx-2">
+                            <div class="form-group col-sm-2">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">Search by Name</label>
                                 <input type="text" name="customer_name" class="form-control"
                                     value="{{ isset($searchQuery) ? $searchQuery : (isset($_GET['queries']['name']) ? $_GET['queries']['name'] : '') }}">

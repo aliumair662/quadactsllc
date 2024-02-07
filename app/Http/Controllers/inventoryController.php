@@ -417,4 +417,46 @@ class inventoryController extends Controller
     {
         DB::table('transactions_log')->insertGetId($data);
     }
+
+    public function cancelItem($id)
+    {
+        $item = DB::table('items')->where('id', $id)->first();
+        if (empty($item)) {
+            return response()->json(['success' => false, 'message' => "Item doesn't exits..", 'redirectUrl' => 'item/itemList'], 200);
+        }
+        $item_cancel = array(
+            'cancel_status' => true,
+        );
+        DB::table('items')->where('id', $id)->update($item_cancel);
+        return redirect('item/itemList');
+    }
+
+    // public function searchItems(Request $request)
+    // {
+    //     $Queries = array();
+
+    //     if (empty($request->from_date) && empty($request->to_date) && empty($request->invoice_number) && empty($request->user_id)) {
+    //         return redirect('dailyVisits.list');
+    //     }
+    //     $query = DB::table('daily_visits');
+
+    //     if (!empty($request->from_date) && !empty($request->to_date)) {
+    //         $Queries['from_date'] = $request->from_date;
+    //         $Queries['to_date'] = $request->to_date;
+    //         $query->whereBetween('daily_visits.invoice_date', [$request->from_date, $request->to_date]);
+    //     }
+    //     if (!empty($request->invoice_number)) {
+    //         $Queries['invoice_number'] = $request->invoice_number;
+    //         $query->where('daily_visits.invoice_number', 'like', "%$request->invoice_number%");
+    //     }
+    //     if (!empty($request->user_id)) {
+    //         $Queries['user_id'] = $request->user_id;
+    //         $query->where('daily_visits.user_id', '=', $request->user_id);
+    //     }
+    //     $list = $query->orderByDesc('daily_visits.id')->paginate(20);
+    //     $list->appends($Queries);
+    //     $users = DB::table('users')->where('status', 1)->get();
+
+    //     return view('dailyVisits.list', array('daily_visits' => $list, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'invoice_number' => $request->invoice_number, 'user_id' => $request->user_id, 'users' => $users));
+    // }
 }

@@ -253,6 +253,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/item/itemPagePdf', [inventoryController::class, 'itemPagePdf'])->name('itemPagePdf');
     //    Items ledger entries (get)
     Route::get('/item/ledgerEntries/{id}', [inventoryController::class, 'itemLedgerEntries'])->name('itemLedgerEntries');
+    Route::get('cancelItem/record/{id}', [inventoryController::class, 'cancelItem'])->name('cancelItem');
+    // Route::post('/item/searchItems', [inventoryController::class, 'searchItems'])->name('searchItems');
 
     // Rout for department
     Route::get('/department/departmentList', [departmentController::class, 'departmentList'])->name('departmentlist');

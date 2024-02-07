@@ -33,6 +33,7 @@
                         <p class="mb-1"><b>URL:</b>{{ $companyinfo->web }}</p>
                     </div>
                 </td>
+                <p class="mb-1"><b>Salesman Name:</b> {{ $sale->sale_user_name }}</p>
                 <td class="align-middle" style="padding-left: 30%; padding-top:2rem;">
                     <p class="mb-1" style="font-family:Georgia, 'Times New Roman', Times, serif;">
                         <b>Verify Your Sale

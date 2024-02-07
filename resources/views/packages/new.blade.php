@@ -18,7 +18,7 @@
                     <div class="page-title-actions">
                         <a href="{{ route('quotationList') }}">
                             <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
-                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Quotation Invoice List">
+                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Packages List">
                                 <i class="fa fa-th-list"></i>
                             </button>
                         </a>
@@ -45,20 +45,20 @@
                             </select>
                         </td>
                         <td class="text-center" style="min-width: 8rem;"><input name="item_price[]" id="item_price"
-                                placeholder="Price" value="" type="text" class="form-control item_price"
+                                placeholder="Price" value="" type="number" class="form-control item_price"
                                 onchange="calculateInvoiceSum();calculateNetProfit();"><input
                                 name="item_purchase_price[]" id="item_purchase_price" placeholder="Purchase Price"
-                                value="" type="text" class="form-control item_purchase_price" onchange=""
+                                value="" type="number" class="form-control item_purchase_price" onchange=""
                                 readonly></td>
                         <td class="text-center" style="min-width: 5rem;"><input name="item_qty[]" id="item_qty"
-                                placeholder="Quantity" value="" type="text"
+                                placeholder="Quantity" value="" type="number"
                                 class="form-control item_qty item_qt"
                                 onchange="calculateInvoiceSum(); qtySum();calculatePurchaseAmountSum();calculateNetProfit();">
                         </td>
                         <td class="text-center" style="min-width: 8rem;"><input name="amount[]" id="amount"
-                                placeholder="Total Amount" value="" type="text" class="form-control amount"
+                                placeholder="Total Amount" value="" type="number" class="form-control amount"
                                 readonly><input name="total_purchase_amount[]" id="total_purchase_amount"
-                                placeholder="Total Purchase Amount" value="" type="text"
+                                placeholder="Total Purchase Amount" value="" type="number"
                                 class="form-control total_purchase_amount" readonly></td>
                         <td><button class="btn btn-dark" type="button"
                                 onclick="removeRow(this);calculateInvoiceSum();calculateNetProfit();"><i
@@ -138,12 +138,12 @@
                                                             <input name="item_price[]" id="item_price"
                                                                 placeholder="Price"
                                                                 value="{{ isset($quotation) ? $invoiceItem['item_price'] : '' }}"
-                                                                type="text" class="form-control item_price"
+                                                                type="number" class="form-control item_price"
                                                                 onchange="calculateInvoiceSum();calculateNetProfit();"><input
                                                                 name="item_purchase_price[]" id="item_purchase_price"
                                                                 placeholder="Purchase Price"
                                                                 value="{{ isset($quotation) ? $invoiceItem['item_purchase_price'] : '' }}"
-                                                                type="text"
+                                                                type="number"
                                                                 class="form-control item_purchase_price"
                                                                 onchange="" readonly>
                                                         </td>
@@ -151,19 +151,19 @@
                                                                 name="item_qty[]" id="item_qty"
                                                                 placeholder="Quantity"
                                                                 value="{{ isset($quotation) ? $invoiceItem['item_qty'] : '' }}"
-                                                                type="text" class="form-control item_qty item_qt"
+                                                                type="number" class="form-control item_qty item_qt"
                                                                 onchange="qtySum();calculateInvoiceSum();calculatePurchaseAmountSum();calculateNetProfit();">
                                                         </td>
                                                         <td class="text-center" style="min-width: 8rem;"><input
                                                                 name="amount[]" id="amount"
                                                                 placeholder="Total Amount"
                                                                 value="{{ isset($quotation) ? $invoiceItem['amount'] : '' }}"
-                                                                type="text" class="form-control amount"
+                                                                type="number" class="form-control amount"
                                                                 readonly><input name="total_purchase_amount[]"
                                                                 id="total_purchase_amount"
                                                                 placeholder="Total Purchase Amount"
                                                                 value="{{ isset($quotation) ? $invoiceItem['total_purchase_amount'] : '' }}"
-                                                                type="text"
+                                                                type="number"
                                                                 class="form-control total_purchase_amount" readonly>
                                                         </td>
                                                     </tr>
@@ -196,7 +196,7 @@
 
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Net Qty</label>
-                                    <input name="net_qty" id="qty_" placeholder="" type="text"
+                                    <input name="net_qty" id="qty_" placeholder="" type="number"
                                         value="{{ isset($quotation) ? $quotation->net_qty : '' }}"
                                         class="form-control" readonly>
                                 </div>
@@ -204,7 +204,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative form-group">
                                     <label for="gross_amount" class="">Gross Amount</label>
-                                    <input name="gross_amount" id="gross_amount" placeholder="" type="text"
+                                    <input name="gross_amount" id="gross_amount" placeholder="" type="number"
                                         value="{{ isset($quotation) ? $quotation->gross_amount : '' }}"
                                         class="form-control" readonly>
                                 </div>
@@ -218,7 +218,7 @@
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Gross Purchase Amount</label>
                                     <input name="gross_purchase_amount" id="gross_purchase_amount" placeholder=""
-                                        type="text"
+                                        type="number"
                                         value="{{ isset($quotation) ? $quotation->gross_purchase_amount : '' }}"
                                         class="form-control" onchange="calculateInvoiceSum();calculateNetProfit();"
                                         readonly>
@@ -230,7 +230,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Discount</label>
-                                    <input name="discount_amount" id="discount_amount" placeholder="" type="text"
+                                    <input name="discount_amount" id="discount_amount" placeholder="" type="number"
                                         value="{{ isset($quotation) ? $quotation->discount_amount : '' }}"
                                         class="form-control" onchange="calculateInvoiceSum();calculateNetProfit();">
                                 </div>
@@ -241,7 +241,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Net Total</label>
-                                    <input name="net_total" id="net_total" placeholder="" type="text"
+                                    <input name="net_total" id="net_total" placeholder="" type="number"
                                         value="{{ isset($quotation) ? $quotation->net_total : '' }}"
                                         class="form-control" readonly>
                                 </div>
@@ -252,7 +252,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Profit/Loss</label>
-                                    <input name="net_profit" id="net_profit" placeholder="" type="text"
+                                    <input name="net_profit" id="net_profit" placeholder="" type="number"
                                         value="{{ isset($quotation) ? $quotation->net_profit : '' }}"
                                         class="form-control" readonly>
                                 </div>

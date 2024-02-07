@@ -11,20 +11,13 @@
                             </i>
                         </div>
                         <div>Transaction Log
-                            <div class="page-title-subheading">This is an example dashboard created using build-in
-                                elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in
+                                elements and components. --}}
                             </div>
 
                         </div>
                     </div>
-                    <!-- <div class="page-title-actions">
-                        <a href="{{ route('newsale') }}">
-                            <button type="button" data-toggle="tooltip" title="" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New Invoice">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </a>
-
-                    </div> -->
                 </div>
             </div>
             <div class="row card mx-0 mb-2 pt-1">
@@ -33,18 +26,18 @@
                         @csrf
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
-                            <div class="form-group col-2">
+                            <div class="form-group col-sm-2">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">From</label>
                                 <input type="date" name="from_date" class="form-control"
                                     value="{{ isset($from_date) ? $from_date : (isset($_GET['queries']['from']) ? $_GET['queries']['from'] : '') }}">
                             </div>
-                            <div class="form-group col-2 mx-2">
+                            <div class="form-group col-sm-2 ml-2">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">To</label>
                                 <input type="date" name="to_date" class="form-control"
                                     value="{{ isset($to_date) ? $to_date : (isset($_GET['queries']['to']) ? $_GET['queries']['to'] : '') }}">
                             </div>
 
-                            <div class="form-group col-2">
+                            <div class="form-group col-sm-2 ml-2">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">Username</label>
                                 <input type="text" name="username" class="form-control"
                                     value="{{ isset($customer_name) ? $customer_name : (isset($_GET['queries']['name']) ? $_GET['queries']['name'] : '') }}"

@@ -49,6 +49,7 @@
                         {{-- <p class="mb-1"><b>NTN #:</b>{{ $companyinfo->ntn_no }}</p>
                         <p class="mb-1"><b>Sale Tax #:</b>{{ $companyinfo->sales_tax_no }}</p> --}}
                         <hr>
+                        <p class="mb-1"><b>Salesman Name:</b> {{ $sale->sale_user_name }}</p>
                         <p class="mb-1"><b>Invoice #:</b> {{ $sale->invoice_number }}</p>
 
                         <p class="mb-1"><b>Customer Name:</b> {{ $sale->name }}</p>
@@ -159,7 +160,7 @@
         </p>
     </div>
     <hr style="margin-left: 10%;">
-    <div class="align-middle" style="padding-left: 30%; ">
+    <div class="align-middle" style="padding-left: 40%;">
         <p class="mb-1" style="font-family:Georgia, 'Times New Roman', Times, serif;">
             <b>Verify Your
                 Invoice</b>

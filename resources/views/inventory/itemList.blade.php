@@ -1,4 +1,10 @@
 <x-app-layout>
+    <style>
+        .disabled-tr {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+    </style>
     <div class="app-main__outer">
         <div class="app-main__inner">
             <div class="app-page-title">
@@ -35,7 +41,7 @@
                 <div class="col-md-12">
                     <form method="get">
                         <div class="row no-gutters">
-                            <div class="form-group col-2 ml-2">
+                            <div class="form-group col-sm-2 ml-2">
                                 <label for="query" class="form-label" style="font-size: 1rem;">Name</label>
                                 <input type="text" name="query" class="form-control"
                                     value="{{ request()->input('query') }}" placeholder="Search">
@@ -55,16 +61,42 @@
                     </form>
                 </div>
             </div>
+            {{-- <div class="row card mx-0 mb-2 pt-1">
+                <div class="col-md-12">
+                    <form action="{{ route('searchItems') }}" method="post">
+                        @csrf
+                        <div class="row no-gutters">
+                            <div class="form-group col-2 ml-1">
+                                <label for="from_date" class="form-label" style="font-size: 1rem;">Name</label>
+                                <input type="text" name="invoice_number" class="form-control"
+                                    value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"
+                                    placeholder="Invoice No.">
+                            </div>
+                            <div class="form-group col-2 ml-1">
+                                <label for="from_date" class="form-label" style="font-size: 1rem;">Invoice #</label>
+                                <input type="text" name="invoice_number" class="form-control"
+                                    value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"
+                                    placeholder="Invoice No.">
+                            </div>
+                            <div class="col-2 align-self-end ml-2 pb-3" style="margin-bottom: 1.1rem;">
+                                <div class="page-title-actions">
+                                    <a href="">
+                                        <button type="submit" data-toggle="tooltip" title=""
+                                            data-placement="bottom" class="btn-shadow btn btn-dark"
+                                            data-original-title="Search">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div> --}}
             <div class="row">
                 <div class="col-md-12">
                     <div class="main-card mb-3 card">
                         <div class="card-header">Item List
-                            <!-- <div class="btn-actions-pane-right">
-                                <div role="group" class="btn-group-sm btn-group">
-                                <a href="{{ route('activemenu') }}"><button class="active btn btn-focus">Active</button></a>
-                                <a href="{{ route('inactivemenu') }}"><button class="btn btn-focus">InActive</button></a>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="table-responsive">
                             <table class="align-middle mb-0 table table-borderless table-striped table-hover">
@@ -84,7 +116,7 @@
                                 <tbody>
                                     @if (!empty($items))
                                         @foreach ($items as $item)
-                                            <tr>
+                                            <tr class="{{ $item->cancel_status === 1 ? 'disabled-tr' : '' }}">
                                                 <td class="text-center text-muted">{{ $item->id }}</td>
                                                 <td class="text-center text-muted">{{ $item->code }}</td>
                                                 <td class="text-center text-muted">
@@ -119,12 +151,15 @@
                                                             <a href="{{ route('edititem', $item->id) }}"><button
                                                                     type="button" tabindex="0"
                                                                     class="dropdown-item">Edit</button></a>
-                                                            <a href="{{ route('deleteitem', $item->id) }}"><button
+                                                            {{-- <a href="{{ route('deleteitem', $item->id) }}"><button
                                                                     type="button" tabindex="0"
-                                                                    class="dropdown-item">Delete</button></a>
+                                                                    class="dropdown-item">Delete</button></a> --}}
                                                             <a href="{{ route('itemLedgerEntries', $item->id) }}"><button
                                                                     type="button" tabindex="0"
                                                                     class="dropdown-item">Ledger</button></a>
+                                                            <a href="{{ route('cancelItem', $item->id) }}"><button
+                                                                    type="button" tabindex="0"
+                                                                    class="dropdown-item">Cancel</button></a>
                                                         </div>
                                                     </div>
                                                 </td>

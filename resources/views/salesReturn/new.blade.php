@@ -45,16 +45,16 @@
                             </select>
                         </td>
                         <td class="text-center" style="min-width: 150px;"><input name="item_price[]" id="item_price"
-                                placeholder="Price" value="" type="text" class="form-control item_price"
+                                placeholder="Price" value="" type="number" class="form-control item_price"
                                 onchange="calculateInvoiceSum();"></td>
                         <td class="text-center" style="min-width: 150px;"><input name="item_pcs[]" id="item_pcs"
-                                placeholder="PCS" value="" type="text" class="form-control item_pcs"
+                                placeholder="PCS" value="" type="number" class="form-control item_pcs"
                                 onchange="pcsSum();"></td>
                         <td class="text-center" style="min-width: 150px;"><input name="item_qty[]" id="item_qty"
-                                placeholder="Pcs" value="" type="text" class="form-control item_qty item_qt"
+                                placeholder="Pcs" value="" type="number" class="form-control item_qty item_qt"
                                 onchange="calculateInvoiceSum(); qtySum();"></td>
                         <td class="text-center" style="min-width: 150px;"><input name="amount[]" id="amount"
-                                placeholder="Total Amount" value="" type="text" class="form-control amount"
+                                placeholder="Total Amount" value="" type="number" class="form-control amount"
                                 readonly></td>
                         <td><button class="btn btn-dark" type="button"
                                 onclick="removeRow(this);calculateInvoiceSum();"><i class="fas fa-times"></i></button>
@@ -154,22 +154,22 @@
                                                         <td class="text-center"><input name="item_price[]"
                                                                 id="item_price" placeholder="Price"
                                                                 value="{{ isset($saleReturn) ? $invoiceItem['item_price'] : '' }}"
-                                                                type="text" class="form-control item_price"
+                                                                type="number" class="form-control item_price"
                                                                 onchange="calculateInvoiceSum();"></td>
                                                         <td class="text-center"><input name="item_pcs[]"
                                                                 id="item_pcs" placeholder="PCS"
                                                                 value="{{ isset($saleReturn) ? $invoiceItem['item_pcs'] : '' }}"
-                                                                type="text" class="form-control item_pcs"
+                                                                type="number" class="form-control item_pcs"
                                                                 onchange="pcsSum();"></td>
                                                         <td class="text-center"><input name="item_qty[]"
                                                                 id="item_qty" placeholder="Quantity"
                                                                 value="{{ isset($saleReturn) ? $invoiceItem['item_qty'] : '' }}"
-                                                                type="text" class="form-control item_qty item_qt"
+                                                                type="number" class="form-control item_qty item_qt"
                                                                 onchange="calculateInvoiceSum(); qtySum();"></td>
                                                         <td class="text-center"><input name="amount[]" id="amount"
                                                                 placeholder="Total Amount"
                                                                 value="{{ isset($saleReturn) ? $invoiceItem['amount'] : '' }}"
-                                                                type="text" class="form-control amount" readonly>
+                                                                type="number" class="form-control amount" readonly>
                                                         </td>
 
                                                     </tr>
@@ -209,7 +209,7 @@
                             <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Net Total</label>
-                                    <input name="net_total" id="net_total" placeholder="" type="text"
+                                    <input name="net_total" id="net_total" placeholder="" type="number"
                                         value="{{ isset($saleReturn) ? $saleReturn->net_total : '' }}"
                                         class="form-control" readonly>
                                 </div>
@@ -218,13 +218,13 @@
                             <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Net PCS</label>
-                                    <input name="net_pcs" id="pcs" placeholder="" type="text"
+                                    <input name="net_pcs" id="pcs" placeholder="" type="number"
                                         value="{{ isset($saleReturn) ? $saleReturn->net_pcs : '' }}"
                                         class="form-control" readonly>
                                 </div>
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Net Qty</label>
-                                    <input name="net_qty" id="qty_" placeholder="" type="text"
+                                    <input name="net_qty" id="qty_" placeholder="" type="number"
                                         value="{{ isset($saleReturn) ? $saleReturn->net_qty : '' }}"
                                         class="form-control" readonly>
                                 </div>

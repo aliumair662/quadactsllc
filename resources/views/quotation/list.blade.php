@@ -47,38 +47,35 @@
                         @csrf
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
-                            <div class="form-group col-2">
+                            <div class="form-group col-sm-2">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">From</label>
                                 <input type="date" name="from_date" class="form-control"
                                     value="{{ isset($from_date) ? $from_date : (isset($_GET['queries']['from']) ? $_GET['queries']['from_date'] : '') }}">
                             </div>
-                            <div class="form-group col-2 mx-2">
+                            <div class="form-group col-sm-2 mx-2">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">To</label>
                                 <input type="date" name="to_date" class="form-control"
                                     value="{{ isset($to_date) ? $to_date : (isset($_GET['queries']['to']) ? $_GET['queries']['to_date'] : '') }}">
                             </div>
 
-                            <div class="form-group col-2 pl-1 pt-1">
-                                <!-- <label for="from_date" class="form-label" style="font-size: 1rem;">Customer</label>
-                                <input type="text" name="customer_name" class="form-control" value="{{ isset($customer_name) ? $customer_name : (isset($_GET['queries']['name']) ? $_GET['queries']['name'] : '') }}" placeholder="name"> -->
+                            <div class="form-group col-sm-2 pl-1 pt-1">
                                 <div class="form-group">
                                     <label for="branch" class="">
                                         Customer
-                                        <!-- <a href="" title="category List"><i  class="fa fa-list"></i></a> -->
                                     </label>
                                     <input type="text" class="form-control" name="customer_name"
                                         value="{{ isset($customer_name) ? $customer_name : (isset($_GET['queries']['customer_name']) ? $_GET['queries']['customer_name'] : '') }}"
                                         id="">
                                 </div>
                             </div>
-                            <div class="form-group col-2 ml-1">
+                            <div class="form-group col-sm-2 ml-1">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">Quotation</label>
                                 <input type="text" name="invoice_number" class="form-control"
                                     value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"
                                     placeholder="Quotation No.">
                             </div>
                             @if (Auth::user()->is_admin === 1)
-                                <div class="form-group col-2 pl-1 pt-1">
+                                <div class="form-group col-sm-2 pl-1 pt-1">
                                     <div class="form-group">
                                         <label for="branch" class="">
                                             Salesman

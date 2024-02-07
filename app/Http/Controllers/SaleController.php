@@ -1337,6 +1337,5 @@ class SaleController extends Controller
         );
         DB::table('quotation')->where('id', $id)->update($quotation_cancel);
         return redirect('/quotation/list');
-        // return response()->json(['success' => true, 'message' => 'Quotation Record Updated Successfully..', 'redirectUrl' => '/quotation/list'], 200);
     }
 }

@@ -21,7 +21,7 @@
                     <div class="page-title-actions">
                         <a href="{{ route('newDailyVisit') }}">
                             <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
-                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New Invoice">
+                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New Visit">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </a>
@@ -39,36 +39,17 @@
                     <form action="{{ route('searchDailyVisit') }}" method="post">
                         @csrf
                         <div class="row no-gutters">
-                            <div class="form-group col-2">
+                            <div class="form-group col-sm-2">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">From</label>
                                 <input type="date" name="from_date" class="form-control"
                                     value="{{ isset($from_date) ? $from_date : (isset($_GET['queries']['from']) ? $_GET['queries']['from_date'] : '') }}">
                             </div>
-                            <div class="form-group col-2 mx-2">
+                            <div class="form-group col-sm-2 ml-1">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">To</label>
                                 <input type="date" name="to_date" class="form-control"
                                     value="{{ isset($to_date) ? $to_date : (isset($_GET['queries']['to']) ? $_GET['queries']['to_date'] : '') }}">
                             </div>
-
-                            {{-- <div class="form-group col-2 pl-1 pt-1">
-                                <div class="form-group">
-                                    <label for="branch" class="">
-                                        Customer
-                                    </label>
-                                    <select class="js-example-basic-single form-control" placeholder="Select Customer"
-                                        name="customer_id" id="customer_id">
-                                        <option value="">Select Customer</option>
-                                        @if (!empty($customers))
-                                            @foreach ($customers as $customer)
-                                                <option value="{{ $customer->id }}"
-                                                    {{ isset($customer_id) ? ($customer->id == $customer_id ? 'Selected' : '') : '' }}>
-                                                    {{ $customer->name }} </option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                            </div> --}}
-                            <div class="form-group col-2 pl-1 pt-1">
+                            <div class="form-group col-sm-2 pl-1 pt-1">
                                 <div class="form-group">
                                     <label for="branch" class="">
                                         Salesman
@@ -86,7 +67,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group col-2 ml-1">
+                            <div class="form-group col-sm-2">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">Invoice</label>
                                 <input type="text" name="invoice_number" class="form-control"
                                     value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"

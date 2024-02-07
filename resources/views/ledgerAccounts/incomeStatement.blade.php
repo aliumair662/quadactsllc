@@ -9,8 +9,9 @@
                             </i>
                         </div>
                         <div>Income Statement
-                            <div class="page-title-subheading">This is an example dashboard created using build-in
-                                elements and components.
+                            <div class="page-title-subheading">
+                                {{-- This is an example dashboard created using build-in
+                                elements and components. --}}
                             </div>
 
                         </div>
@@ -35,11 +36,11 @@
                         @csrf
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
-                            <div class="form-group col-4">
+                            <div class="form-group col-sm-3">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">From</label>
                                 <input type="date" name="from_date" class="form-control" value="{{ $from_date }}">
                             </div>
-                            <div class="form-group col-md-4 mx-2">
+                            <div class="form-group col-sm-3 ml-2">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">To</label>
                                 <input type="date" name="to_date" class="form-control" value="{{ $to_date }}">
                             </div>

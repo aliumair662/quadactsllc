@@ -34,7 +34,7 @@
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
 
-                            <div class="form-group col-2 mx-2">
+                            <div class="form-group col-sm-2 mx-2">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">Search by Name</label>
                                 <input type="text" name="username" class="form-control"
                                     value="{{ isset($searchQuery) ? $searchQuery : '' }}">

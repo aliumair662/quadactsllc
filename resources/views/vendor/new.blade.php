@@ -18,7 +18,7 @@
                     <div class="page-title-actions">
                         <a href="">
                             <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
-                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Users List">
+                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Vendors List">
                                 <i class="fa fa-th-list"></i>
                             </button>
                         </a>
@@ -39,9 +39,8 @@
                                     <label for="exampleEmail11" class="">Name</label>
                                     <input name="name" id="text" placeholder="with a placeholder" type="text"
                                         value="{{ isset($vendor) ? $vendor->name : '' }}" class="form-control">
-                                    <input name="id" id="id"
-                                        value="{{ isset($vendor) ? $vendor->id : '' }}" type="hidden"
-                                        class="form-control">
+                                    <input name="id" id="id" value="{{ isset($vendor) ? $vendor->id : '' }}"
+                                        type="hidden" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">

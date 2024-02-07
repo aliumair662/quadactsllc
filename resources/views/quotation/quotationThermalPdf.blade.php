@@ -47,13 +47,14 @@
                         <p class="mb-1"><b>Email:</b>{{ $companyinfo->email }}</p>
                         <p class="mb-1"><b>URL:</b>{{ $companyinfo->web }}</p>
                         <hr>
-                        <p class="mb-1"><b>Invoice #:</b> {{ $quotation->invoice_number }}</p>
+                        <p class="mb-1"><b>Salesman Name:</b> {{ $quotation->quotation_user_name }}</p>
+                        <p class="mb-1"><b>Quotation Invoice #:</b> {{ $quotation->invoice_number }}</p>
 
                         <p class="mb-1"><b>Customer Name:</b> {{ $quotation->name }}</p>
 
                         <p class="mb-1"><b>Contact #:</b> {{ $quotation->phone }}</p>
 
-                        <p class="mb-1"><b>Invoice Date:</b> {{ $quotation->invoice_date }}</p>
+                        <p class="mb-1"><b>Quotation Invoice Date:</b> {{ $quotation->invoice_date }}</p>
                         <p class="mb-1"><b>Address:</b> {{ $quotation->address }}</p>
                     </div>
                 </td>
@@ -63,7 +64,7 @@
     </div>
 
 
-    <p class="text-center" style="font-size: 1rem; padding-left: 15%;"><b>quotation Invoice</b></p>
+    <p class="text-center" style="font-size: 1rem; padding-left: 15%;"><b>Quotation Invoice</b></p>
     <div style="padding-left: 15%;">
         <table class="table table-bordered">
             <thead>
@@ -140,7 +141,7 @@
         </p>
     </div>
     <hr style="margin-left: 10%;">
-    <div class="align-middle" style="padding-left: 30%; ">
+    <div class="align-middle" style="padding-left: 40%;">
         <p class="mb-1" style="font-family:Georgia, 'Times New Roman', Times, serif;">
             <b>Verify Your
                 Invoice</b>

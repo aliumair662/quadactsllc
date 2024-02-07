@@ -19,7 +19,8 @@
                     <div class="page-title-actions">
                         <a href="{{ route('newPurchaseReturn') }}">
                             <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
-                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New Invoice">
+                                class="btn-shadow mr-3 btn btn-dark"
+                                data-original-title="Add New Purchase Return Invoice">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </a>
@@ -39,17 +40,17 @@
                         @csrf
                         <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
-                            <div class="form-group col-2">
+                            <div class="form-group col-sm-2">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">From</label>
                                 <input type="date" name="from_date" class="form-control"
                                     value="{{ isset($from_date) ? $from_date : (isset($_GET['queries']['from']) ? $_GET['queries']['from'] : '') }}">
                             </div>
-                            <div class="form-group col-2 mx-2">
+                            <div class="form-group col-sm-2 ml-1">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">To</label>
                                 <input type="date" name="to_date" class="form-control"
                                     value="{{ isset($to_date) ? $to_date : (isset($_GET['queries']['to']) ? $_GET['queries']['to'] : '') }}">
                             </div>
-                            <div class="form-group pt-1">
+                            <div class="form-group col-sm-2 ml-1 pt-1">
                                 <label for="branch" class="">
                                     Vendor
                                     <!-- <a href="" title="category List"><i  class="fa fa-list"></i></a> -->
@@ -66,7 +67,7 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="form-group col-2 ml-2">
+                            <div class="form-group col-sm-2 ml-0 p-0">
                                 <label for="from_date" class="form-label" style="font-size: 1rem;">Invoice</label>
                                 <input type="text" name="invoice_number" class="form-control"
                                     value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"

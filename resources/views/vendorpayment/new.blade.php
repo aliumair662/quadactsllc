@@ -18,7 +18,7 @@
                     <div class="page-title-actions">
                         <a href="{{ route('vendorpaymentlist') }}">
                             <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
-                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Payment List">
+                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Vendor Payments List">
                                 <i class="fa fa-th-list"></i>
                             </button>
                         </a>

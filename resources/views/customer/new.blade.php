@@ -18,7 +18,7 @@
                     <div class="page-title-actions">
                         <a href="">
                             <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
-                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Users List">
+                                class="btn-shadow mr-3 btn btn-dark" data-original-title="Customers List">
                                 <i class="fa fa-th-list"></i>
                             </button>
                         </a>
