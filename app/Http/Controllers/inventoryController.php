@@ -372,9 +372,52 @@ class inventoryController extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
             );
             $this->addTransactionLog($log);
+            $this->updatePricesOfPackages($request->id);
             return response()->json(['success' => true, 'message' => 'Item update successfully..', 'redirectUrl' => '/item/itemList'], 200);
         }
     }
+
+    function updatePricesOfPackages($item_id)
+    {
+        // Fetch latest item
+        $item = DB::table('items')->where('id', $item_id);
+        if (!$item->exists()) {
+            return;
+        }
+        $latestItem = $item->first();
+        $packages = DB::table('quotation_packages')->get();
+        foreach ($packages as $package) {
+            $i_details = unserialize($package->items_detail);
+            $package->gross_amount = 0;
+            $package->gross_purchase_amount = 0;
+            $package->net_profit = 0;
+            $package->net_total = 0;
+            if (is_array($i_details)) {
+                for ($i = 0; $i < count($i_details); $i++) {
+                    if ($latestItem->id == $i_details[$i]['item_id']) {
+                        $i_details[$i]['item_purchase_price'] = $latestItem->purchase_price;
+                        $i_details[$i]['item_price'] = $latestItem->sele_price;
+                        $i_details[$i]['amount'] = $latestItem->sele_price * $i_details[$i]['item_qty'];
+                        $i_details[$i]['total_purchase_amount'] = $latestItem->purchase_price * $i_details[$i]['item_qty'];
+                        $package->gross_amount += $i_details[$i]['amount'];
+                        $package->gross_purchase_amount += $i_details[$i]['total_purchase_amount'];
+                        $package->net_profit += $i_details[$i]['amount'] - $i_details[$i]['total_purchase_amount'];
+                        $package->net_total += $i_details[$i]['amount'];
+                    }
+                }
+            }
+            $package->net_total = $package->net_total - $package->discount_amount;
+            $package->net_profit = $package->net_profit - $package->discount_amount;
+            DB::table('quotation_packages')->where('id', $package->id)->update([
+                'items_detail' => serialize($i_details),
+                'gross_amount' => $package->gross_amount,
+                'gross_purchase_amount' => $package->gross_purchase_amount,
+                'net_total' => $package->net_total,
+                'net_profit' => $package->net_profit
+            ]);
+        }
+    }
+
     public function deleteItem($id)
     {
         $itemData = DB::table('items')->where('id', $id)->first();
