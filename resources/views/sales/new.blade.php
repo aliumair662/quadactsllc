@@ -31,7 +31,7 @@
             <!--HTML USED FOR CREATE NEW ROW -->
             <table style="display: none;">
                 <tbody class="new_row">
-                    <tr>
+                    <tr class="item_row">
 
                         <td class="text-center"><label class="sr_no">1</label></td>
                         <td class="text-center text-muted">
@@ -144,6 +144,18 @@
                             </div>
 
                         </div>
+                        <div class="col-md-12">
+                            @if (!isset($sale))
+                                <div class="row">
+
+                                    <div class="position-relative form-group col-md-4">
+                                        <label for="exampleEmail11" class="">Item Code</label>
+                                        <input name="code" id="code" placeholder="" type="text"
+                                            value="" class="form-control" autofocus>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                         <div class="form-row">
                             <div class="table-responsive col-md-12">
                                 <table class="align-middle mb-0 table table-borderless table-striped table-hover">
@@ -164,7 +176,7 @@
                                                     $i = 1;
                                                 @endphp
                                                 @foreach (unserialize($sale->items_detail) as $invoiceItem)
-                                                    <tr>
+                                                    <tr class="item_row">
                                                         <td class="text-center">{{ $i }}</td>
                                                         <td class="text-center text-muted" style="min-width: 8rem;">
                                                             <select

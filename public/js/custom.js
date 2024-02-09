@@ -396,6 +396,76 @@ function openGoogleMaps() {
     // Open the link in a new tab
     window.open(mapsUrl, "_blank");
 }
+
+async function GetItemByCode() {
+    var code = $("#code").val();
+    $("#code").val(""); //Prevent double Enter press issue
+    if (code == "") {
+        return false;
+    }
+    let url = `${window.location.origin}/item/data`;
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { code: code },
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: await function (data) {
+            if (data.data != null) {
+                var item = data.data;
+                var finditem = false;
+                $(".itemData").each(function (index) {
+                    if ($(this).val() == item.id) {
+                        $(this)
+                            .closest("tr")
+                            .find(".item_qty")
+                            .val(
+                                Number(
+                                    $(this)
+                                        .closest("tr")
+                                        .find(".item_qty")
+                                        .val()
+                                ) + Number(1)
+                            );
+                        finditem = true;
+                    }
+                });
+                if (finditem == false) {
+                    $(".add_row").trigger("click");
+                    $(".item_row:last").find(".item_qty").val(1);
+                    // $('.item_row:last').find('.sale_price').val(item.sele_price);
+                    $(".item_row:last").find(".itemData").val(item.id).change();
+                }
+                calculateInvoiceSum();
+                calculateNetProfit();
+                calculatePurchaseAmountSum();
+            }
+            $("#code").val("");
+            $("#code").focus();
+        },
+        error: function (err) {
+            console.log(err);
+        },
+    });
+}
+
+$(".Q-form").on("keypress", function (e) {
+    var keyCode = e.keyCode || e.which;
+    var elementId = e.target.id;
+    if (keyCode == 13) {
+        //if user press Enter then check
+        if (elementId == "code") {
+            GetItemByCode();
+        }
+        e.preventDefault();
+        return false;
+    }
+});
+$("#code").on("change", function (e) {
+    GetItemByCode();
+});
+
 $(document).ready(function () {
     $(".js-example-basic-single").select2();
     $(".add_row").click(function () {

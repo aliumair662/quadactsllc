@@ -42,7 +42,9 @@
                     <img src="data:image/png;base64,{{ $qrCodeString }}">
                 </td>
             </tr>
-            <p class="mb-1"><b>Salesman Name:</b> {{ $sale->sale_user_name }}</p>
+            <tr>
+                <p class="mb-1"><b>Salesman Name:</b> {{ $sale->sale_user_name }}</p>
+            </tr>
         </table>
     </div>
     <hr>

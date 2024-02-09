@@ -36,7 +36,7 @@
             <!--HTML USED FOR CREATE NEW ROW -->
             <table style="display: none;">
                 <tbody class="new_row">
-                    <tr>
+                    <tr class="item_row">
 
                         <td class="text-center"><label class="sr_no">1</label></td>
                         <td class="text-center text-muted">
@@ -127,6 +127,15 @@
                                     data-target="#exampleModal" data-whatever="@mdo">Add Customer</button>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="position-relative form-group col-md-4">
+                                    <label for="exampleEmail11" class="">Item Code</label>
+                                    <input name="code" id="code" placeholder="" type="text"
+                                        value="" class="form-control" autofocus>
+                                </div>
+                            </div>
+                        </div>
                         {{-- && file_name == 'packages'  --}}
                         {{-- {{ Auth::user()->is_admin == 1 ? '' : 'pointer-none' }} --}}
                         <div class="">
@@ -150,7 +159,7 @@
                                                         $i = 1;
                                                     @endphp
                                                     @foreach (unserialize($quotation->items_detail) as $invoiceItem)
-                                                        <tr>
+                                                        <tr class="item_row">
                                                             <td class="text-center">{{ $i }}</td>
                                                             <td class="text-center text-muted"
                                                                 style="min-width: 8rem;">
@@ -181,7 +190,6 @@
                                                                     type="number"
                                                                     class="form-control item_purchase_price"
                                                                     onchange="" readonly></td>
-                                                            {{-- <td class="text-center"><input name="item_pcs[]" id="item_pcs" placeholder="PCS" value="{{(isset($quotation)) ? $invoiceItem['item_pcs'] : ''}}" type="text" class="form-control item_pcs" onchange="pcsSum();"></td> --}}
                                                             <td class="text-center" style="min-width: 5rem;"><input
                                                                     name="item_qty[]" id="item_qty"
                                                                     placeholder="Quantity"
@@ -208,28 +216,6 @@
                                                             </td>
 
                                                         </tr>
-                                                        {{-- <tr>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="text-center"><input
-                                                                    name="item_purchase_price[]"
-                                                                    id="item_purchase_price"
-                                                                    placeholder="Purchase Price"
-                                                                    value="{{ isset($quotation) ? $invoiceItem['item_purchase_price'] : '' }}"
-                                                                    type="text"
-                                                                    class="form-control item_purchase_price"
-                                                                    onchange="" readonly></td>
-                                                            <td></td>
-                                                            <td class="text-center"><input
-                                                                    name="total_purchase_amount[]"
-                                                                    id="total_purchase_amount"
-                                                                    placeholder="Total Purchase Amount"
-                                                                    value="{{ isset($quotation) ? $invoiceItem['total_purchase_amount'] : '' }}"
-                                                                    type="text"
-                                                                    class="form-control total_purchase_amount"
-                                                                    readonly>
-                                                            </td>
-                                                        </tr> --}}
                                                         @php
                                                             $i++;
                                                         @endphp
