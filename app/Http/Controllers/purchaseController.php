@@ -30,7 +30,10 @@ class purchaseController extends Controller
     public function newPurchase()
     {
         $vendors = DB::table('vendors')->select('id', 'name')->where('branch', Auth::user()->branch)->where('status', 1)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->whereIn('category', [3, 5, 6])->get();
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
+            ->whereIn('category', [3, 5, 6])
+            ->get();
         $invoice_number = DB::table('purchases')->max('id') + 1;
         return view('purchases.new', array('vendors' => $vendors, 'items' => $items, 'invoice_number' => $invoice_number));
     }
@@ -218,7 +221,10 @@ class purchaseController extends Controller
     {
         $purchase = DB::table('purchases')->where('id', $id)->first();
         $vendors = DB::table('vendors')->where('status', 1)->where('branch', Auth::user()->branch)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
+            // ->whereIn('category', [3, 5, 6])
+            ->get();
         return view('purchases.new', array('purchase' => $purchase, 'vendors' => $vendors, 'items' => $items));
     }
 
@@ -494,7 +500,6 @@ class purchaseController extends Controller
         $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
-        // Log::debug($vendors);
         $data =  array('purchase' => $purchase, 'items' => $items, 'companyinfo' => $companyinfo);
         $pdf = PDF::loadView('purchases.purchasePdf', $data);
         return $pdf->stream('purchasePdf.pdf');

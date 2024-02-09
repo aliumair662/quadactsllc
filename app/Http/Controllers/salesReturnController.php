@@ -33,7 +33,10 @@ class salesReturnController extends Controller
     {
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
         $invoice_number = DB::table('sales_return')->max('id') + 1;
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->whereIn('category', [4, 5, 6])->get();
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
+            ->whereIn('category', [4, 5, 6])
+            ->get();
         return view('salesReturn.new', array('customers' => $customers, 'invoice_number' => $invoice_number, 'items' => $items));
     }
 
@@ -218,7 +221,10 @@ class salesReturnController extends Controller
     {
         $sale_return = DB::table('sales_return')->where('id', $id)->first();
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
+            ->whereIn('category', [4, 5, 6])
+            ->get();
         return view('salesReturn.new', array('saleReturn' => $sale_return, 'customers' => $customers, 'items' => $items));
     }
 

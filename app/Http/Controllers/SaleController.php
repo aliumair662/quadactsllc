@@ -51,8 +51,9 @@ class SaleController extends Controller
     {
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
         $invoice_number = DB::table('sales')->max('id') + 1;
-
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)
+        // ->where('branch', Auth()->user()->branch)
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])
             ->get();
         // ->where('is_admin', 0)
@@ -273,7 +274,9 @@ class SaleController extends Controller
     {
         $sale = DB::table('sales')->where('id', $id)->first();
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
+            ->get();
         $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
         return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 0, 'users' => $users));
     }
@@ -742,6 +745,7 @@ class SaleController extends Controller
         $invoice_number = DB::table('quotation')->max('id') + 1;
         // ->where('branch', Auth()->user()->branch)
         $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])
             ->get();
         $response = ['invoice_number' => $invoice_number, 'items' => $items, 'customers' => $customers];
@@ -762,7 +766,8 @@ class SaleController extends Controller
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
         $invoice_number = DB::table('quotation_packages')->max('id') + 1;
 
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])
             ->get();
         return view('packages/new', array('invoice_number' => $invoice_number, 'items' => $items, 'customers' => $customers));
@@ -995,8 +1000,8 @@ class SaleController extends Controller
         $sale = DB::table('quotation')->where('id', $id)->first();
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
         $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])
-            // ->where('branch', Auth()->user()->branch)
             ->get();
 
         return view('quotation/new', array('quotation' => $sale, 'items' => $items, 'customers' => $customers));
@@ -1006,7 +1011,10 @@ class SaleController extends Controller
     {
         $package = DB::table('quotation_packages')->where('id', $id)->first();
         $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
+            ->whereIn('category', [4, 5, 6])
+            ->get();
         return view('quotation/new', array('quotation' => $package, 'items' => $items, 'customers' => $customers));
     }
 

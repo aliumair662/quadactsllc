@@ -403,6 +403,13 @@ class inventoryController extends Controller
                         $package->gross_purchase_amount += $i_details[$i]['total_purchase_amount'];
                         $package->net_profit += $i_details[$i]['amount'] - $i_details[$i]['total_purchase_amount'];
                         $package->net_total += $i_details[$i]['amount'];
+                    } else {
+                        $i_details[$i]['total_purchase_amount'] = $i_details[$i]['item_purchase_price'] * $i_details[$i]['item_qty'];
+                        $i_details[$i]['amount'] = $i_details[$i]['item_price'] * $i_details[$i]['item_qty'];
+                        $package->gross_amount += $i_details[$i]['amount'];
+                        $package->gross_purchase_amount += $i_details[$i]['total_purchase_amount'];
+                        $package->net_profit += $i_details[$i]['amount'] - $i_details[$i]['total_purchase_amount'];
+                        $package->net_total += $i_details[$i]['amount'];
                     }
                 }
             }

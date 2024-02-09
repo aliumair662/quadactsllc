@@ -32,7 +32,10 @@ class purchasesReturnController extends Controller
     public function newPurchaseReturn()
     {
         $vendors = DB::table('vendors')->where('branch', Auth::user()->branch)->select('id', 'name')->where('status', 1)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->whereIn('category', [3, 5, 6])->get();
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
+            ->whereIn('category', [3, 5, 6])
+            ->get();
         $invoice_number = DB::table('purchases_return')->max('id') + 1;
         return view('purchaseReturn.new', array('vendors' => $vendors, 'items' => $items, 'invoice_number' => $invoice_number));
     }
@@ -217,7 +220,10 @@ class purchasesReturnController extends Controller
     {
         $purchaseReturn = DB::table('purchases_return')->where('id', $id)->first();
         $vendors = DB::table('vendors')->where('status', 1)->where('branch', Auth::user()->branch)->get();
-        $items = DB::table('items')->where('branch', Auth()->user()->branch)->get();
+        $items = DB::table('items')
+            ->where('cancel_status', '!=', 1)
+            // ->whereIn('category', [3, 5, 6])
+            ->get();
         return view('purchaseReturn.new', array('purchaseReturn' => $purchaseReturn, 'vendors' => $vendors, 'items' => $items));
     }
 
