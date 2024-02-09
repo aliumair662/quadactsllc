@@ -33,7 +33,6 @@
                         <p class="mb-1"><b>URL:</b>{{ $companyinfo->web }}</p>
                     </div>
                 </td>
-                <p class="mb-1"><b>Salesman Name:</b> {{ $sale->sale_user_name }}</p>
                 <td class="align-middle" style="padding-left: 30%; padding-top:2rem;">
                     <p class="mb-1" style="font-family:Georgia, 'Times New Roman', Times, serif;">
                         <b>Verify Your Sale
@@ -42,17 +41,8 @@
                     <hr>
                     <img src="data:image/png;base64,{{ $qrCodeString }}">
                 </td>
-                {{-- <td class="align-middle">
-                    <div class="ml-2">
-                        <h3 style="font-family:Georgia, 'Times New Roman', Times, serif;">Sale Invoice</h3>
-                        <p class="mb-1"><b>Invoice #:</b> {{ $sale->invoice_number }}</p>
-                        <p class="mb-1"><b>Invoice Date:</b> {{ $sale->invoice_date }}</p>
-                        <p class="mb-1"><b>Customer Name:</b> {{ $sale->name }}</p>
-                        <p class="mb-1"><b>Address:</b> {{ $sale->address }}</p>
-                        <p class="mb-1"><b>Contact #:</b> {{ $sale->phone }}</p>
-                    </div>
-                </td> --}}
             </tr>
+            <div class="mb-1"><b>Salesman Name:</b> {{ $sale->sale_user_name }}</div>
         </table>
     </div>
     <hr>
