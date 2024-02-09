@@ -36,8 +36,8 @@
                     <hr>
                     <img src="data:image/png;base64,{{ $qrCodeString }}">
                 </td>
-                <p class="mb-1"><b>Salesman Name:</b> {{ $quotation->quotation_user_name }}</p>
             </tr>
+            <p class="mb-1"><b>Salesman Name:</b> {{ $quotation->quotation_user_name }}</p>
         </table>
     </div>
     <hr>
