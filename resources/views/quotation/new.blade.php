@@ -45,10 +45,14 @@
                                 <option value="">Select Item</option>
                                 @if (!empty($items))
                                     @foreach ($items as $item)
-                                        <option value="{{ $item->id }}"> {{ $item->name }} </option>
+                                        <option value="{{ $item->id }}"> {{ $item->code }} </option>
                                     @endforeach
                                 @endif
                             </select>
+                        </td>
+                        <td class="text-center" style="min-width: 8rem;"><input name="item_name[]" id="item_name"
+                                placeholder="Item Name" value="" type="text" class="form-control item_name"
+                                readonly>
                         </td>
                         <td class="text-center" style="min-width: 8rem;"><input name="item_price[]" id="item_price"
                                 placeholder="Price" value="" type="number" class="form-control item_price"
@@ -131,8 +135,9 @@
                             <div class="row">
                                 <div class="position-relative form-group col-md-4">
                                     <label for="exampleEmail11" class="">Item Code</label>
-                                    <input name="code" id="code" placeholder="" type="text"
-                                        value="" class="form-control" autofocus>
+                                    <input name="code" id="code"
+                                        placeholder="Enter item's code to add in List" type="text" value=""
+                                        class="form-control" autofocus>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +150,8 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">#</th>
-                                                <th class="text-center">Items</th>
+                                                <th class="text-center">Item Code</th>
+                                                <th class="text-center">Item Name</th>
                                                 <th class="text-center">Price</th>
                                                 {{-- <th class="text-center">PCS</th> --}}
                                                 <th class="text-center">Quantity</th>
@@ -171,11 +177,17 @@
                                                                         @foreach ($items as $item)
                                                                             <option value="{{ $item->id }}"
                                                                                 {{ isset($quotation) ? ($item->id == $invoiceItem['item_id'] ? 'Selected' : '') : '' }}>
-                                                                                {{ $item->name }} </option>
+                                                                                {{ $item->code }} </option>
                                                                         @endforeach
                                                                     @endif
 
                                                                 </select>
+                                                            </td>
+                                                            <td class="text-center" style="min-width: 8rem;"><input
+                                                                    name="item_name[]" id="item_name"
+                                                                    placeholder="Item Name" value=""
+                                                                    type="text" class="form-control item_name"
+                                                                    readonly>
                                                             </td>
                                                             <td class="text-center" style="min-width: 8rem;"><input
                                                                     name="item_price[]" id="item_price"

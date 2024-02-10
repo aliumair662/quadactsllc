@@ -56,8 +56,9 @@ class CustomerController extends Controller
                 $list->balance = $endingBalance;
             }
         }
+        $users = DB::table('users')->where('status', 1)->get();
 
-        return view('customer.list', array('customers' => $lists));
+        return view('customer.list', array('customers' => $lists, 'users' => $users));
     }
     public function newCustomer()
     {
@@ -257,13 +258,19 @@ class CustomerController extends Controller
     public function searchCustomers(Request $request)
     {
         $Queries = array();
-        if (isset($request->customer_name)) {
-            $Queries['customer_name'] = $request->customer_name;
+        if (empty($request->customer_name) && empty($request->user_id)) {
+            return redirect('/customer/list');
         }
-        $lists = DB::table('customers')
-            ->where('name', 'like', "%$request->customer_name%")
-            ->orderByDesc('id')
-            ->paginate(1);
+        $query = DB::table('customers');
+        if (!empty($request->customer_name)) {
+            $Queries['customer_name'] = $request->customer_name;
+            $query->where('name', 'like', "%$request->customer_name%");
+        }
+        if (!empty($request->user_id)) {
+            $Queries['user_id'] = $request->user_id;
+            $query->where('user_id', '=', $request->user_id);
+        }
+        $lists = $query->orderByDesc('id')->paginate(20);
         $lists->appends($Queries);
         foreach ($lists as $list) {
             $journal_entry_rule = $this->getAccountjournalentryrule($list->general_ledger_account_id);
@@ -278,7 +285,9 @@ class CustomerController extends Controller
                 ->sum(\DB::raw($journal_sum_rule));
             $list->balance = $endingBalance;
         }
-        return view('customer.list', array('customers' => $lists, 'searchQuery' => $request->customer_name, 'queries' => $Queries));
+
+        $users = DB::table('users')->where('status', 1)->get();
+        return view('customer.list', array('customers' => $lists, 'searchQuery' => $request->customer_name, 'queries' => $Queries, 'user_id' => $request->user_id, 'users' => $users, 'customer_name' => $request->customer_name,));
     }
 
 

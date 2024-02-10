@@ -62,7 +62,7 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Item Code</label>
-                                    <input name="code" id="code" placeholder="Item Code" type="text"
+                                    <input name="code" placeholder="Item Code" type="text"
                                         value="{{ isset($item) ? $item->code : '' }}" class="form-control">
                                 </div>
                             </div>

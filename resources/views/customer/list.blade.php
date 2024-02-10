@@ -34,16 +34,36 @@
                 <div class="col-md-12">
                     <form action="{{ route('searchCustomers') }}" method="post">
                         @csrf
-                        <!-- <p style="font-size: 1.2rem;" class="mb-1">Search</p> -->
                         <div class="row no-gutters">
 
                             <div class="form-group col-sm-2">
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">Search by Name</label>
                                 <input type="text" name="customer_name" class="form-control"
-                                    value="{{ isset($searchQuery) ? $searchQuery : (isset($_GET['queries']['name']) ? $_GET['queries']['name'] : '') }}">
+                                    value="{{ isset($customer_name) ? $customer_name : (isset($_GET['queries']['customer_name']) ? $_GET['queries']['customer_name'] : '') }}"
+                                    placeholder="Enter Name">
                             </div>
+                            @if (Auth::user()->is_admin === 1)
+                                <div class="form-group col-sm-2 pl-1 pt-1">
+                                    <div class="form-group">
+                                        <label for="branch" class="">
+                                            Salesman
+                                        </label>
+                                        <select class="js-example-basic-single form-control"
+                                            placeholder="Select Salesman" name="user_id" id="user_id">
+                                            <option value="">Select Salesman</option>
+                                            @if (!empty($users))
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}"
+                                                        {{ isset($user_id) ? ($user->id == $user_id ? 'Selected' : '') : '' }}>
+                                                        {{ $user->name }} </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
 
-                            <div class="col-2 align-self-end ml-2" style="margin-bottom: 1.1rem;">
+                            <div class="col-2 align-self-end " style="margin-bottom: 2.2rem;">
                                 <div class="page-title-actions">
                                     <a href="">
                                         <button type="submit" data-toggle="tooltip" title=""

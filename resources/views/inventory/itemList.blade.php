@@ -44,7 +44,12 @@
                             <div class="form-group col-sm-2 ml-2">
                                 <label for="query" class="form-label" style="font-size: 1rem;">Name</label>
                                 <input type="text" name="query" class="form-control"
-                                    value="{{ request()->input('query') }}" placeholder="Search">
+                                    value="{{ request()->input('query') }}" placeholder="Search By Name">
+                            </div>
+                            <div class="form-group col-sm-2 ml-2">
+                                <label for="code" class="form-label" style="font-size: 1rem;">Code</label>
+                                <input type="text" name="code" class="form-control"
+                                    value="{{ request()->input('code') }}" placeholder="Search By Code">
                             </div>
                             <div class="col-2 align-self-end ml-2" style="margin-bottom: 1.1rem;">
                                 <div class="page-title-actions">

@@ -52,7 +52,8 @@
         <thead>
             <tr class="table-warning">
                 <th>#</th>
-                <th>Items</th>
+                <th>Item Code</th>
+                <th>Item Name</th>
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Pcs</th>
@@ -69,6 +70,14 @@
                     @foreach (unserialize($purchase->items_detail) as $invoiceItem)
                         <tr>
                             <td>{{ $i }}</td>
+                            <td>
+                                @if (!empty($items))
+                                    @foreach ($items as $item)
+                                        {{ isset($purchase) ? ($item->id == $invoiceItem['item_id'] ? $item->code : '') : '' }}
+                                    @endforeach
+                                @endif
+
+                            </td>
                             <td>
                                 @if (!empty($items))
                                     @foreach ($items as $item)
@@ -91,15 +100,15 @@
                 @endif
             @endif
             <tr>
-                <td colspan="6" style="text-align: right;padding-right:2rem;">Gross Amount</td>
+                <td colspan="7" style="text-align: right;padding-right:2rem;">Gross Amount</td>
                 <td>{{ $purchase->gross_amount }}</td>
             </tr>
             <tr>
-                <td colspan="6" style="text-align: right;padding-right:2rem;">Discount</td>
+                <td colspan="7" style="text-align: right;padding-right:2rem;">Discount</td>
                 <td>{{ $purchase->discount_amount }}</td>
             </tr>
             <tr>
-                <td colspan="6" style="text-align: right;padding-right:2rem;">Net Total</td>
+                <td colspan="7" style="text-align: right;padding-right:2rem;">Net Total</td>
                 <td>{{ $purchase->net_total }}</td>
             </tr>
         </tbody>

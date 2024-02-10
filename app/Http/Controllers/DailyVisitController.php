@@ -104,7 +104,7 @@ class DailyVisitController extends Controller
             }
             $daily_visit = array(
                 'invoice_number' => $request->invoice_number,
-                'invoice_date' => $request->invoice_date,
+                'invoice_date' => now()->format('Y-m-d H:i:s'),
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -279,7 +279,9 @@ class DailyVisitController extends Controller
         if (!empty($request->from_date) && !empty($request->to_date)) {
             $Queries['from_date'] = $request->from_date;
             $Queries['to_date'] = $request->to_date;
-            $query->whereBetween('daily_visits.invoice_date', [$request->from_date, $request->to_date]);
+            $from = date('Y-m-d 00:00:00', strtotime($request->from_date));
+            $to = date('Y-m-d 23:59:59', strtotime($request->to_date));
+            $query->whereBetween('daily_visits.invoice_date', [$from, $to]);
         }
         if (!empty($request->invoice_number)) {
             $Queries['invoice_number'] = $request->invoice_number;
@@ -292,7 +294,6 @@ class DailyVisitController extends Controller
         $list = $query->orderByDesc('daily_visits.id')->paginate(20);
         $list->appends($Queries);
         $users = DB::table('users')->where('status', 1)->get();
-
         return view('dailyVisits.list', array('daily_visits' => $list, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'invoice_number' => $request->invoice_number, 'user_id' => $request->user_id, 'users' => $users));
     }
 

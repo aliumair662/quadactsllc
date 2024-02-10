@@ -49,7 +49,17 @@ class SaleController extends Controller
     }
     public function newsale()
     {
-        $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
+        if (Auth::user()->is_admin) {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                // ->where('branch', Auth::user()->branch)
+                ->get();
+        } else {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+        }
         $invoice_number = DB::table('sales')->max('id') + 1;
         // ->where('branch', Auth()->user()->branch)
         $items = DB::table('items')
@@ -273,7 +283,17 @@ class SaleController extends Controller
     public function edit($id)
     {
         $sale = DB::table('sales')->where('id', $id)->first();
-        $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
+        if (Auth::user()->is_admin) {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                // ->where('branch', Auth::user()->branch)
+                ->get();
+        } else {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+        }
         $items = DB::table('items')
             ->where('cancel_status', '!=', 1)
             ->get();
@@ -763,7 +783,17 @@ class SaleController extends Controller
 
     public function newPackage()
     {
-        $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
+        if (Auth::user()->is_admin) {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                // ->where('branch', Auth::user()->branch)
+                ->get();
+        } else {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+        }
         $invoice_number = DB::table('quotation_packages')->max('id') + 1;
 
         $items = DB::table('items')
@@ -998,7 +1028,17 @@ class SaleController extends Controller
     public function editQuotation($id)
     {
         $sale = DB::table('quotation')->where('id', $id)->first();
-        $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
+        if (Auth::user()->is_admin) {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                // ->where('branch', Auth::user()->branch)
+                ->get();
+        } else {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+        }
         $items = DB::table('items')
             ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])
@@ -1010,7 +1050,17 @@ class SaleController extends Controller
     public function editPackage($id)
     {
         $package = DB::table('quotation_packages')->where('id', $id)->first();
-        $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->get();
+        if (Auth::user()->is_admin) {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                // ->where('branch', Auth::user()->branch)
+                ->get();
+        } else {
+            $customers = DB::table('customers')
+                ->where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+        }
         $items = DB::table('items')
             ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])

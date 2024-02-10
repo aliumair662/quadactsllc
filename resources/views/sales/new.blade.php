@@ -40,10 +40,14 @@
                                 <option value="">Select Item</option>
                                 @if (!empty($items))
                                     @foreach ($items as $item)
-                                        <option value="{{ $item->id }}"> {{ $item->name }} </option>
+                                        <option value="{{ $item->id }}"> {{ $item->code }} </option>
                                     @endforeach
                                 @endif
                             </select>
+                        </td>
+                        <td class="text-center" style="min-width: 8rem;"><input name="item_name[]" id="item_name"
+                                placeholder="Item Name" value="" type="text" class="form-control item_name"
+                                readonly>
                         </td>
                         <td class="text-center" style="min-width: 8rem;"><input name="item_price[]" id="item_price"
                                 placeholder="Price" value="" type="number" class="form-control item_price"
@@ -51,7 +55,7 @@
                                 name="item_purchase_price[]" id="item_purchase_price" placeholder="Purchase Price"
                                 value="" type="number" class="form-control item_purchase_price" onchange=""
                                 readonly></td>
-                        {{-- <td class="text-center"><input name="item_pcs[]" id="item_pcs" placeholder="PCS" value="" type="text" class="form-control item_pcs" onchange="pcsSum();"></td> --}}
+
                         <td class="text-center" style="min-width: 5rem;"><input name="item_qty[]" id="item_qty"
                                 placeholder="Quantity" value="" type="number"
                                 class="form-control item_qty item_qt"
@@ -150,7 +154,8 @@
 
                                     <div class="position-relative form-group col-md-4">
                                         <label for="exampleEmail11" class="">Item Code</label>
-                                        <input name="code" id="code" placeholder="" type="text"
+                                        <input name="code" id="code"
+                                            placeholder="Enter item's code to add in List" type="text"
                                             value="" class="form-control" autofocus>
                                     </div>
                                 </div>
@@ -162,7 +167,8 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">#</th>
-                                            <th class="text-center">Items</th>
+                                            <th class="text-center">Item Code</th>
+                                            <th class="text-center">Item Name</th>
                                             <th class="text-center">Price</th>
                                             {{-- <th class="text-center">PCS</th> --}}
                                             <th class="text-center">Quantity</th>
@@ -187,26 +193,16 @@
                                                                     @foreach ($items as $item)
                                                                         <option value="{{ $item->id }}"
                                                                             {{ isset($sale) ? ($item->id == $invoiceItem['item_id'] ? 'Selected' : '') : '' }}>
-                                                                            {{ $item->name }} </option>
+                                                                            {{ $item->code }} </option>
                                                                     @endforeach
                                                                 @endif
 
                                                             </select>
                                                         </td>
-                                                        {{-- <td class="text-center text-muted">
-                                                            <select class="js-example-basic-single form-control"
-                                                                aria-placeholder="Select Item" name="item_id[]"
-                                                                onchange="calculateInvoice();" required>
-                                                                @if (!empty($items))
-                                                                    @foreach ($items as $item)
-                                                                        <option value="{{ $item->id }}"
-                                                                            {{ isset($sale) ? ($item->id == $invoiceItem['item_id'] ? 'Selected' : '') : '' }}>
-                                                                            {{ $item->name }} </option>
-                                                                    @endforeach
-                                                                @endif
-
-                                                            </select>
-                                                        </td> --}}
+                                                        <td class="text-center" style="min-width: 8rem;"><input
+                                                                name="item_name[]" id="item_name"
+                                                                placeholder="Item Name" value="" type="text"
+                                                                class="form-control item_name" readonly></td>
                                                         <td class="text-center" style="min-width: 8rem;"><input
                                                                 name="item_price[]" id="item_price"
                                                                 placeholder="Price"
@@ -219,7 +215,6 @@
                                                                 type="number"
                                                                 class="form-control item_purchase_price"
                                                                 onchange="" readonly></td>
-                                                        {{-- <td class="text-center"><input name="item_pcs[]" id="item_pcs" placeholder="PCS" value="{{(isset($sale)) ? $invoiceItem['item_pcs'] : ''}}" type="text" class="form-control item_pcs" onchange="pcsSum();"></td> --}}
                                                         <td class="text-center" style="min-width: 5rem;"><input
                                                                 name="item_qty[]" id="item_qty"
                                                                 placeholder="Quantity"

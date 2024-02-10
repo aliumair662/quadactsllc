@@ -89,6 +89,11 @@ async function fetchingItemData($this) {
                 .closest("tr")
                 .find(".item_purchase_price")
                 .val(data.data.purchase_price);
+            $($this)
+                .closest("tr")
+                .find(".item_price")
+                .val(data.data.sele_price);
+            $($this).closest("tr").find(".item_name").val(data.data.name);
             calculateInvoiceSum();
             calculatePurchaseAmountSum();
             calculateNetProfit();
@@ -177,6 +182,13 @@ function deductEmployeeAmount() {
 
 $(".bank_check_toggle").click(function (e) {
     $("#show_hide_inps").show();
+    $("#account_number_id").hide();
+    $("#check_number_id").show();
+});
+$(".online_check_toggle").click(function (e) {
+    $("#show_hide_inps").show();
+    $("#check_number_id").hide();
+    $("#account_number_id").show();
 });
 $(".cash").click(function () {
     let first = document.querySelectorAll(".check_number");
@@ -417,23 +429,23 @@ async function GetItemByCode() {
                 var finditem = false;
                 $(".itemData").each(function (index) {
                     if ($(this).val() == item.id) {
-                        $(this)
-                            .closest("tr")
-                            .find(".item_qty")
-                            .val(
-                                Number(
-                                    $(this)
-                                        .closest("tr")
-                                        .find(".item_qty")
-                                        .val()
-                                ) + Number(1)
-                            );
+                        // $(this)
+                        //     .closest("tr")
+                        //     .find(".item_qty")
+                        //     .val(
+                        //         Number(
+                        //             $(this)
+                        //                 .closest("tr")
+                        //                 .find(".item_qty")
+                        //                 .val()
+                        //         ) + Number(1)
+                        //     );
                         finditem = true;
                     }
                 });
                 if (finditem == false) {
                     $(".add_row").trigger("click");
-                    $(".item_row:last").find(".item_qty").val(1);
+                    // $(".item_row:last").find(".item_qty").val(1);
                     // $('.item_row:last').find('.sale_price').val(item.sele_price);
                     $(".item_row:last").find(".itemData").val(item.id).change();
                 }

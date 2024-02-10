@@ -150,6 +150,9 @@ class inventoryController extends Controller
         if (request()->input('query')) {
             $query->where('items.name', 'like', '%' . request()->input('query') . '%');
         }
+        if (request()->input('code')) {
+            $query->where('items.code', 'like', '%' . request()->input('code') . '%');
+        }
         $itemlist = $query->join('category', 'items.category', '=', 'category.id')
             ->select('items.*', 'category.name as category_name')->where('items.branch', Auth::user()->branch)
             ->orderByDesc('items.id')
@@ -192,7 +195,6 @@ class inventoryController extends Controller
     {
         $categorylist = DB::table('category')->where('branch', Auth::user()->branch)->get();
         $item_number = DB::table('items')->max('id') + 1;
-        // $item_number = DB::table('items')->max('id') + 1;
         $items = DB::table('items')->where('category', 5)->where('item_type', 0)->get();
         return view('inventory.addItem', array('category' => $categorylist, 'item_number' => $item_number, 'itemss' => $items));
     }

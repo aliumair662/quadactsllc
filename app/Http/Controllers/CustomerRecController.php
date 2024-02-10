@@ -30,7 +30,17 @@ class CustomerRecController extends Controller
 
     public function newCustomer_receipt()
     {
-        $list = DB::table('customers')->where('branch', Auth::user()->branch)->get();
+        if (Auth::user()->is_admin) {
+            $list = DB::table('customers')
+                ->where('status', 1)
+                // ->where('branch', Auth::user()->branch)
+                ->get();
+        } else {
+            $list = DB::table('customers')
+                ->where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+        }
         $voucher_number = DB::table('customer_receipt')->count() + 1;
         return view('customer_receipt.new', array('customers' => $list, 'voucher_no' => $voucher_number));
     }
@@ -120,7 +130,17 @@ class CustomerRecController extends Controller
     public function editCustomer_receipt($id)
     {
         $menus = DB::table('customer_receipt')->join('customers', 'customer_receipt.customer', '=', 'customers.id')->where('customer_receipt.id', $id)->select('customers.id as customer_id', 'customers.*', 'customer_receipt.*')->first();
-        $list = DB::table('customers')->where('branch', Auth::user()->branch)->get();
+        if (Auth::user()->is_admin) {
+            $list = DB::table('customers')
+                ->where('status', 1)
+                // ->where('branch', Auth::user()->branch)
+                ->get();
+        } else {
+            $list = DB::table('customers')
+                ->where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+        }
         $voucher_number = DB::table('customer_receipt')->count() + 1;
         return view('customer_receipt.new', array('customer_receipt' => $menus, 'voucher_no' => $voucher_number, 'customers' => $list));
     }

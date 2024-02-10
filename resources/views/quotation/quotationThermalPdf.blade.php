@@ -70,7 +70,8 @@
             <thead>
                 <tr class="table-warning">
                     <th>#</th>
-                    <th>Items</th>
+                    <th>Item Code</th>
+                    <th>Item Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total Amount</th>
@@ -85,6 +86,14 @@
                         @foreach (unserialize($quotation->items_detail) as $invoiceItem)
                             <tr>
                                 <td>{{ $i }}</td>
+                                <td>
+                                    @if (!empty($items))
+                                        @foreach ($items as $item)
+                                            {{ isset($quotation) ? ($item->id == $invoiceItem['item_id'] ? $item->code : '') : '' }}
+                                        @endforeach
+                                    @endif
+
+                                </td>
                                 <td>
                                     @if (!empty($items))
                                         @foreach ($items as $item)
@@ -105,29 +114,29 @@
                     @endif
                 @endif
                 <tr>
-                    <td colspan="4" style="text-align: right;padding-right:2rem;">Gross Amount</td>
+                    <td colspan="5" style="text-align: right;padding-right:2rem;">Gross Amount</td>
                     <td>{{ !empty($quotation->gross_amount) ? $quotation->gross_amount . '.' . $currency_symbol : '' }}
                     </td>
 
                 </tr>
                 <tr>
-                    <td colspan="4" style="text-align: right;padding-right:2rem;">Discount</td>
+                    <td colspan="5" style="text-align: right;padding-right:2rem;">Discount</td>
                     <td>{{ !empty($quotation->discount_amount) ? $quotation->discount_amount . '.' . $currency_symbol : '' }}
                     </td>
 
                 </tr>
                 <tr>
-                    <td colspan="4" style="text-align: right;padding-right:2rem;">Net Total</td>
+                    <td colspan="5" style="text-align: right;padding-right:2rem;">Net Total</td>
                     <td>{{ !empty($quotation->net_total) ? $quotation->net_total . '.' . $currency_symbol : '' }}</td>
 
                 </tr>
                 {{-- <tr>
-                    <td colspan="4" style="text-align: right;padding-right:2rem;">Recieved/Advance Amount</td>
+                    <td colspan="5" style="text-align: right;padding-right:2rem;">Recieved/Advance Amount</td>
                     <td>{{ $quotation->recieved_amount }}</td>
 
                 </tr> --}}
                 {{-- <tr>
-                    <td colspan="4" style="text-align: right;padding-right:2rem;">Balance</td>
+                    <td colspan="5" style="text-align: right;padding-right:2rem;">Balance</td>
                     <td>{{ $quotation->balance_amount }}</td>
 
                 </tr> --}}

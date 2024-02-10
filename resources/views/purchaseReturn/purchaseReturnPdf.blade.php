@@ -44,7 +44,8 @@
         <thead>
             <tr class="table-warning">
                 <th>#</th>
-                <th>Items</th>
+                <th>Item Code</th>
+                <th>Item Name</th>
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Pcs</th>
@@ -61,6 +62,14 @@
                     @foreach (unserialize($purchaseReturn->items_detail) as $invoiceItem)
                         <tr>
                             <td>{{ $i }}</td>
+                            <td>
+                                @if (!empty($items))
+                                    @foreach ($items as $item)
+                                        {{ isset($purchase) ? ($item->id == $invoiceItem['item_id'] ? $item->code : '') : '' }}
+                                    @endforeach
+                                @endif
+
+                            </td>
                             <td>
                                 @if (!empty($items))
                                     @foreach ($items as $item)
@@ -83,7 +92,7 @@
                 @endif
             @endif
             <tr>
-                <td colspan="6">Net Total</td>
+                <td colspan="7">Net Total</td>
                 <td>{{ $purchaseReturn->net_total }}</td>
             </tr>
         </tbody>
