@@ -95,7 +95,7 @@
                                     <div class="d-flex align-items-baseline col-md-2">
                                         <label for="cash" class="mr-2 pb-3"
                                             style="font-weight: 500; display:inline-block;">Online</label>
-                                        <input type="radio" name="payment_mode" class="bank_check_toggle"
+                                        <input type="radio" name="payment_mode" class="online_check_toggle"
                                             style="position: relative; top:2px;" value="2"
                                             {{ isset($vendorpayment) ? ($vendorpayment->payment_mode == 2 ? 'checked' : '') : '' }}>
                                     </div>
@@ -114,7 +114,10 @@
                         <div class="form-row" id="show_hide_inps"
                             style="display:{{ isset($vendorpayment) ? ($vendorpayment->payment_mode !== 1 ? 'flex' : 'none') : 'none' }}">
                             <div class="form-group col-md-5">
-                                <label for="check_number" class="form-label">Check Number</label>
+
+                                <label id="check_number_id" for="check_number" class="form-label">Check Number</label>
+                                <label id="account_number_id" for="check_number" class="form-label">Acount
+                                    Number</label>
                                 <input type="text" class="form-control check_number" name="check_number"
                                     value="{{ isset($vendorpayment) ? $vendorpayment->check_number : '' }}">
                             </div>

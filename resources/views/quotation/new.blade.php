@@ -183,12 +183,17 @@
 
                                                                 </select>
                                                             </td>
-                                                            <td class="text-center" style="min-width: 8rem;"><input
-                                                                    name="item_name[]" id="item_name"
-                                                                    placeholder="Item Name" value=""
-                                                                    type="text" class="form-control item_name"
-                                                                    readonly>
-                                                            </td>
+                                                            @foreach ($items as $item)
+                                                                @if (!empty($items) && $item->id == $invoiceItem['item_id'])
+                                                                    <td class="text-center" style="min-width: 8rem;">
+                                                                        <input name="item_name[]" id="item_name"
+                                                                            placeholder="Item Name"
+                                                                            value="{{ isset($quotation) ? ($item->id == $invoiceItem['item_id'] ? $item->name : '') : '' }}"
+                                                                            type="text"
+                                                                            class="form-control item_name" readonly>
+                                                                    </td>
+                                                                @endif
+                                                            @endforeach
                                                             <td class="text-center" style="min-width: 8rem;"><input
                                                                     name="item_price[]" id="item_price"
                                                                     placeholder="Price"

@@ -149,17 +149,14 @@
 
                         </div>
                         <div class="col-md-12">
-                            @if (!isset($sale))
-                                <div class="row">
-
-                                    <div class="position-relative form-group col-md-4">
-                                        <label for="exampleEmail11" class="">Item Code</label>
-                                        <input name="code" id="code"
-                                            placeholder="Enter item's code to add in List" type="text"
-                                            value="" class="form-control" autofocus>
-                                    </div>
+                            <div class="row">
+                                <div class="position-relative form-group col-md-4">
+                                    <label for="exampleEmail11" class="">Item Code</label>
+                                    <input name="code" id="code"
+                                        placeholder="Enter item's code to add in List" type="text" value=""
+                                        class="form-control" autofocus>
                                 </div>
-                            @endif
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="table-responsive col-md-12">
@@ -199,10 +196,17 @@
 
                                                             </select>
                                                         </td>
-                                                        <td class="text-center" style="min-width: 8rem;"><input
-                                                                name="item_name[]" id="item_name"
-                                                                placeholder="Item Name" value="" type="text"
-                                                                class="form-control item_name" readonly></td>
+                                                        @foreach ($items as $item)
+                                                            @if (!empty($items) && $item->id == $invoiceItem['item_id'])
+                                                                <td class="text-center" style="min-width: 8rem;">
+                                                                    <input name="item_name[]" id="item_name"
+                                                                        placeholder="Item Name"
+                                                                        value="{{ isset($sale) ? ($item->id == $invoiceItem['item_id'] ? $item->name : '') : '' }}"
+                                                                        type="text" class="form-control item_name"
+                                                                        readonly>
+                                                                </td>
+                                                            @endif
+                                                        @endforeach
                                                         <td class="text-center" style="min-width: 8rem;"><input
                                                                 name="item_price[]" id="item_price"
                                                                 placeholder="Price"
