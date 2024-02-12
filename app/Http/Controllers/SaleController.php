@@ -1347,8 +1347,8 @@ class SaleController extends Controller
     }
     public function generateQrCode($url)
     {
-        $pdf_data = 'https://wa.me/?text=' . $url;
-        $qrCodeString = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate($pdf_data));
+        // $pdf_data = 'https://wa.me/?text=' . $url;
+        $qrCodeString = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate($url));
 
         return $qrCodeString;
     }

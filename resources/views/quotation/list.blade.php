@@ -65,7 +65,7 @@
                                     </label>
                                     <input type="text" class="form-control" name="customer_name"
                                         value="{{ isset($customer_name) ? $customer_name : (isset($_GET['queries']['customer_name']) ? $_GET['queries']['customer_name'] : '') }}"
-                                        id="">
+                                        id="" placeholder="Enter Name">
                                 </div>
                             </div>
                             <div class="form-group col-sm-2 ml-1">

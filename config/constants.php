@@ -59,5 +59,10 @@ return [
         '1' => 'AED',
         '2' => '(USD)$',
         '3' => '(PKR)Rs.'
+    ],
+    'daily_visit_status' => [
+        '1' => 'Visited',
+        '2' => 'Reminder',
+        '3' => 'Customer'
     ]
 ];

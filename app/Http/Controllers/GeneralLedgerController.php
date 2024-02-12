@@ -34,12 +34,12 @@ class GeneralLedgerController extends Controller
         $beginningBalance = DB::table('general_ledger_transactions')
             ->where('voucher_date', '<', Carbon::now()->format('d-m-Y'))
             ->where('general_ledger_account_id', $general_ledger_account_id)
-            ->where('branch', Auth::user()->branch)
+            // ->where('branch', Auth::user()->branch)
             ->sum(\DB::raw($journal_sum_rule));
         $allTransactions = DB::table('general_ledger_transactions')
             ->where('general_ledger_account_id', $general_ledger_account_id)
             ->where('voucher_date', '=', Carbon::now()->format('d-m-Y'))
-            ->where('branch', Auth::user()->branch)
+            // ->where('branch', Auth::user()->branch)
             ->get();
         $transactions = array();
         $balance = $beginningBalance;
@@ -57,7 +57,7 @@ class GeneralLedgerController extends Controller
         $endingBalance = DB::table('general_ledger_transactions')
             ->where('voucher_date', '<=', Carbon::now()->format('d-m-Y'))
             ->where('general_ledger_account_id', $general_ledger_account_id)
-            ->where('branch', Auth::user()->branch)
+            // ->where('branch', Auth::user()->branch)
             ->sum(\DB::raw($journal_sum_rule));
 
         $data = array(
@@ -88,13 +88,13 @@ class GeneralLedgerController extends Controller
         $beginningBalance = DB::table('general_ledger_transactions')
             ->where('voucher_date', '<', $request->from_date)
             ->where('general_ledger_account_id', $request->general_ledger_account_id)
-            ->where('branch', Auth::user()->branch)
+            // ->where('branch', Auth::user()->branch)
             ->sum(\DB::raw($journal_sum_rule));
         $allTransactions = DB::table('general_ledger_transactions')
             ->where('general_ledger_account_id', $request->general_ledger_account_id)
             ->where('voucher_date', '>=', $request->from_date)
             ->where('voucher_date', '<=', $request->to_date)
-            ->where('branch', Auth::user()->branch)
+            // ->where('branch', Auth::user()->branch)
             ->get();
         $transactions = array();
         $balance = $beginningBalance;
@@ -113,7 +113,7 @@ class GeneralLedgerController extends Controller
         $endingBalance = DB::table('general_ledger_transactions')
             ->where('voucher_date', '<=', $request->to_date)
             ->where('general_ledger_account_id', $request->general_ledger_account_id)
-            ->where('branch', Auth::user()->branch)
+            // ->where('branch', Auth::user()->branch)
             ->sum(\DB::raw($journal_sum_rule));
         $data = array(
             'beginningBalance' => $beginningBalance,

@@ -29,11 +29,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="text-right">
-                <a href="{{ route('salePagePdf', ['from_date' => isset($from_date) ? $from_date : 'none', 'to_date' => isset($to_date) ? $to_date : 'none', 'customer_id' => isset($customer_id) ? $customer_id : 'none', 'invoice_number' => isset($invoice_number) ? $invoice_number : 'none']) }}"
-                    target="_blank" class="btn btn-outline-success mb-2">Download PDF</a>
-
-            </div> --}}
             <div class="row card mx-0 mb-2 pt-1">
                 <div class="col-md-12">
                     <form action="{{ route('searchDailyVisit') }}" method="post">
@@ -48,6 +43,12 @@
                                 <label for="to_date" class="form-label" style="font-size: 1rem;">To</label>
                                 <input type="date" name="to_date" class="form-control"
                                     value="{{ isset($to_date) ? $to_date : (isset($_GET['queries']['to']) ? $_GET['queries']['to_date'] : '') }}">
+                            </div>
+                            <div class="form-group col-sm-2 pl-1">
+                                <label for="from_date" class="form-label" style="font-size: 1rem;">Invoice</label>
+                                <input type="text" name="invoice_number" class="form-control"
+                                    value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"
+                                    placeholder="Invoice No.">
                             </div>
                             <div class="form-group col-sm-2 pl-1 pt-1">
                                 <div class="form-group">
@@ -67,11 +68,23 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group col-sm-2">
-                                <label for="from_date" class="form-label" style="font-size: 1rem;">Invoice</label>
-                                <input type="text" name="invoice_number" class="form-control"
-                                    value="{{ isset($invoice_number) ? $invoice_number : (isset($_GET['queries']['invoice_number']) ? $_GET['queries']['invoice_number'] : '') }}"
-                                    placeholder="Invoice No.">
+                            <div class="form-group col-sm-2 pl-0 pt-1">
+                                <div class="form-group">
+                                    <label for="branch" class="">
+                                        Status
+                                    </label>
+                                    <select class="js-example-basic-single form-control" placeholder="Select Status"
+                                        name="status_id" id="status_id">
+                                        <option value="">Select Status</option>
+                                        @if (!empty($visit_status))
+                                            @foreach ($visit_status as $status)
+                                                <option value="{{ $status->id }}"
+                                                    {{ isset($status_id) ? ($status->id == $status_id ? 'Selected' : '') : '' }}>
+                                                    {{ $status->name }} </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-2 align-self-end ml-2 pb-3" style="margin-bottom: 1.1rem;">
                                 <div class="page-title-actions">
@@ -115,6 +128,7 @@
                                         <th class="text-center">Latitude</th> --}}
                                         <th class="text-center">Date</th>
                                         <th class="text-center">Location</th>
+                                        <th class="text-center">Status</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -140,6 +154,10 @@
                                                     {{ \Carbon\Carbon::parse($list->invoice_date)->format('d-m-Y') }}
                                                 </td>
                                                 <td class="text-center" id="map_location">{{ $list->location }} </td>
+                                                <td style="margin-top: 15%;"
+                                                    class="text-center badge {{ $list->badge }}" id="visit_status">
+                                                    {{ $list->status_name }}
+                                                </td>
                                                 <td class="text-center">
                                                     <div class="mb-2 mr-2 btn-group">
                                                         <button class="btn btn-outline-success">Edit</button>

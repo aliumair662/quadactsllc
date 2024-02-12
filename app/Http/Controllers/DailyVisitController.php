@@ -32,14 +32,46 @@ class DailyVisitController extends Controller
                 ->paginate(20);
         }
         $users = DB::table('users')->where('status', 1)->get();
-        return view('dailyVisits.list', array('daily_visits' => $list, 'users' => $users));
+        $visit_status_data = config('constants.daily_visit_status');
+        $status = [];
+        foreach ($visit_status_data as $id => $name) {
+            $statusObject = new \stdClass();
+            $statusObject->id = $id;
+            $statusObject->name = $name;
+            $status[] = $statusObject;
+        }
+        foreach ($list as $record) {
+            for ($i = 0; $i < count($visit_status_data); $i++) {
+                $id = array_keys($visit_status_data)[$i];
+                $name = $visit_status_data[$id];
+                if ($id == $record->status_id) {
+                    $record->status_name = $name;
+                    if ($id == 1) $record->badge = 'badge-warning';
+                    elseif ($id == 2) $record->badge = 'badge-danger';
+                    elseif ($id == 3) $record->badge = 'badge-success';
+                } else {
+                    if ($id == 1) {
+                        $record->status_name = $name;
+                        $record->badge = 'badge-warning';
+                    }
+                }
+            }
+        }
+        return view('dailyVisits.list', array('daily_visits' => $list, 'users' => $users, 'visit_status' => $status));
     }
 
     public function newDailyVisit()
     {
         $invoice_number = DB::table('daily_visits')->max('id') + 1;
-
-        return view('dailyVisits.new', array('invoice_number' => $invoice_number));
+        $visit_status_data = config('constants.daily_visit_status');
+        $status = [];
+        foreach ($visit_status_data as $id => $name) {
+            $statusObject = new \stdClass();
+            $statusObject->id = $id;
+            $statusObject->name = $name;
+            $status[] = $statusObject;
+        }
+        return view('dailyVisits.new', array('invoice_number' => $invoice_number, 'visit_status' => $status));
     }
 
     public function editDailyVisit($id)
@@ -48,7 +80,15 @@ class DailyVisitController extends Controller
         if (empty($daily_visit)) {
             return response()->json(['success' => false, 'message' => 'Record not found..', 'redirectUrl' => '/dailyVisit/list'], 404);
         }
-        return view('dailyVisits/new', array('dailyVisit' => $daily_visit));
+        $visit_status_data = config('constants.daily_visit_status');
+        $status = [];
+        foreach ($visit_status_data as $id => $name) {
+            $statusObject = new \stdClass();
+            $statusObject->id = $id;
+            $statusObject->name = $name;
+            $status[] = $statusObject;
+        }
+        return view('dailyVisits/new', array('dailyVisit' => $daily_visit, 'visit_status' => $status));
     }
 
     public function saveDailyVisit(Request $request)
@@ -70,6 +110,7 @@ class DailyVisitController extends Controller
                 'longitute' => 'required',
                 'location' => 'required',
                 'description' => 'required',
+                // 'status_id' => 'required'
             ],
             [
                 'invoice_number.required' => ' Visit # is required.',
@@ -82,6 +123,7 @@ class DailyVisitController extends Controller
                 'longitute.required' => ' latitude is required.',
                 'location' => ' location is required.',
                 'description.required' => 'Notes is required.',
+                // 'status_id.required' => 'Status is required.'
             ]
         );
         if ($validator->fails()) {
@@ -117,6 +159,7 @@ class DailyVisitController extends Controller
                 'description' => $request->description,
                 'location' => $request->location,
                 'attachment' => isset($storedRelativePath) ? $storedRelativePath : null,
+                'status_id' => $request->status_id ?? 1
             );
             $idForPdf = DB::table('daily_visits')->insertGetId($daily_visit);
             /***
@@ -153,6 +196,7 @@ class DailyVisitController extends Controller
                 'longitute' => 'required',
                 'location' => 'required',
                 'description' => 'required',
+                // 'status_id' => 'required'
             ],
             [
                 'invoice_number.required' => 'The Visit # is required.',
@@ -165,6 +209,7 @@ class DailyVisitController extends Controller
                 'longitute.required' => 'The latitude is required.',
                 'location' => 'The location is required.',
                 'description.required' => 'Notes is required.',
+                // 'status_id.required' => 'Status is required.'
             ]
         );
         if ($validator->fails()) {
@@ -206,7 +251,8 @@ class DailyVisitController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
                 'description' => $request->description,
                 'location' => $request->location,
-                'attachment' => isset($storedRelativePath) ? $storedRelativePath : null
+                'attachment' => isset($storedRelativePath) ? $storedRelativePath : null,
+                'status_id' => $request->status_id ?? 1
             );
 
             DB::table('daily_visits')->where('id', $request->id)->update($daily_visit);
@@ -271,7 +317,7 @@ class DailyVisitController extends Controller
     {
         $Queries = array();
 
-        if (empty($request->from_date) && empty($request->to_date) && empty($request->invoice_number) && empty($request->user_id)) {
+        if (empty($request->from_date) && empty($request->to_date) && empty($request->invoice_number) && empty($request->user_id) && empty($request->status_id)) {
             return redirect('dailyVisits.list');
         }
         $query = DB::table('daily_visits');
@@ -291,10 +337,42 @@ class DailyVisitController extends Controller
             $Queries['user_id'] = $request->user_id;
             $query->where('daily_visits.user_id', '=', $request->user_id);
         }
+        if (!empty($request->status_id)) {
+            $Queries['status_id'] = $request->status_id;
+            $query->where('daily_visits.status_id', '=', $request->status_id);
+        }
         $list = $query->orderByDesc('daily_visits.id')->paginate(20);
+
+        $visit_status_data = config('constants.daily_visit_status');
+        $status = [];
+        foreach ($visit_status_data as $id => $name) {
+            $statusObject = new \stdClass();
+            $statusObject->id = $id;
+            $statusObject->name = $name;
+            $status[] = $statusObject;
+        }
+        foreach ($list as $record) {
+            for ($i = 0; $i < count($visit_status_data); $i++) {
+                $id = array_keys($visit_status_data)[$i];
+                $name = $visit_status_data[$id];
+                if ($id == $record->status_id) {
+                    $record->status_name = $name;
+                    if ($id == 1) $record->badge = 'badge-warning';
+                    elseif ($id == 2) $record->badge = 'badge-danger';
+                    elseif ($id == 3) $record->badge = 'badge-success';
+                } else {
+                    if ($id == 1) {
+                        $record->status_name = $name;
+                        $record->badge = 'badge-warning';
+                    }
+                }
+            }
+        }
+
+
         $list->appends($Queries);
         $users = DB::table('users')->where('status', 1)->get();
-        return view('dailyVisits.list', array('daily_visits' => $list, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'invoice_number' => $request->invoice_number, 'user_id' => $request->user_id, 'users' => $users));
+        return view('dailyVisits.list', array('daily_visits' => $list, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'invoice_number' => $request->invoice_number, 'user_id' => $request->user_id, 'users' => $users, 'visit_status' => $status, 'status_id' => $request->status_id));
     }
 
     public function addTransactionLog($data)
