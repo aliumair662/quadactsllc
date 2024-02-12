@@ -51,7 +51,7 @@
                                         class="form-control" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Status</label>
                                     <select class="js-example-basic-single form-control"
@@ -66,7 +66,7 @@
                                         @endif
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="form-row">
                             <div class="col-md-6">
@@ -105,7 +105,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- d-none --}}
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
@@ -155,11 +154,28 @@
                                 @endif
                             </div>
                         </div>
-                    </div>
-                    <div class="d-flex justify-content-end px-4 pb-3">
-                        <button type="submit" class="mt-2 btn btn-primary"
-                            id='save_button'>{{ isset($dailyVisit) ? 'Update' : 'Save' }}</button>
-                    </div>
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <div class="position-relative form-group">
+                                    <label for="exampleEmail11" class="">Status</label>
+                                    <select class="js-example-basic-single form-control"
+                                        placeholder="Select Visit Status" name="status_id" id="status_id">
+                                        {{-- <option value="">Select Status</option> --}}
+                                        @if (!empty($visit_status))
+                                            @foreach ($visit_status as $data)
+                                                <option value="{{ $data->id }}"
+                                                    {{ isset($dailyVisit) && isset($dailyVisit->status_id) ? ($dailyVisit->status_id == $data->id ? 'Selected' : '') : '' }}>
+                                                    {{ $data->name }} </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end px-4 pb-3">
+                            <button type="submit" class="mt-2 btn btn-primary"
+                                id='save_button'>{{ isset($dailyVisit) ? 'Update' : 'Save' }}</button>
+                        </div>
                 </form>
             </div>
         </div>
@@ -228,6 +244,10 @@
         }
 
         // Get user's location on page load
-        window.addEventListener('load', getUserLocation);
+        if ($("#location").val() === "") {
+            // Call getUserLocation() function when the page is loaded
+            window.addEventListener('load', getUserLocation);
+        }
+        // window.addEventListener('load', getUserLocation);
     </script>
 </x-app-layout>

@@ -478,10 +478,6 @@ $("#code").on("change", function (e) {
     GetItemByCode();
 });
 
-$("#save_button").click(function (e) {
-    $("#save_button").hide();
-});
-
 $(document).ready(function () {
     $(".js-example-basic-single").select2();
     $(".add_row").click(function () {
@@ -505,6 +501,7 @@ $(document).ready(function () {
         var url = form.attr("action");
         var formData = new FormData(this);
         onloader();
+        $("#save_button").hide();
         $.ajax({
             type: "POST",
             url: url,

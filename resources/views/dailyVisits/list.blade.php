@@ -151,7 +151,7 @@
                                                 <td class="text-center">{{ $list->longitute }} </td>
                                                 <td class="text-center">{{ $list->latitude }} </td> --}}
                                                 <td class="text-center">
-                                                    {{ \Carbon\Carbon::parse($list->invoice_date)->format('d-m-Y') }}
+                                                    {{ \Carbon\Carbon::parse($list->invoice_date)->format('d-m-Y h:i:s') }}
                                                 </td>
                                                 <td class="text-center" id="map_location">{{ $list->location }} </td>
                                                 <td style="margin-top: 15%;"

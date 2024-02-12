@@ -87,7 +87,7 @@
                 </td>
                 <td>
                     <p for="exampleEmail11"><b>Current Date &
-                            Time:</b>{{ \Carbon\Carbon::parse($dailyVisit->invoice_date)->format('d-m-Y') }}</p>
+                            Time:</b>{{ \Carbon\Carbon::parse($dailyVisit->invoice_date)->format('d-m-Y h:i:s') }}</p>
                 </td>
             </tr>
             <tr>
@@ -122,13 +122,15 @@
         </table>
     </div>
 
-
-    <p class="mb-1"><b>Image Link:</b>{{ asset($dailyVisit->attachment) }} </p>
+    <p class="mb-1"><b>Image
+            Link:</b>{{ !empty($dailyVisit->attachment) ? asset($dailyVisit->attachment) : 'Image not attached' }}
+    </p>
     <p class="mb-1"><b>Description:</b></p>
     <p class="mb-5">{{ $dailyVisit->description }}</p>
     <hr>
     <div class="mt-2" style="text-align: center;">
-        <img src="{{ public_path($dailyVisit->attachment) }}" alt="Image" width="350px" height="300px">
+        <img src="{{ !empty($dailyVisit->attachment) ? public_path($dailyVisit->attachment) : '' }}" alt="Image"
+            width="350px" height="300px">
     </div>
     <div class="mt-5" style="position: fixed; bottom: 10%; left: 0; width: 100%;">
         <div class="d-inline-block">
