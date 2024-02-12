@@ -478,6 +478,10 @@ $("#code").on("change", function (e) {
     GetItemByCode();
 });
 
+$("#save_button").click(function (e) {
+    $("#save_button").hide();
+});
+
 $(document).ready(function () {
     $(".js-example-basic-single").select2();
     $(".add_row").click(function () {
@@ -522,11 +526,13 @@ $(document).ready(function () {
                     } else {
                         redirectUrl(response.redirectUrl);
                     }
+                    $("#save_button").show();
                 } else {
                     offloader();
                     toasterTitle = "Error !";
                     toasterMessage = response.message;
                     errorToaster();
+                    $("#save_button").show();
                 }
             },
             error: function (response) {
@@ -537,6 +543,7 @@ $(document).ready(function () {
                 });
                 toasterTitle = "Error !";
                 errorToaster();
+                $("#save_button").show();
             },
         });
     });

@@ -51,24 +51,22 @@
                                         class="form-control" readonly>
                                 </div>
                             </div>
-                            @if (isset($dailyVisit))
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="exampleEmail11" class="">Status</label>
-                                        <select class="js-example-basic-single form-control"
-                                            placeholder="Select Visit Status" name="status_id" id="status_id" required>
-                                            <option value="">Select Status</option>
-                                            @if (!empty($visit_status))
-                                                @foreach ($visit_status as $data)
-                                                    <option value="{{ $data->id }}"
-                                                        {{ isset($dailyVisit) && isset($dailyVisit->status_id) ? ($dailyVisit->status_id == $data->id ? 'Selected' : '') : '' }}>
-                                                        {{ $data->name }} </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
+                            <div class="col-md-3">
+                                <div class="position-relative form-group">
+                                    <label for="exampleEmail11" class="">Status</label>
+                                    <select class="js-example-basic-single form-control"
+                                        placeholder="Select Visit Status" name="status_id" id="status_id">
+                                        <option value="">Select Status</option>
+                                        @if (!empty($visit_status))
+                                            @foreach ($visit_status as $data)
+                                                <option value="{{ $data->id }}"
+                                                    {{ isset($dailyVisit) && isset($dailyVisit->status_id) ? ($dailyVisit->status_id == $data->id ? 'Selected' : '') : '' }}>
+                                                    {{ $data->name }} </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
                                 </div>
-                            @endif
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-6">
@@ -159,8 +157,8 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end px-4 pb-3">
-                        <button type="submit"
-                            class="mt-2 btn btn-primary">{{ isset($dailyVisit) ? 'Update' : 'Save' }}</button>
+                        <button type="submit" class="mt-2 btn btn-primary"
+                            id='save_button'>{{ isset($dailyVisit) ? 'Update' : 'Save' }}</button>
                     </div>
                 </form>
             </div>
