@@ -115,8 +115,9 @@
     </table>
 
     <p class="mb-1"><b>Description:</b></p>
-    <p>{{ $purchase->note }}</p>
-
+    @php
+        echo $purchase->note_html;
+    @endphp
     <div class="mt-5" style="position: fixed; bottom: 10%; left: 0; width: 100%;">
         <div class="d-inline-block">
             {{-- <p class="mb-0" style="font-size: 1.3rem; font-weight:900">Thank You for Your business!</p> --}}

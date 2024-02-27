@@ -231,6 +231,10 @@
                                                                     class="form-control total_purchase_amount"
                                                                     readonly>
                                                             </td>
+                                                            <td><button class="btn btn-dark" type="button"
+                                                                    onclick="removeRow(this);calculateInvoiceSum();calculatePurchaseAmountSum();calculateNetProfit();"><i
+                                                                        class="fas fa-times"></i></button>
+                                                            </td>
 
                                                         </tr>
                                                         @php
@@ -260,11 +264,16 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="col-md-6">
-                                    <label for="exampleEmail11" class="">Notes</label>
-                                    <textarea name="note" id="note" placeholder="" type="text" value="" class="form-control">{{ isset($quotation) ? $quotation->note : '' }}</textarea>
+                                <div class="col-md-8">
+                                    <div id="toolbar">
+                                        <label for="exampleEmail11" class="">Notes</label>
+                                    </div>
+                                    <div id="editor">
+                                    </div>
+                                    <textarea name="note" id="note" placeholder="" type="text" value="" class="form-control"
+                                        data-custom-value="" hidden>{{ isset($quotation) ? $quotation->note : '' }}</textarea>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
 
                                     <div class="position-relative form-group">
                                         <label for="exampleEmail11" class="">Net Qty</label>
@@ -279,7 +288,7 @@
                             <input name="net_pcs" id="pcs" placeholder="" type="text" value="{{(isset($quotation)) ? $quotation->net_pcs : ''}}" class="form-control" readonly>
                         </div>
                     </div> --}}
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="position-relative form-group">
                                         <label for="gross_amount" class="">Total Amount</label>
                                         <input name="gross_amount" id="gross_amount" placeholder="" type="number"
@@ -291,8 +300,8 @@
 
                             </div>
                             <div class="form-row">
-                                <div class="col-md-9"></div>
-                                <div class="col-md-3">
+                                <div class="col-md-10"></div>
+                                <div class="col-md-2">
                                     <div class="position-relative form-group">
                                         <label for="exampleEmail11" class="">Total Purchase Amount</label>
                                         <input name="gross_purchase_amount" id="gross_purchase_amount" placeholder=""
@@ -304,8 +313,8 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-9"></div>
-                                <div class="col-md-3">
+                                <div class="col-md-10"></div>
+                                <div class="col-md-2">
                                     <div class="position-relative form-group">
                                         <label for="exampleEmail11" class="">Discount</label>
                                         <input name="discount_amount" id="discount_amount" placeholder=""
@@ -317,8 +326,8 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-9"></div>
-                                <div class="col-md-3">
+                                <div class="col-md-10"></div>
+                                <div class="col-md-2">
                                     <div class="position-relative form-group">
                                         <label for="exampleEmail11" class="">Total</label>
                                         <input name="net_total" id="net_total" placeholder="" type="number"
@@ -329,14 +338,21 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-9"></div>
-                                <div class="col-md-3">
+                                <div class="col-md-10"></div>
+                                <div class="col-md-2">
                                     <div class="position-relative form-group">
                                         <label for="exampleEmail11" class="">Profit/Loss</label>
                                         <input name="net_profit" id="net_profit" placeholder="" type="number"
                                             value="{{ isset($quotation) ? $quotation->net_profit : '' }}"
                                             class="form-control" readonly>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-9">
+                                    <input name="html_semantic" id="html_semantic" placeholder="" type="text"
+                                        value="{{ isset($purchase) ? $purchase->note_html : '' }}"
+                                        class="form-control" hidden>
                                 </div>
                             </div>
                         </div>
@@ -350,3 +366,80 @@
 
     </div>
 </x-app-layout>
+<script>
+    const toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+        ['blockquote', 'code-block'],
+        // ['link', 'image', 'video', 'formula'],
+
+        [{
+            'header': 1
+        }, {
+            'header': 2
+        }], // custom button values
+        [{
+            'list': 'ordered'
+        }, {
+            'list': 'bullet'
+        }, {
+            'list': 'check'
+        }],
+        [{
+            'script': 'sub'
+        }, {
+            'script': 'super'
+        }], // superscript/subscript
+        [{
+            'indent': '-1'
+        }, {
+            'indent': '+1'
+        }], // outdent/indent
+        [{
+            'direction': 'rtl'
+        }], // text direction
+
+        [{
+            'size': ['small', false, 'large', 'huge']
+        }], // custom dropdown
+        [{
+            'header': [1, 2, 3, 4, 5, 6, false]
+        }],
+
+        [{
+            'color': []
+        }, {
+            'background': []
+        }], // dropdown with defaults from theme
+        [{
+            'font': ['Times New Roman']
+        }],
+        [{
+            'align': []
+        }],
+
+        ['clean'] // remove formatting button
+    ];
+
+    const quill = new Quill('#editor', {
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'
+    });
+    quill.on('text-change', (delta, oldDelta, source) => {
+        if (source == 'user') {
+            $('#note').val(JSON.stringify(quill.getContents()));
+            const html = quill.getSemanticHTML();
+            $('#html_semantic').val(html);
+        }
+    });
+    $(document).ready(function() {
+        quill.setContents(JSON.parse($('#note').val()));
+
+        $('.Q-form').submit(function(event) {
+            $('#note').data('customValue', quill.getContents());
+            var customValue = $('#note').data('customValue');
+            $('#note').val(JSON.stringify(customValue));
+        });
+    });
+</script>

@@ -135,9 +135,8 @@
                                                                         type="button" tabindex="0"
                                                                         class="dropdown-item">Delete</button></a>
                                                             @endif
-                                                            <a
-                                                                href="{{ route('customerRecieptRecordPdf', $customer_receipt->id) }}"><button
-                                                                    type="button" tabindex="0"
+                                                            <a href="{{ route('customerRecieptRecordPdf', $customer_receipt->id) }}"
+                                                                target="_blank"><button type="button" tabindex="0"
                                                                     class="dropdown-item">PDF</button></a>
                                                         </div>
                                                     </div>

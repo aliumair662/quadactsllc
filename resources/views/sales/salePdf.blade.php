@@ -162,8 +162,11 @@
     </table>
 
     <p class="mb-1"><b>Description:</b></p>
-    <p class="mb-5">{{ $sale->note }}</p>
-    <div class="mt-5" style="position: fixed; bottom: 10%; left: 0; width: 100%;">
+    {{-- <p class="mb-5">{{ $sale->note }}</p> --}}
+    @php
+        echo $sale->note_html;
+    @endphp
+    <div class="mt-5" style="position: fixed; bottom: 0; left: 0; width: 100%;">
         <div class="d-inline-block">
             {{-- <p class="mb-0" style="font-size: 1.3rem; font-weight:900">Thank You for Your business!</p> --}}
             <p><span style="font-size: 1.3rem; font-weight:900">Print Date:</span> @php echo date('d-m-Y'); @endphp</p>
@@ -175,9 +178,9 @@
         </div>
     </div>
     <div
-        style="position: fixed; bottom: 0; left: 0; width: 100%; align-items: center; justify-content: center; padding-left: 25%;">
+        style="position: fixed; bottom: -3rem; left: 0; width: 100%; align-items: center; justify-content: center; padding-left: 25%;">
 
-        <p class="mb-0" style="font-size: 1.3rem; font-weight:900">Thank You for Your business!</p>
+        <p class="mb-0" style="font-size: 1.1rem; font-weight:900">Thank You for Your business!</p>
 
     </div>
 

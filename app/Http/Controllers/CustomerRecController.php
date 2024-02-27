@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Auth;
+use Illuminate\Support\Facades\Log;
 use PDF;
 
 class CustomerRecController extends Controller
@@ -283,18 +285,27 @@ class CustomerRecController extends Controller
 
 
 
-    public function recordPdf($id)
+    public function recordPdf(Request $request, $id)
     {
         $menus = DB::table('customer_receipt')->join('customers', 'customer_receipt.customer', '=', 'customers.id')->where('customer_receipt.id', $id)->first();
         $list = DB::table('customers')->get();
         $companyinfo = DB::table('companyinfo')->first();
         $companyinfo->logo = url('/') . $companyinfo->logo;
 
+        $qrCodeString = $this->generateQrCode($request->url());
         $currency_symbol = $this->getCurrencySymbol($companyinfo->currency_id);
 
-        $data = array('customer_receipt' => $menus, 'customers' => $list, 'companyinfo' => $companyinfo, 'currency_symbol' => $currency_symbol);
+        $data = array('customer_receipt' => $menus, 'customers' => $list, 'companyinfo' => $companyinfo, 'currency_symbol' => $currency_symbol, 'qrCodeString' => $qrCodeString);
         $pdf = PDF::loadView('customer_receipt.recordPdf', $data);
         return $pdf->stream('recordPdf.pdf');
+    }
+
+    public function generateQrCode($url)
+    {
+        // $pdf_data = 'https://wa.me/?text=' . $url;
+        $qrCodeString = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate($url));
+
+        return $qrCodeString;
     }
 
 

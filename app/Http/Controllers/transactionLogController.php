@@ -17,7 +17,8 @@ class transactionLogController extends Controller
     public function list()
     {
         $list = DB::table('transactions_log')
-            ->leftJoin('users', 'transactions_log.user_id', '=', 'users.id')->where('transactions_log.branch', Auth::user()->branch)
+            ->leftJoin('users', 'transactions_log.user_id', '=', 'users.id')
+            // ->where('transactions_log.branch', Auth::user()->branch)
             ->select('transactions_log.*', 'users.name')
             ->orderByDesc('transactions_log.id')
             ->paginate(20);
@@ -40,12 +41,15 @@ class transactionLogController extends Controller
                 $Queries['to'] = $request->to_date;
                 $query->whereBetween('transactions_log.created_at', [$request->from_date, $request->to_date]);
             }
-            $result = $query->where('transactions_log.branch', Auth::user()->branch)->orderByDesc('transactions_log.id')->paginate(20);
+            $result = $query
+                // ->where('transactions_log.branch', Auth::user()->branch)
+                ->orderByDesc('transactions_log.id')->paginate(20);
 
             return view('transactionLog.list', array('lists' => $result, 'from_date' => $request->from_date, 'to_date' => $request->to_date, 'customer_name' => $request->username));
         } else {
             $list = DB::table('transactions_log')
-                ->leftJoin('users', 'transactions_log.user_id', '=', 'users.id')->where('transactions_log.branch', Auth::user()->branch)
+                ->leftJoin('users', 'transactions_log.user_id', '=', 'users.id')
+                // ->where('transactions_log.branch', Auth::user()->branch)
                 ->paginate(20);
             return view('transactionLog.list', array('lists' => $list));
         }

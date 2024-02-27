@@ -144,9 +144,10 @@
         </table>
     </div>
     <div style="padding-left: 15%;">
-        <p class="mb-1"><b>Description:</b></p>
-        <p>
-            {{ $quotation->note }}
+        @php
+            echo $quotation->note_html;
+        @endphp
+        {{ $quotation->note }}
         </p>
     </div>
     <hr style="margin-left: 10%;">

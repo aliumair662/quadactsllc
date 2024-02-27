@@ -164,9 +164,9 @@
     </div>
     <div style="padding-left: 15%;">
         <p class="mb-1"><b>Description:</b></p>
-        <p>
-            {{ $sale->note }}
-        </p>
+        @php
+            echo $sale->note_html;
+        @endphp
     </div>
     <hr style="margin-left: 10%;">
     <div class="align-middle" style="padding-left: 40%;">

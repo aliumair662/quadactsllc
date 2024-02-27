@@ -256,7 +256,7 @@ class GeneralLedgerController extends Controller
                 'account_type_id' => $request->account_type,
                 'chart_of_account_id' => $request->account_group,
                 'chart_of_accounts_category_id' => $request->account_category,
-                'created_at' => date('d-m-Y H:i:s'),
+                'created_at' => date('Y-m-d H:i:s'),
                 'status' => 1
             );
 
@@ -268,7 +268,7 @@ class GeneralLedgerController extends Controller
                 'transaction_detail' => serialize($general_ledger_accounts),
                 'branch' => Auth::user()->branch,
                 'transaction_type' => 'Ledger Account',
-                'created_at' => date('d-m-Y H:i:s'),
+                'created_at' => date('Y-m-d H:i:s'),
             );
             $this->addTransactionLog($log);
             return response()->json(['success' => true, 'message' => 'Account added successfully..', 'redirectUrl' => '/ledgerAccounts/list'], 200);

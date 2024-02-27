@@ -47,6 +47,13 @@ use App\Http\Controllers\DailyVisitController;
 
 Route::get('/', [DashboardController::class, 'welcome'])->name('welcome');
 
+Route::get('/sales/pdf/{id}', [SaleController::class, 'recordPDF'])->name('recordPDF');
+
+Route::get('/quotation/pdf/{id}', [SaleController::class, 'quotationRecordPdf'])->name('quotationRecordPdf');
+
+// Customer Receipt record PDF
+Route::get('customerreceipt/pdf/{id}', [CustomerRecController::class, 'recordPdf'])->name('customerRecieptRecordPdf');
+
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/dashboard', function () {
@@ -79,7 +86,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Sales Search
     Route::any('/sales/searchSales', [SaleController::class, 'searchSales'])->name('searchSales');
     // Record PDF generator
-    Route::get('/sales/pdf/{id}', [SaleController::class, 'recordPDF'])->name('recordPDF');
+
     // Sale Page PDF generator
     Route::get('/sales/pagepdf/{from_date}/{to_date}/{customer_id}/{invoice_number}', [SaleController::class, 'salePagePDF'])->name('salePagePdf');
 
@@ -92,7 +99,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('quotation/delete/{id}', [SaleController::class, 'deleteQuotation'])->name('deleteQuotation');
     Route::post('quotation/searchResults', [SaleController::class, 'searchQuotation'])->name('searchQuotation');
     Route::get('/quotation/pagepdf/{from_date}/{to_date}/{customer_name}/{invoice_number}', [SaleController::class, 'quotationPagePdf'])->name('quotationPagePdf');
-    Route::get('/quotation/pdf/{id}', [SaleController::class, 'quotationRecordPdf'])->name('quotationRecordPdf');
     Route::get('quatationToSalesInvoice/record/{id}', [SaleController::class, 'quatationToSalesInvoice'])->name('quatationToSalesInvoice');
     Route::get('cancelQuotation/record/{id}', [SaleController::class, 'cancelQuotation'])->name('cancelQuotation');
 
@@ -193,8 +199,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('customerreceipt/delete/{id}', [CustomerRecController::class, 'deleteCustomer_receipt'])->name('deletecustomer_receipt');
     // Search for customer receipt
     Route::any('customerreceipt/searchResult', [CustomerRecController::class, 'searchCustomerReceipt'])->name('searchCustomerReceipt');
-    // Customer Receipt record PDF
-    Route::get('customerreceipt/pdf/{id}', [CustomerRecController::class, 'recordPdf'])->name('customerRecieptRecordPdf');
     // Customer Receipt page pdf
     Route::get('customerreceipt/pagepdf/{from_date}/{to_date}/{customer_name}/{invoice_number}', [CustomerRecController::class, 'pagePdf'])->name('customerRecPagePdf');
 

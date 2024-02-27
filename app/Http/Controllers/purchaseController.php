@@ -200,6 +200,7 @@ class purchaseController extends Controller
                 'note' => isset($request->note) ? $request->note : null,
                 'invoice_date' => $request->invoice_date,
                 'branch' => Auth::user()->branch,
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null
             );
 
             $idForPdf = DB::table('purchases')->insertGetId($purchase);
@@ -385,7 +386,7 @@ class purchaseController extends Controller
                 'note' => isset($request->note) ? $request->note : null,
                 'invoice_date' => $request->invoice_date,
                 'branch' => Auth::user()->branch,
-
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null
             );
 
             DB::table('purchases')->where('id', $request->id)->update($purchases);

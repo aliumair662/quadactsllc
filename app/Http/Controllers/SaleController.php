@@ -259,7 +259,8 @@ class SaleController extends Controller
                 'gross_purchase_amount' => $request->gross_purchase_amount,
                 'user_id' => $request->user_id,
                 'sale_user_name' => isset($user->name) ? $user->name : null,
-                'net_profit' => $request->net_profit
+                'net_profit' => $request->net_profit,
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null
             );
             $idForPdf =  DB::table('sales')->insertGetId($sale);
             /***
@@ -482,8 +483,8 @@ class SaleController extends Controller
                 'gross_purchase_amount' => $request->gross_purchase_amount,
                 'user_id' => $request->user_id ?? null,
                 'sale_user_name' => isset($user->name) ? $user->name : null,
-                'net_profit' => $request->net_profit
-
+                'net_profit' => $request->net_profit,
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null
             );
             DB::table('sales')->where('id', $request->id)->update($sale);
             $log = array(
@@ -891,7 +892,9 @@ class SaleController extends Controller
                 'user_id' => Auth::user()->id,
                 'quotation_user_name' => Auth::user()->name,
                 'gross_purchase_amount' => $request->gross_purchase_amount,
-                'net_profit' => $request->net_profit
+                'net_profit' => $request->net_profit,
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null
+
             );
 
             $idForPdf = DB::table('quotation')->insertGetId($sale);
@@ -1002,7 +1005,8 @@ class SaleController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_name' => Auth::user()->name,
                 'gross_purchase_amount' => $request->gross_purchase_amount,
-                'net_profit' => $request->net_profit
+                'net_profit' => $request->net_profit,
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null
             );
 
             $idForPdf = DB::table('quotation_packages')->insert($sale);
@@ -1156,7 +1160,8 @@ class SaleController extends Controller
                 'user_id' => Auth::user()->id,
                 'quotation_user_name' => Auth::user()->name,
                 'gross_purchase_amount' => $request->gross_purchase_amount,
-                'net_profit' => $request->net_profit
+                'net_profit' => $request->net_profit,
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null
             );
             DB::table('quotation')->where('id', $request->id)->update($quotation);
             $log = array(

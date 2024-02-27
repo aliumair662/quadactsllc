@@ -61,6 +61,7 @@
                                 class="form-control item_qty item_qt"
                                 onchange="calculateInvoiceSum(); qtySum();calculatePurchaseAmountSum();calculateNetProfit();">
                         </td>
+                        {{-- calculateProfitPercentage(); --}}
                         <td class="text-center" style="min-width: 8rem;"><input name="amount[]" id="amount"
                                 placeholder="Total Amount" value="" type="number" class="form-control amount"
                                 readonly><input name="total_purchase_amount[]" id="total_purchase_amount"
@@ -267,11 +268,16 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-6">
-                                <label for="exampleEmail11" class="">Notes</label>
-                                <textarea name="note" id="note" placeholder="" type="text" value="" class="form-control">{{ isset($sale) ? $sale->note : '' }}</textarea>
+                            <div class="col-md-8">
+                                <div id="toolbar">
+                                    <label for="exampleEmail11" class="">Notes</label>
+                                </div>
+                                <div id="editor">
+                                </div>
+                                <textarea name="note" id="note" placeholder="" type="text" value="" class="form-control"
+                                    data-custom-value="" hidden>{{ isset($sale) ? $sale->note : '' }}</textarea>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
 
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Net Qty</label>
@@ -280,7 +286,7 @@
                                         readonly>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="gross_amount" class="">Total Amount</label>
                                     <input name="gross_amount" id="gross_amount" placeholder="" type="number"
@@ -298,8 +304,8 @@
 
                         </div>
                         <div class="form-row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Total Purchase Amount</label>
                                     <input name="gross_purchase_amount" id="gross_purchase_amount" placeholder=""
@@ -310,8 +316,8 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Discount</label>
                                     <input name="discount_amount" id="discount_amount" placeholder="" type="number"
@@ -321,8 +327,8 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Total</label>
                                     <input name="net_total" id="net_total" placeholder="" type="number"
@@ -333,8 +339,8 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Recieved/Advance Amount</label>
                                     <input name="recieved_amount" id="recieved_amount" placeholder="" type="number"
@@ -345,8 +351,8 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Balance</label>
                                     <input name="balance_amount" id="balance_amount" placeholder="" type="number"
@@ -357,14 +363,35 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
                                 <div class="position-relative form-group">
                                     <label for="exampleEmail11" class="">Profit/Loss</label>
                                     <input name="net_profit" id="net_profit" placeholder="" type="number"
                                         value="{{ isset($sale) ? $sale->net_profit : '' }}" class="form-control"
                                         readonly>
                                 </div>
+                            </div>
+                        </div>
+                        {{-- onchange="calculateProfitPercentage();" --}}
+                        {{-- <div class="form-row">
+                            <div class="col-md-9"></div>
+                            <div class="col-md-3">
+                                <div class="position-relative form-group">
+                                    <label for="exampleEmail11" class="">Profit%</label>
+                                    <input name="profit_percent" id="profit_percent" placeholder="" type="number"
+                                        value="{{ isset($sale) ? $sale->profit_percent : '' }}" class="form-control"
+                                        readonly>
+                                    <p id="display_percent" class="form-control bg-danger profit_percent"
+                                        style="color: white; width: 50%; text-align: center;">
+                                    </p>
+                                </div>
+                            </div>
+                        </div> --}}
+                        <div class="form-row">
+                            <div class="col-md-8">
+                                <input name="html_semantic" id="html_semantic" placeholder="" type="text"
+                                    value="{{ isset($sale) ? $sale->note_html : '' }}" class="form-control" hidden>
                             </div>
                         </div>
                         <div class="d-block text-center card-footer">
@@ -380,3 +407,80 @@
     </div>
 
 </x-app-layout>
+<script>
+    const toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+        ['blockquote', 'code-block'],
+        // ['link', 'image', 'video', 'formula'],
+
+        [{
+            'header': 1
+        }, {
+            'header': 2
+        }], // custom button values
+        [{
+            'list': 'ordered'
+        }, {
+            'list': 'bullet'
+        }, {
+            'list': 'check'
+        }],
+        [{
+            'script': 'sub'
+        }, {
+            'script': 'super'
+        }], // superscript/subscript
+        [{
+            'indent': '-1'
+        }, {
+            'indent': '+1'
+        }], // outdent/indent
+        [{
+            'direction': 'rtl'
+        }], // text direction
+
+        [{
+            'size': ['small', false, 'large', 'huge']
+        }], // custom dropdown
+        [{
+            'header': [1, 2, 3, 4, 5, 6, false]
+        }],
+
+        [{
+            'color': []
+        }, {
+            'background': []
+        }], // dropdown with defaults from theme
+        [{
+            'font': ['Times New Roman']
+        }],
+        [{
+            'align': []
+        }],
+
+        ['clean'] // remove formatting button
+    ];
+
+    const quill = new Quill('#editor', {
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'
+    });
+    quill.on('text-change', (delta, oldDelta, source) => {
+        if (source == 'user') {
+            $('#note').val(JSON.stringify(quill.getContents()));
+            const html = quill.getSemanticHTML();
+            $('#html_semantic').val(html);
+        }
+    });
+    $(document).ready(function() {
+        quill.setContents(JSON.parse($('#note').val()));
+
+        $('.Q-form').submit(function(event) {
+            $('#note').data('customValue', quill.getContents());
+            var customValue = $('#note').data('customValue');
+            $('#note').val(JSON.stringify(customValue));
+        });
+    });
+</script>

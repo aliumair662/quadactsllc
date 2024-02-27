@@ -137,7 +137,22 @@ function calculateNetProfit() {
         $("#gross_purchase_amount").val() -
         $("#discount_amount").val();
     $("#net_profit").val(net_profit);
+    // var profit_percentage =
+    //     ($("#net_profit").val() / $("#net_total").val()) * 100;
+    // $("#profit_percent").val(profit_percentage);
+    // $("#display_percent").text(profit_percentage + " %");
 }
+// function calculateProfitPercentage() {
+//     var net_profit = $("#net_profit").val();
+//     var net_total = $("#net_total").val();
+//     var profit_percentage = (net_profit / net_total) * 100;
+//     console.log(profit_percentage);
+//     console.log($("#net_profit").val());
+//     console.log($("#net_total").val());
+
+//     $("#profit_percent").val(profit_percentage);
+//     $("#display_percent").text(profit_percentage + " %");
+// }
 function calculatePurchaseAmountSum() {
     var net_total = 0;
     $(".item_purchase_price").each(function (index) {
