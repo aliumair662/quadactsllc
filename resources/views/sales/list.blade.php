@@ -135,6 +135,7 @@
                                         <th class="text-center">Net Qty</th>
                                         <th class="text-center">Invoice Date</th>
                                         <th class="text-center">Net Profit</th>
+                                        <th class="text-center">Profit %</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -163,6 +164,21 @@
                                                     {{ \Carbon\Carbon::parse($list->invoice_date)->format('d-m-Y') }}
                                                 </td>
                                                 <td class="text-center">{{ $list->net_profit }} </td>
+                                                @if (!empty($list->profit_percent) && $list->profit_percent >= 30)
+                                                    <td class="text-center"><span
+                                                            class="badge badge-success">{{ $list->profit_percent }} %
+                                                        </span>
+                                                    </td>
+                                                @elseif (!empty($list->profit_percent) && $list->profit_percent < 30)
+                                                    <td class="text-center"><span
+                                                            class="badge badge-danger">{{ $list->profit_percent }} %
+                                                        </span>
+                                                    </td>
+                                                @elseif (empty($list->profit_percent))
+                                                    <td class="text-center"><span>
+                                                        </span>
+                                                    </td>
+                                                @endif
                                                 <td class="text-center">
                                                     <div class="mb-2 mr-2 btn-group">
                                                         <button class="btn btn-outline-success">Edit</button>

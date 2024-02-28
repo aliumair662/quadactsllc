@@ -51,7 +51,7 @@
                         </td>
                         <td class="text-center" style="min-width: 8rem;"><input name="item_price[]" id="item_price"
                                 placeholder="Price" value="" type="number" class="form-control item_price"
-                                onchange="calculateInvoiceSum();calculateNetProfit();"><input
+                                onchange="calculateInvoiceSum();calculateNetProfit();calculateProfitPercentage();"><input
                                 name="item_purchase_price[]" id="item_purchase_price" placeholder="Purchase Price"
                                 value="" type="number" class="form-control item_purchase_price" onchange=""
                                 readonly></td>
@@ -59,9 +59,8 @@
                         <td class="text-center" style="min-width: 5rem;"><input name="item_qty[]" id="item_qty"
                                 placeholder="Quantity" value="" type="number"
                                 class="form-control item_qty item_qt"
-                                onchange="calculateInvoiceSum(); qtySum();calculatePurchaseAmountSum();calculateNetProfit();">
+                                onchange="calculateInvoiceSum(); qtySum();calculatePurchaseAmountSum();calculateNetProfit();calculateProfitPercentage();">
                         </td>
-                        {{-- calculateProfitPercentage(); --}}
                         <td class="text-center" style="min-width: 8rem;"><input name="amount[]" id="amount"
                                 placeholder="Total Amount" value="" type="number" class="form-control amount"
                                 readonly><input name="total_purchase_amount[]" id="total_purchase_amount"
@@ -213,7 +212,7 @@
                                                                 placeholder="Price"
                                                                 value="{{ isset($sale) ? $invoiceItem['item_price'] : '' }}"
                                                                 type="number" class="form-control item_price"
-                                                                onchange="calculateInvoiceSum();calculateNetProfit();"><input
+                                                                onchange="calculateInvoiceSum();calculateNetProfit();calculateProfitPercentage();"><input
                                                                 name="item_purchase_price[]" id="item_purchase_price"
                                                                 placeholder="Purchase Price"
                                                                 value="{{ isset($sale) ? $invoiceItem['item_purchase_price'] : '' }}"
@@ -225,7 +224,7 @@
                                                                 placeholder="Quantity"
                                                                 value="{{ isset($sale) ? $invoiceItem['item_qty'] : '' }}"
                                                                 type="number" class="form-control item_qty item_qt"
-                                                                onchange="qtySum();calculateInvoiceSum();calculatePurchaseAmountSum();calculateNetProfit();">
+                                                                onchange="qtySum();calculateInvoiceSum();calculatePurchaseAmountSum();calculateNetProfit();calculateProfitPercentage();">
                                                         </td>
                                                         <td class="text-center" style="min-width: 8rem;"><input
                                                                 name="amount[]" id="amount"
@@ -373,23 +372,23 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- onchange="calculateProfitPercentage();" --}}
-                        {{-- <div class="form-row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
                                 <div class="position-relative form-group">
-                                    <label for="exampleEmail11" class="">Profit%</label>
+                                    <label for="exampleEmail11" class="">Profit %</label>
                                     <input name="profit_percent" id="profit_percent" placeholder="" type="number"
                                         value="{{ isset($sale) ? $sale->profit_percent : '' }}" class="form-control"
-                                        readonly>
-                                    <p id="display_percent" class="form-control bg-danger profit_percent"
-                                        style="color: white; width: 50%; text-align: center;">
+                                        readonly hidden>
+                                    <p id="display_percent" class="form-control"
+                                        style="color: white; width: 90%; text-align: center;">
                                     </p>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
                         <div class="form-row">
-                            <div class="col-md-8">
+                            <div class="col-md-9"></div>
+                            <div class="col-md-3">
                                 <input name="html_semantic" id="html_semantic" placeholder="" type="text"
                                     value="{{ isset($sale) ? $sale->note_html : '' }}" class="form-control" hidden>
                             </div>
@@ -475,6 +474,15 @@
         }
     });
     $(document).ready(function() {
+        var profit_per_val = $('#profit_percent').val();
+        if (profit_per_val != '' && profit_per_val >= 30) {
+            $("#display_percent").css("background-color", "green");
+            $("#display_percent").text(profit_per_val + " %");
+        } else if (profit_per_val != '' && profit_per_val < 30) {
+            $("#display_percent").css("background-color", "red");
+            $("#display_percent").text(profit_per_val + " %");
+        }
+
         quill.setContents(JSON.parse($('#note').val()));
 
         $('.Q-form').submit(function(event) {

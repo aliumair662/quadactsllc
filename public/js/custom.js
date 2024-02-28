@@ -97,6 +97,7 @@ async function fetchingItemData($this) {
             calculateInvoiceSum();
             calculatePurchaseAmountSum();
             calculateNetProfit();
+            calculateProfitPercentage();
         },
         error: function (err) {
             console.log(err);
@@ -137,22 +138,21 @@ function calculateNetProfit() {
         $("#gross_purchase_amount").val() -
         $("#discount_amount").val();
     $("#net_profit").val(net_profit);
-    // var profit_percentage =
-    //     ($("#net_profit").val() / $("#net_total").val()) * 100;
-    // $("#profit_percent").val(profit_percentage);
-    // $("#display_percent").text(profit_percentage + " %");
 }
-// function calculateProfitPercentage() {
-//     var net_profit = $("#net_profit").val();
-//     var net_total = $("#net_total").val();
-//     var profit_percentage = (net_profit / net_total) * 100;
-//     console.log(profit_percentage);
-//     console.log($("#net_profit").val());
-//     console.log($("#net_total").val());
+function calculateProfitPercentage() {
+    var net_profit = $("#net_profit").val();
+    var net_total = $("#net_total").val();
+    var profit_percentage = Math.round((net_profit / net_total) * 100);
 
-//     $("#profit_percent").val(profit_percentage);
-//     $("#display_percent").text(profit_percentage + " %");
-// }
+    if (profit_percentage >= 30) {
+        $("#display_percent").css("background-color", "green");
+    } else {
+        $("#display_percent").css("background-color", "red");
+    }
+    $("#profit_percent").val(profit_percentage);
+
+    $("#display_percent").text(profit_percentage + " %");
+}
 function calculatePurchaseAmountSum() {
     var net_total = 0;
     $(".item_purchase_price").each(function (index) {
