@@ -31,6 +31,7 @@ use App\Http\Controllers\toDoController;
 use App\Http\Controllers\transactionLogController;
 use App\Http\Controllers\advanceReturnController;
 use App\Http\Controllers\DailyVisitController;
+use App\Http\Controllers\TermConditionController;
 
 
 
@@ -119,6 +120,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('dailyVisit/edit/{id}', [DailyVisitController::class, 'editDailyVisit'])->name('editDailyVisit');
     Route::post('dailyVisit/update', [DailyVisitController::class, 'updatedailyVisit'])->name('updatedailyVisit');
     Route::get('/dailyVisit/pdf/{id}', [DailyVisitController::class, 'dailyVisitRecordPdf'])->name('dailyVisitRecordPdf');
+
+    // Route for Terms & Conditions
+    Route::get('termCondition/list', [TermConditionController::class, 'termConditionList'])->name('termConditionList');
+    // Route::post('termCondition/searchtermCondition', [TermConditionController::class, 'searchTermCondition'])->name('searchTermCondition');
+    Route::get('termCondition/new', [TermConditionController::class, 'newTermCondition'])->name('newTermCondition');
+    Route::post('termCondition/save', [TermConditionController::class, 'saveTermCondition'])->name('saveTermCondition');
+    Route::get('termCondition/delete/{id}', [TermConditionController::class, 'deleteTermCondition'])->name('deleteTermCondition');
+    Route::get('termCondition/{id}', [TermConditionController::class, 'editTermCondition'])->name('editTermCondition');
+    Route::post('termCondition/update', [TermConditionController::class, 'updateTermCondition'])->name('updateTermCondition');
+    // Route::get('/dailyVisit/pdf/{id}', [TermConditionController::class, 'dailyVisitRecordPdf'])->name('dailyVisitRecordPdf');
+    Route::post('termCondition/data', [TermConditionController::class, 'termConditionData'])->name('termConditionData');
 
     // Route for sales return
     Route::get('/salesReturn/list', [salesReturnController::class, 'saleReturnList'])->name('saleReturnList');

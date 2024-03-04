@@ -104,6 +104,24 @@ async function fetchingItemData($this) {
         },
     });
 }
+async function fetchingTermConditionData($this) {
+    let url = `${window.location.origin}/termCondition/data`;
+    let id = $($this).val();
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { id: id },
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: await function (data) {
+            quill.setContents(JSON.parse(data.data.note));
+        },
+        error: function (err) {
+            console.log(err);
+        },
+    });
+}
 function calculateInvoiceSum() {
     var net_total = 0;
     $(".item_price").each(function (index) {

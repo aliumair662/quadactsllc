@@ -35,7 +35,8 @@ class purchaseController extends Controller
             ->whereIn('category', [3, 5, 6])
             ->get();
         $invoice_number = DB::table('purchases')->max('id') + 1;
-        return view('purchases.new', array('vendors' => $vendors, 'items' => $items, 'invoice_number' => $invoice_number));
+        $term_conditions = DB::table('term_condition')->orderByDesc('id')->get();
+        return view('purchases.new', array('vendors' => $vendors, 'items' => $items, 'invoice_number' => $invoice_number, 'term_conditions' => $term_conditions));
     }
 
     public function savePurchase(Request $request)
@@ -226,7 +227,8 @@ class purchaseController extends Controller
             ->where('cancel_status', '!=', 1)
             // ->whereIn('category', [3, 5, 6])
             ->get();
-        return view('purchases.new', array('purchase' => $purchase, 'vendors' => $vendors, 'items' => $items));
+        $term_conditions = DB::table('term_condition')->orderByDesc('id')->get();
+        return view('purchases.new', array('purchase' => $purchase, 'vendors' => $vendors, 'items' => $items, 'term_conditions' => $term_conditions));
     }
 
 

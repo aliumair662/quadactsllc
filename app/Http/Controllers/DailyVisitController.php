@@ -95,7 +95,7 @@ class DailyVisitController extends Controller
     {
         $daily_visit = DB::table('daily_visits')->where('invoice_number', $request->invoice_number)->first();
         if (!empty($daily_visit)) {
-            return response()->json(['success' => false, 'message' => 'Visit ID already exits..', 'redirectUrl' => '/dailyVisit/list'], 200);
+            return response()->json(['success' => false, 'message' => 'Visit ID already exist..', 'redirectUrl' => '/dailyVisit/list'], 200);
         }
         $validator = Validator::make(
             $request->all(),

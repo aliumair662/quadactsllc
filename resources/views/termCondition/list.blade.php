@@ -1,6 +1,4 @@
 <x-app-layout>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWCT-3sgRjyld2IKVaHtG8EeVoF6G7JMY&libraries=places">
-    </script>
     <div class="app-main__outer">
         <div class="app-main__inner">
             <div class="app-page-title">
@@ -10,16 +8,14 @@
                             <i class="pe-7s-users icon-gradient bg-mean-fruit">
                             </i>
                         </div>
-                        <div>Daily Visits
+                        <div>Term & Conditions
                             <div class="page-title-subheading">
-                                {{-- This is an example dashboard created using build-in
-                                elements and components. --}}
                             </div>
 
                         </div>
                     </div>
                     <div class="page-title-actions">
-                        <a href="{{ route('newDailyVisit') }}">
+                        <a href="{{ route('newTermCondition') }}">
                             <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
                                 class="btn-shadow mr-3 btn btn-dark" data-original-title="Add New Visit">
                                 <i class="fa fa-plus"></i>
@@ -29,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row card mx-0 mb-2 pt-1">
+            {{-- <div class="row card mx-0 mb-2 pt-1">
                 <div class="col-md-12">
                     <form action="{{ route('searchDailyVisit') }}" method="post">
                         @csrf
@@ -100,12 +96,12 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-md-12">
                     <div class="main-card mb-3 card">
-                        <div class="card-header">Daily Visits List
+                        <div class="card-header">Term & Conditions List
                             <div class="btn-actions-pane-right">
                                 <div role="group" class="btn-group-sm btn-group">
                                 </div>
@@ -116,44 +112,34 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">#</th>
-                                        <th class="text-center">Visit ID</th>
-                                        @if (Auth::user()->is_admin === 1)
-                                            <th class="text-center">User Name</th>
-                                        @endif
-                                        <th class="text-center">Business Name</th>
-                                        <th class="text-center">Phone</th>
-                                        {{-- <th class="text-center">Email</th>
-                                        <th class="text-center">Address</th> --}}
-                                        {{-- <th class="text-center">Longituted</th>
-                                        <th class="text-center">Latitude</th> --}}
-                                        <th class="text-center">Date</th>
-                                        <th class="text-center">Location</th>
-                                        <th class="text-center">Status</th>
+                                        <th class="text-center">T&C ID</th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Created At</th>
+                                        <th class="text-center">Updated At</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (!empty($daily_visits))
+                                    @if (!empty($term_condition))
                                         @php
                                             $i = 1;
                                         @endphp
-                                        @foreach ($daily_visits as $list)
+                                        @foreach ($term_condition as $list)
                                             <tr>
                                                 <td class="text-center text-muted">{{ $i }}</td>
-                                                <td class="text-center text-muted">{{ $list->invoice_number }}</td>
-                                                @if (Auth::user()->is_admin === 1)
-                                                    <td class="text-center text-muted"> {{ $list->user_name }}</td>
-                                                @endif
+                                                <td class="text-center">{{ $list->t_c_number }}</td>
                                                 <td class="text-center">{{ $list->name }}</td>
-                                                <td class="text-center">{{ $list->phone }} </td>
                                                 <td class="text-center">
-                                                    {{ \Carbon\Carbon::parse($list->invoice_date)->format('d-m-Y h:i:s') }}
+                                                    {{ \Carbon\Carbon::parse($list->created_at)->format('d-m-Y h:i:s') }}
                                                 </td>
-                                                <td class="text-center" id="map_location">{{ $list->location }} </td>
-                                                <td style="margin-top: 15%;"
-                                                    class="text-center badge {{ $list->badge }}" id="visit_status">
-                                                    {{ $list->status_name }}
-                                                </td>
+                                                @if (!empty($list->updated_at))
+                                                    <td class="text-center">
+                                                        {{ \Carbon\Carbon::parse($list->updated_at)->format('d-m-Y h:i:s') }}
+                                                    </td>
+                                                @else
+                                                    <td class="text-center">
+                                                    </td>
+                                                @endif
                                                 <td class="text-center">
                                                     <div class="mb-2 mr-2 btn-group">
                                                         <button class="btn btn-outline-success">Edit</button>
@@ -165,19 +151,16 @@
                                                         <div tabindex="-1" role="menu" aria-hidden="true"
                                                             class="dropdown-menu" x-placement="bottom-start"
                                                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(68px, 33px, 0px);">
-                                                            <a href="{{ route('editDailyVisit', $list->id) }}"><button
+                                                            <a href="{{ route('editTermCondition', $list->id) }}"><button
                                                                     type="button" tabindex="0"
                                                                     class="dropdown-item">Edit</button></a>
                                                             <a href="#"
-                                                                onclick="deleteRecord('{{ route('deleteDailyVisit', $list->id) }}');"><button
+                                                                onclick="deleteRecord('{{ route('deleteTermCondition', $list->id) }}');"><button
                                                                     type="button" tabindex="0"
                                                                     class="dropdown-item">Delete</button></a>
-                                                            <a onclick="openGoogleMaps();" class=""
+                                                            {{-- <a href="{{ route('dailyVisitRecordPdf', $list->id) }}"
                                                                 target="_blank"><button type="button" tabindex="0"
-                                                                    class="dropdown-item">Map</button></a>
-                                                            <a href="{{ route('dailyVisitRecordPdf', $list->id) }}"
-                                                                target="_blank"><button type="button" tabindex="0"
-                                                                    class="dropdown-item">PDF</button></a>
+                                                                    class="dropdown-item">PDF</button></a> --}}
                                                         </div>
                                                     </div>
                                                 </td>
@@ -192,7 +175,7 @@
                         </div>
                         <div class="d-flex justify-content-end mr-3 card-footer">
                             <div>
-                                {{ $daily_visits->links() }}
+                                {{ $term_condition->links() }}
                             </div>
                         </div>
                     </div>

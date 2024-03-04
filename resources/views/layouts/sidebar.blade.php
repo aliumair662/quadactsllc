@@ -144,6 +144,25 @@
                     </ul>
                 </li>
                 @if (Auth::user()->is_admin !== 0)
+                    <li class="app-sidebar__heading">Terms & Conditions</li>
+                    <li>
+                        <a href="#"
+                            class="{{ Request::is('termCondition/list') || Request::is('termCondition/new') || Request::is('termCondition/edit*') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-users"></i>
+                            Terms & Conditions
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ route('termConditionList') }}">
+                                    <i class="metismenu-icon"></i>
+                                    List
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+                @if (Auth::user()->is_admin !== 0)
                     <li class="app-sidebar__heading">Purchase</li>
                     <li>
                         <a href="#"

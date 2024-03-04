@@ -68,7 +68,8 @@ class SaleController extends Controller
             ->get();
         // ->where('is_admin', 0)
         $users = DB::table('users')->where('status', 1)->get();
-        return view('sales.new', array('customers' => $customers, 'invoice_number' => $invoice_number, 'items' => $items, 'users' => $users));
+        $term_conditions = DB::table('term_condition')->orderByDesc('id')->get();
+        return view('sales.new', array('customers' => $customers, 'invoice_number' => $invoice_number, 'items' => $items, 'users' => $users, 'term_conditions' => $term_conditions));
     }
     public function store(Request $request)
     {
@@ -300,7 +301,8 @@ class SaleController extends Controller
             ->where('cancel_status', '!=', 1)
             ->get();
         $users = DB::table('users')->where('status', 1)->where('is_admin', 0)->get();
-        return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 0, 'users' => $users));
+        $term_conditions = DB::table('term_condition')->orderByDesc('id')->get();
+        return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 0, 'users' => $users, 'term_conditions' => $term_conditions));
     }
     public function update(Request $request)
     {
@@ -771,7 +773,8 @@ class SaleController extends Controller
             ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])
             ->get();
-        $response = ['invoice_number' => $invoice_number, 'items' => $items, 'customers' => $customers];
+        $term_conditions = DB::table('term_condition')->orderByDesc('id')->get();
+        $response = ['invoice_number' => $invoice_number, 'items' => $items, 'customers' => $customers, 'term_conditions' => $term_conditions];
         if (request()->input('pkg_id')) {
             $pkg_data = DB::table('quotation_packages')->where('id', request()->input('pkg_id'))->first();
             $pkg_data->customer_id = '';
@@ -803,7 +806,8 @@ class SaleController extends Controller
             ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])
             ->get();
-        return view('packages/new', array('invoice_number' => $invoice_number, 'items' => $items, 'customers' => $customers));
+        $term_conditions = DB::table('term_condition')->orderByDesc('id')->get();
+        return view('packages/new', array('invoice_number' => $invoice_number, 'items' => $items, 'customers' => $customers, 'term_conditions' => $term_conditions));
     }
 
     public function saveQuotation(Request $request)
@@ -1051,8 +1055,8 @@ class SaleController extends Controller
             ->where('cancel_status', '!=', 1)
             ->whereIn('category', [4, 5, 6])
             ->get();
-
-        return view('quotation/new', array('quotation' => $sale, 'items' => $items, 'customers' => $customers));
+        $term_conditions = DB::table('term_condition')->orderByDesc('id')->get();
+        return view('quotation/new', array('quotation' => $sale, 'items' => $items, 'customers' => $customers, 'term_conditions' => $term_conditions));
     }
 
     public function editPackage($id)

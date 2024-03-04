@@ -10,8 +10,6 @@
                         </div>
                         <div>Purchases
                             <div class="page-title-subheading">
-                                {{-- This is an example dashboard created using build-in
-                                elements and components. --}}
                             </div>
 
                         </div>
@@ -113,6 +111,25 @@
                                                     {{ $vendor->name }} </option>
                                             @endforeach
                                         @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="position-relative form-group">
+                                    <label for="branch" class="">
+                                        Policies
+                                        <a href="" title="category List"><i class="fa fa-list"></i></a>
+                                    </label>
+                                    <select class="js-example-basic-single form-control" placeholder="Select Policy"
+                                        name="policy_id" id="policy_id" onchange="fetchingTermConditionData(this);">
+                                        <option value="">Select Policy</option>
+                                        {{-- @if (!empty($term_conditions)) --}}
+                                        @foreach ($term_conditions as $term_condition)
+                                            <option value="{{ $term_condition->id }}">
+                                                {{ $term_condition->name }} </option>
+                                        @endforeach
+                                        {{-- {{ isset($purchase) ? ($purchase->term_condition_id == $term_condition->t_c_number ? 'Selected' : '') : '' }} --}}
+                                        {{-- @endif --}}
                                     </select>
                                 </div>
                             </div>
@@ -367,6 +384,11 @@
     });
     quill.on('text-change', (delta, oldDelta, source) => {
         if (source == 'user') {
+            $('#note').val(JSON.stringify(quill.getContents()));
+            const html = quill.getSemanticHTML();
+            $('#html_semantic').val(html);
+        }
+        if (source == 'api') {
             $('#note').val(JSON.stringify(quill.getContents()));
             const html = quill.getSemanticHTML();
             $('#html_semantic').val(html);
