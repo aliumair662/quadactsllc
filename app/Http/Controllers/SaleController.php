@@ -1395,7 +1395,8 @@ class SaleController extends Controller
         $sale->recieved_amount  = '';
         $sale->balance_amount   = '';
         $users = DB::table('users')->where('status', 1)->get();
-        return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 1, 'users' => $users));
+        $term_conditions = DB::table('term_condition')->orderByDesc('id')->get();
+        return view('sales.new', array('sale' => $sale, 'customers' => $customers, 'items' => $items, 'create_Invoice' => 1, 'users' => $users, 'term_conditions' => $term_conditions));
     }
 
     public function cancelQuotation($id)

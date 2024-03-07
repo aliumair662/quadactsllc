@@ -26,9 +26,9 @@ class DashboardController extends Controller
         /**
          * Calculate Net Sales
          **/
-        if (Auth::user()->is_admin === 0) {
-            return redirect('quotation/list');
-        };
+        // if (Auth::user()->is_admin === 0) {
+        //     return redirect('quotation/list');
+        // };
         $now = now();
         $Sales = DB::table('general_ledger_transactions')
             ->where('general_ledger_account_id', Config::get('constants.SALE_ACCOUNT_GENERAL_LEDGER'))
@@ -44,11 +44,19 @@ class DashboardController extends Controller
         /**
          * Active Customers
          **/
-        $customers = DB::table('customers')->where('status', 1)->where('branch', Auth::user()->branch)->count('*');
+        if (Auth::user()->is_admin === 0) {
+            $customers = DB::table('customers')->where('status', 1)->where('user_id', Auth::user()->id)->count('*');
+            $quotation = DB::table('quotation')->where('user_id', Auth::user()->id)->count('*');
+            $daily_visits = DB::table('daily_visits')->where('user_id', Auth::user()->id)->count('*');
+        } else {
+            $customers = DB::table('customers')->where('status', 1)->count('*');
+            $quotation = DB::table('quotation')->count('*');
+            $daily_visits = DB::table('daily_visits')->count('*');
+        }
         /**
          * Active Vendors
          **/
-        $vendors = DB::table('vendors')->where('status', 1)->where('branch', Auth::user()->branch)->count('*');
+        $vendors = DB::table('vendors')->where('status', 1)->count('*');
 
         /**
          * Sale Invoices
@@ -185,7 +193,8 @@ class DashboardController extends Controller
             'accountReceivable' => $this->getAccountBalanceByCategory(Config::get('constants.CUSTOMER_CHART_OF_ACCOUNT_CATEGORY_ID'), 'debit - credit'),
             'accountPayable' => $this->getAccountBalanceByCategory(Config::get('constants.VENDOR_CHART_OF_ACCOUNT_CATEGORY_ID'), 'credit - debit'),
             'users' => $users,
-
+            'quotation' => $quotation,
+            'daily_visits' => $daily_visits
         );
 
         $todo = DB::table('to_do')->where('user_id', Auth::user()->id)->where('priority', '1')->get();

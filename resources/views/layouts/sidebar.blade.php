@@ -35,15 +35,13 @@
                 {{-- @if (Auth::user()->is_admin !== 0) --}}
 
                 {{-- {{ Auth::user()->avatar }} --}}
-                @if (Auth::user()->is_admin !== 0)
-                    <li class="app-sidebar__heading">Dashboards</li>
-                    <li>
-                        <a href="{{ route('dashboard') }}" class="{{ Request::is('dashboard') ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-rocket"></i>
-                            Dashboard
-                        </a>
-                    </li>
-                @endif
+                <li class="app-sidebar__heading">Dashboards</li>
+                <li>
+                    <a href="{{ route('dashboard') }}" class="{{ Request::is('dashboard') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-rocket"></i>
+                        Dashboard
+                    </a>
+                </li>
                 {{-- @endif --}}
                 <li class="app-sidebar__heading">Sales</li>
                 @if (Auth::user()->is_admin !== 0)
