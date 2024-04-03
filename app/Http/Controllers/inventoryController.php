@@ -234,7 +234,7 @@ class inventoryController extends Controller
         $data = array(
             'item_list' => $list,
             'companyinfo' => $companyinfo,
-            'qutotation' => $qutotation
+            'quotation' => $qutotation
         );
         $pdf = PDF::loadView('inventory.descriptionPdf', $data);
         return $pdf->stream('descriptionPdf.pdf');
@@ -400,7 +400,7 @@ class inventoryController extends Controller
             $item = array(
                 'code' => $request->code,
                 'name' => $request->name,
-                'pic' => $file_path,
+                // 'pic' => $file_path,
                 'purchase_price' => $request->purchase_price,
                 'sele_price' => $request->sele_price,
                 'stock' => 0,
@@ -414,6 +414,9 @@ class inventoryController extends Controller
 
             $item['updated_at'] = date('Y-m-d H:i:s');
             $item = DB::table('items')->where('id', $request->id)->update($item);
+            if ($request->file('pic')) {
+                $item = DB::table('items')->where('id', $request->id)->update(['pic' => $file_path]);
+            }
             $log = array(
                 'user_id' => Auth::user()->id,
                 'voucher_number' => $request->id,

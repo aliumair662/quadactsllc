@@ -37,18 +37,29 @@
         </table>
     </div>
     <hr>
-    <div>
-        <h4 style="text-align: right;"><b>Customer Name:</b> {{ $qutotation->customer_name }}</h4>
-    </div>
+    <table style="width: 100%;" collspacing="0" class="">
+        <tr>
+            <td>
+                <h4 style="text-align: left;"><b>Quotation #:</b> {{ $quotation->invoice_number }}</h4>
+            </td>
+            <td>
+                <h4 style="text-align: right;"><b>Customer Name:</b> {{ $quotation->customer_name }}</h4>
+            </td>
+        </tr>
+    </table>
+    @php
+        $i = 1;
+    @endphp
     @foreach ($item_list as $item)
         <div style="text-align: center;">
-            <h3 style="margin-bottom: 10px;">{{ $item->name }}</h3>
+            <h3 style="margin-bottom: 10px;">{{ $i }}# - {{ $item->name }}</h3>
         </div>
         <div style="width: 30%; margin: 0 auto; display: flex; justify-content: center;">
             <img src="{{ asset($item->pic) }}" style="object-fit: contain; width:100%;" alt="" class="mb-4">
         </div>
         @php
             echo $item->note_html;
+            $i++;
         @endphp
         <hr>
     @endforeach
