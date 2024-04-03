@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use PDF;
 use Illuminate\Support\Facades\Log;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class GeneralLedgerController extends Controller
 {
@@ -176,7 +177,7 @@ class GeneralLedgerController extends Controller
         } else {
             $customer = DB::table('customers')->where('name',  $customer_name)->first();
         }
-
+        $qrCodeString = $this->generateQrCode($request->fullUrl());
         $data = array(
             'beginningBalance' => $beginningBalance,
             'transactions' => $transactions,
@@ -184,12 +185,20 @@ class GeneralLedgerController extends Controller
             'account' => $account,
             'journal_entry_rule' => $journal_entry_rule,
             'customer' => isset($customer) ? $customer : '',
-            'vendor' => isset($vendor) ? $vendor : ''
+            'vendor' => isset($vendor) ? $vendor : '',
+            'qrCodeString' => $qrCodeString,
         );
 
         $pdf = PDF::loadView('ledger.ledgerPdf', compact('data'));
         // return $pdf->download('salePdf.pdf');
         return $pdf->stream('ledger.pdf');
+    }
+    public function generateQrCode($url)
+    {
+        // $pdf_data = 'https://wa.me/?text=' . $url;
+        $qrCodeString = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate($url));
+
+        return $qrCodeString;
     }
 
     // Ledger Accounts CRUD starts

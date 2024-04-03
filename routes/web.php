@@ -55,6 +55,8 @@ Route::get('/quotation/pdf/{id}', [SaleController::class, 'quotationRecordPdf'])
 // Customer Receipt record PDF
 Route::get('customerreceipt/pdf/{id}', [CustomerRecController::class, 'recordPdf'])->name('customerRecieptRecordPdf');
 
+Route::get('/ledger/ledgerPdf/{general_ledger_account_id}/{customer_name}/{type}', [GeneralLedgerController::class, 'ledgerPdf'])->name('ledgerPdf');
+
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/dashboard', function () {
@@ -82,7 +84,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/sales/update', [SaleController::class, 'update'])->name('updateinvoice');
     Route::get('/sales/delete/{id}', [SaleController::class, 'delete'])->name('deletinvoice');
     Route::get('/ledger/{general_ledger_account_id}', [GeneralLedgerController::class, 'ledger'])->name('ledger');
-    Route::get('/ledger/ledgerPdf/{general_ledger_account_id}/{customer_name}/{type}', [GeneralLedgerController::class, 'ledgerPdf'])->name('ledgerPdf');
     Route::post('/searchledger', [GeneralLedgerController::class, 'searchledger'])->name('searchledger');
     // Sales Search
     Route::any('/sales/searchSales', [SaleController::class, 'searchSales'])->name('searchSales');

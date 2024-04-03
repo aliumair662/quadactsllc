@@ -5,9 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sale Invoice</title>
+    <title>Ledger</title>
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
 </head>
+<style>
+    .table th {
+        background-color: rgb(124, 152, 238)
+    }
+</style>
 
 <body>
     <div class="pt-5 mb-4">
@@ -26,23 +31,57 @@
                         <p class="mb-1"><b>Phone:</b>{{ $companyinfo->phone }}</p>
                         <p class="mb-1"><b>Email:</b>{{ $companyinfo->email }}</p>
                         <p class="mb-1"><b>URL:</b>{{ $companyinfo->web }}</p>
-                        <br>
-                        @if ($data['customer'] != '')
-                            <p class="mb-1"><b>Customer Name:</b> {{ $data['customer']->name }}</p>
-                            <p class="mb-1"><b>Customer Address:</b> {{ $data['customer']->address }}</p>
-                            <p class="mb-1"><b>Customer Contact #:</b> {{ $data['customer']->phone }}</p>
-                        @endif
-                        @if ($data['vendor'] != '')
-                            <p class="mb-1"><b>Vendor Name:</b> {{ $data['vendor']->name }}</p>
-                            <p class="mb-1"><b>Vendor Address:</b> {{ $data['vendor']->address }}</p>
-                            <p class="mb-1"><b>Vendor Contact #:</b> {{ $data['vendor']->phone }}</p>
-                        @endif
                     </div>
                 </td>
-
+                <td class="align-middle" style="padding-left: 30%; padding-top:2rem;">
+                    <p class="mb-1" style="font-family:Georgia, 'Times New Roman', Times, serif;">
+                        <b>Verify Your Sale
+                            Invoice</b>
+                    </p>
+                    <hr>
+                    <img src="data:image/png;base64,{{ $data['qrCodeString'] }}">
+                </td>
             </tr>
+            {{-- <tr>
+                <p class="mb-1"><b>Salesman Name:</b> {{ $sale->sale_user_name }}</p>
+            </tr> --}}
         </table>
     </div>
+    <hr>
+    <table style="width: 100%;" collspacing="0" class="">
+        @if ($data['customer'] != '')
+            <tr>
+                <td>
+                    <p class="mb-1"><b>Customer Name:</b> {{ $data['customer']->name }}</p>
+                </td>
+                <td>
+                    <p class="mb-1"><b>Customer Contact #:</b> {{ $data['customer']->phone }}</p>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="mb-1"><b>Customer Address:</b> {{ $data['customer']->address }}</p>
+                </td>
+            </tr>
+        @endif
+        @if ($data['vendor'] != '')
+            <tr>
+                <td>
+                    <p class="mb-1"><b>Vendor Name:</b> {{ $data['vendor']->name }}</p>
+
+                </td>
+                <td>
+                    <p class="mb-1"><b>Vendor Contact #:</b> {{ $data['vendor']->phone }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="mb-1"><b>Vendor Address:</b> {{ $data['vendor']->address }}</p>
+                </td>
+            </tr>
+        @endif
+    </table>
     @if ($data['vendor'] != '')
         <h4 class="text-right"><b>{{ $data['vendor']->name }} - Vendor Ledger</b></h4>
     @endif
