@@ -259,6 +259,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Rout for Items
     // Get Item Data by (ID)
     Route::post('item/data', [inventoryController::class, 'itemData'])->name('itemData');
+    // Route::post('item/stockData', [inventoryController::class, 'itemStockData'])->name('itemStockData');
+    // Route::post('item/stock', [inventoryController::class, 'itemStock'])->name('itemStock');
 
     Route::get('/item/itemList', [inventoryController::class, 'itemList'])->name('itemlist');
     Route::get('/item/newitem', [inventoryController::class, 'newItem'])->name('newitem');
@@ -270,6 +272,8 @@ Route::group(['middleware' => ['auth']], function () {
     //    Items ledger entries (get)
     Route::get('/item/ledgerEntries/{id}', [inventoryController::class, 'itemLedgerEntries'])->name('itemLedgerEntries');
     Route::get('cancelItem/record/{id}', [inventoryController::class, 'cancelItem'])->name('cancelItem');
+    Route::get('item/descriptionPdf/{id}', [inventoryController::class, 'descriptionPdf'])->name('descriptionPdf');
+
     // Route::post('/item/searchItems', [inventoryController::class, 'searchItems'])->name('searchItems');
 
     // Rout for department

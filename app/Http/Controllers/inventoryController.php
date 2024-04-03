@@ -133,6 +133,36 @@ class inventoryController extends Controller
     }
 
     // items crud(methods)
+    // public function itemStock(Request $request)
+    // {
+    //     $purchases_data = DB::table('inventory_stocks')->orderByDesc('id')->get();
+    //     $data = [];
+    //     foreach ($purchases_data as $purchase) {
+    //         $unseri = unserialize($purchase->items_detail);
+    //         Log::debug(count($unseri));
+    //         for ($i = 0; $i < count($unseri); $i++) {
+    //             if ($unseri[$i]['item_id'] == $request->id) {
+    //                 $data[]['value'] = $purchase->invoice_number;
+    //             }
+    //         }
+    //     }
+    //     return response()->json(['success' => true, 'data' => $data]);
+    // }
+
+    // public function itemStockData(Request $request)
+    // {
+    //     $purchase_data = DB::table('inventory_stocks')->where('invoice_number', $request->stock_code)->first();
+    //     $items_detail = unserialize($purchase_data->items_detail);
+    //     $data = [];
+    //     $item_data = DB::table('items')->where('id', $request->item_id)->select('name')->first();
+    //     foreach ($items_detail as $record) {
+    //         if ($record['item_id'] == $request->item_id) {
+    //             $record['item_name'] = $item_data->name;
+    //             $data = $record;
+    //         }
+    //     }
+    //     return response()->json(['success' => true, 'data' => $data]);
+    // }
     public function itemData(Request $request)
     {
 
@@ -190,6 +220,24 @@ class inventoryController extends Controller
 
         $pdf = PDF::loadView('inventory.itemPagePdf', $data);
         return $pdf->stream('itemPagePdf.pdf');
+    }
+    public function descriptionPdf($id)
+    {
+        $qutotation =  DB::table('quotation')->where('id', $id)->first();
+        $companyinfo = DB::table('companyinfo')->first();
+        $companyinfo->logo = url('/') . $companyinfo->logo;
+        $item_ids = [];
+        foreach (unserialize($qutotation->items_detail) as $i_detail) {
+            $item_ids[] = $i_detail['item_id'];
+        };
+        $list =  DB::table('items')->whereIn('id', $item_ids)->get();
+        $data = array(
+            'item_list' => $list,
+            'companyinfo' => $companyinfo,
+            'qutotation' => $qutotation
+        );
+        $pdf = PDF::loadView('inventory.descriptionPdf', $data);
+        return $pdf->stream('descriptionPdf.pdf');
     }
     public function newItem()
     {
@@ -266,6 +314,8 @@ class inventoryController extends Controller
                 'category' => $request->category,
                 'branch' => Auth::user()->branch,
                 'created_at' => date('Y-m-d H:i:s'),
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null,
+                'note' => isset($request->note) ? $request->note : null,
             );
             $itemId = DB::table('items')->insertGetId($item);
             $log = array(
@@ -358,8 +408,8 @@ class inventoryController extends Controller
                 'linked_items' => serialize($item_detail),
                 'category' => $request->category,
                 'branch' => Auth::user()->branch,
-
-
+                'note_html' => isset($request->html_semantic) ? $request->html_semantic : null,
+                'note' => isset($request->note) ? $request->note : null,
             );
 
             $item['updated_at'] = date('Y-m-d H:i:s');

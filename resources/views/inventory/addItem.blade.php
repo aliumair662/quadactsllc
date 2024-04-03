@@ -220,7 +220,24 @@
                                 @endif
                             </div>
                         </div>
-
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div id="toolbar">
+                                    <label for="exampleEmail11" class="">Notes</label>
+                                </div>
+                                <div id="editor">
+                                </div>
+                                <textarea name="note" id="note" placeholder="" type="text" value="" class="form-control"
+                                    data-custom-value="" hidden>{{ isset($item) ? $item->note : '' }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            {{-- <div class="col-md-9"></div> --}}
+                            <div class="col-md-9" style="margin-top: 7%">
+                                <input name="html_semantic" id="html_semantic" placeholder="" type="text"
+                                    value="{{ isset($item) ? $item->note_html : '' }}" class="form-control" hidden>
+                            </div>
+                        </div>
                         <div class="form-row">
                             <!--<div class="col-md-6">
                                 <div class="position-relative form-group">
@@ -250,3 +267,94 @@
     </div>
 
 </x-app-layout>
+<script>
+    const toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+        ['blockquote', 'code-block'],
+        // ['link', 'image', 'video', 'formula'],
+
+        [{
+            'header': 1
+        }, {
+            'header': 2
+        }], // custom button values
+        [{
+            'list': 'ordered'
+        }, {
+            'list': 'bullet'
+        }, {
+            'list': 'check'
+        }],
+        [{
+            'script': 'sub'
+        }, {
+            'script': 'super'
+        }], // superscript/subscript
+        [{
+            'indent': '-1'
+        }, {
+            'indent': '+1'
+        }], // outdent/indent
+        [{
+            'direction': 'rtl'
+        }], // text direction
+
+        [{
+            'size': ['small', false, 'large', 'huge']
+        }], // custom dropdown
+        [{
+            'header': [1, 2, 3, 4, 5, 6, false]
+        }],
+
+        [{
+            'color': []
+        }, {
+            'background': []
+        }], // dropdown with defaults from theme
+        [{
+            'font': ['Times New Roman']
+        }],
+        [{
+            'align': []
+        }],
+
+        ['clean'] // remove formatting button
+    ];
+
+    const quill = new Quill('#editor', {
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'
+    });
+    quill.on('text-change', (delta, oldDelta, source) => {
+        if (source == 'user') {
+            $('#note').val(JSON.stringify(quill.getContents()));
+            const html = quill.getSemanticHTML();
+            $('#html_semantic').val(html);
+        }
+        if (source == 'api') {
+            $('#note').val(JSON.stringify(quill.getContents()));
+            const html = quill.getSemanticHTML();
+            $('#html_semantic').val(html);
+        }
+    });
+    $(document).ready(function() {
+        var profit_per_val = $('#profit_percent').val();
+        if (profit_per_val != '' && profit_per_val >= 30) {
+            $("#display_percent").css("background-color", "green");
+            $("#display_percent").text(profit_per_val + " %");
+        } else if (profit_per_val != '' && profit_per_val < 30) {
+            $("#display_percent").css("background-color", "red");
+            $("#display_percent").text(profit_per_val + " %");
+        }
+
+        quill.setContents(JSON.parse($('#note').val()));
+
+        $('.Q-form').submit(function(event) {
+            $('#note').data('customValue', quill.getContents());
+            var customValue = $('#note').data('customValue');
+            $('#note').val(JSON.stringify(customValue));
+        });
+    });
+</script>

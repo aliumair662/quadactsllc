@@ -213,6 +213,10 @@
                                                             <a href="{{ route('cancelQuotation', $list->id) }}"><button
                                                                     type="button" tabindex="0"
                                                                     class="dropdown-item">Cancel</button></a>
+                                                            <a href="{{ route('descriptionPdf', ['id' => $list->id]) }}"
+                                                                target="_blank"><button type="button" tabindex="0"
+                                                                    class="dropdown-item">Product Description
+                                                                    PDF</button></a>
                                                         </div>
                                                     </div>
                                                 </td>
