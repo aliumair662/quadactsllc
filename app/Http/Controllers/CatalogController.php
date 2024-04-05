@@ -24,7 +24,7 @@ class CatalogController extends Controller
         $items = DB::table('items')
             // ->select('id', 'pic', 'name', 'code', 'note_html')
             ->orderByDesc('id')
-            ->paginate(20);
+            ->get();
         return view('catalog.list', array('catalogs' => $items));
     }
 }
