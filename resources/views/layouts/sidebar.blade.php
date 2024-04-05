@@ -141,6 +141,23 @@
                         </li>
                     </ul>
                 </li>
+                <li class="app-sidebar__heading">Catalogs</li>
+                <li>
+                    {{-- || Request::is('dailyVisit/new') || Request::is('dailyVisit/edit*') --}}
+                    <a href="#" class="{{ Request::is('catalog/list') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-users"></i>
+                        Catalogs
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{ route('catalogList') }}">
+                                <i class="metismenu-icon"></i>
+                                List
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 @if (Auth::user()->is_admin !== 0)
                     <li class="app-sidebar__heading">Terms & Conditions</li>
                     <li>

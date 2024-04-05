@@ -37,6 +37,9 @@
         </table>
     </div>
     <hr>
+    <div style="text-align: center;">
+        <h1 style="margin-bottom: 10px;">Project Equipment's Detail</h1>
+    </div>
     <table style="width: 100%;" collspacing="0" class="">
         <tr>
             <td>
@@ -47,6 +50,7 @@
             </td>
         </tr>
     </table>
+    <hr>
     @php
         $i = 1;
     @endphp

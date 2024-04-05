@@ -32,6 +32,7 @@ use App\Http\Controllers\transactionLogController;
 use App\Http\Controllers\advanceReturnController;
 use App\Http\Controllers\DailyVisitController;
 use App\Http\Controllers\TermConditionController;
+use App\Http\Controllers\CatalogController;
 
 
 
@@ -56,6 +57,8 @@ Route::get('/quotation/pdf/{id}', [SaleController::class, 'quotationRecordPdf'])
 Route::get('customerreceipt/pdf/{id}', [CustomerRecController::class, 'recordPdf'])->name('customerRecieptRecordPdf');
 
 Route::get('/ledger/ledgerPdf/{general_ledger_account_id}/{customer_name}/{type}', [GeneralLedgerController::class, 'ledgerPdf'])->name('ledgerPdf');
+
+Route::get('catalog/list', [CatalogController::class, 'catalogList'])->name('catalogList');
 
 Route::group(['middleware' => ['auth']], function () {
 
