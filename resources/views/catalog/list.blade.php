@@ -21,7 +21,7 @@
 
         .select2,
         .select2-container--focus {
-            width: 90% !important;
+            width: 100% !important;
             margin-right: 3rem;
         }
 
@@ -315,22 +315,20 @@
     </footer>
 </body>
 <script>
-    // Get all elements with class "note-container"
     var containers = document.querySelectorAll('.note-container');
 
-    // Loop through each container
+
     containers.forEach(function(container) {
-        // Get all child elements within the container
+
         var elements = container.querySelectorAll('*');
 
-        // Loop through each element
+
         elements.forEach(function(element) {
-            // Remove the background color class
-            element.style.backgroundColor = ''; // Remove inline background color style
-            element.classList.remove('bg-color-class'); // Remove background color class
+
+            element.style.backgroundColor = '';
+            element.classList.remove('bg-color-class');
         });
 
-        // Loop through each element and set its color to white
         elements.forEach(function(element) {
             element.style.color = 'black';
         });
