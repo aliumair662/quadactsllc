@@ -241,7 +241,7 @@
                             </div>
                         </div>
                     @else
-                        <div class="mt-5 mb-5" style="background: black !important; padding:3%">
+                        <div class="mt-5 mb-5" style="background: lightgreen !important; padding:3%">
                             <div class="shop-details-area pt-120 pb-120">
                                 <div class="container">
                                     <div class="row">
@@ -256,15 +256,16 @@
                                                 </div>
                                                 <div class="product-reviews"><a href="#">10 reviews</a></div>
                                             </div> --}}
-                                                <h3 class="product-details-title mb-20" style="color: white">
+                                                <h3 class="product-details-title mb-20" style="color: black">
                                                     {{ $catalogs[$i]->name }}</h3>
                                                 <div class="product-price mb-30">
                                                     {{-- <span class="old-price pr-10">$90.35
                                                 </span> --}}
-                                                    <span class="new-price">AED {{ $catalogs[$i]->sele_price }}</span>
+                                                    <span class="new-price" style="color:white">AED
+                                                        {{ $catalogs[$i]->sele_price }}</span>
                                                 </div>
                                                 <div class="product-paragraph">
-                                                    <div class="mb-25" style="color: white">
+                                                    <div class="note-container" class="mb-25">
                                                         <?php echo $catalogs[$i]->note_html; ?>
                                                     </div>
                                                     {{-- <p class="mb-25">Priyoshop has brought to you the
@@ -280,7 +281,7 @@
                                                 </p> --}}
                                                 </div>
                                                 <div class="product-details-meta">
-                                                    <div class="sku mb-5"><b style="color: white">Product
+                                                    <div class="sku mb-5"><b style="color: black">Product
                                                             Code:</b><span style="color: red;">
                                                             {{ $catalogs[$i]->code }}</span>
                                                     </div>
@@ -307,8 +308,31 @@
             </div>
         </div>
     </div>
-    <footer style=" background-color: lightgreen; text-align: center;padding: 1rem 0;">
-        <p>&copy; 2024 <span style="color: white"><b>Quad</b></span><span style="color: black"><b>acts</b></span>
-        </p>
+    <footer style=" background-color: lightgreen; text-align: center;padding: 1rem 0; height: 15%;">
+        <h3 style="margin-top: 1.5%;"><span style="color: black"> &copy; 2024 </span><span
+                style="color: white"><b>Quad</b></span><span style="color: black"><b>acts</b></span>
+        </h3>
     </footer>
 </body>
+<script>
+    // Get all elements with class "note-container"
+    var containers = document.querySelectorAll('.note-container');
+
+    // Loop through each container
+    containers.forEach(function(container) {
+        // Get all child elements within the container
+        var elements = container.querySelectorAll('*');
+
+        // Loop through each element
+        elements.forEach(function(element) {
+            // Remove the background color class
+            element.style.backgroundColor = ''; // Remove inline background color style
+            element.classList.remove('bg-color-class'); // Remove background color class
+        });
+
+        // Loop through each element and set its color to white
+        elements.forEach(function(element) {
+            element.style.color = 'black';
+        });
+    });
+</script>
